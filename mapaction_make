@@ -1,0 +1,5 @@
+final_target: data/in data/out data/mid ## final target to check deployment
+	psql -V
+	osmium --version
+	gdalinfo --version
+	ogrinfo --version
