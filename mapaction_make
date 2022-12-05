@@ -1,5 +1,40 @@
-final_target: data/in data/out data/mid ## final target to check deployment
-	psql -V
-	osmium --version
-	gdalinfo --version
-	ogrinfo --version
+data/in/andorra-latest.osm.pbf: | data/in ## Download Andorra pbf
+	wget https://download.geofabrik.de/europe/andorra-latest.osm.pbf -O $@
+	
+data/mid/andorra.pbf: data/in/andorra-latest.osm.pbf | data/mid ## Rename pbf
+	cp data/in/andorra-latest.osm.pbf $@
+	
+db/table/osm_andorra: data/mid/andorra.pbf | db/table ## Andorra OpenStreetMap dataset.
+	psql -c "drop table if exists osm;"
+	# Pin osmium to CPU1 and disable HT on it
+	OSMIUM_POOL_THREADS=8 OSMIUM_MAX_INPUT_QUEUE_SIZE=800 OSMIUM_MAX_OSMDATA_QUEUE_SIZE=800 OSMIUM_MAX_OUTPUT_QUEUE_SIZE=800 OSMIUM_MAX_WORK_QUEUE_SIZE=100 osmium export -i dense_mmap_array -c osmium.config.json -f pg data/mid/andorra.pbf  -v --progress | psql -1 -c 'create table osm(geog geography, osm_type text, osm_id bigint, osm_user text, ts timestamptz, way_nodes bigint[], tags jsonb); copy osm from stdin freeze;'
+	psql -c "alter table osm set (parallel_workers = 32);"
+	touch $@
+	
+# ---------------- PRIVATE BLOCK ----------------
+
+# ---------------- final goals block ------------
+
+dev: data/out/andorra_buildings.gpkg # dev
+	echo "Dev target was built"
+	
+prod: data/out/andorra_buildings.gpkg # prod
+	echo "Prod target was built"
+
+# ----------------- private code block -----------
+
+db/function/parse_float: | db/function ## Converts text into a float or a NULL.
+	psql -f functions/parse_float.sql
+	touch $@
+
+db/function/parse_integer: | db/function ## Converts text levels into a integer or a NULL.
+	psql -f functions/parse_integer.sql
+	touch $@
+
+db/table/osm_buildings: db/table/osm_andorra db/function/parse_float db/function/parse_integer | db/table ## All the buildings (but not all the properties yet) extracted from OpenStreetMap dataset.
+	psql -f tables/osm_buildings.sql
+	touch $@
+	
+data/out/andorra_buildings.gpkg: db/table/osm_buildings | data/out ## Andorra buildings (most recent) geopackage archive.
+	rm -f $@
+	ogr2ogr -f GPKG data/out/andorra_buildings.gpkg PG:'dbname=test' -sql "select * from osm_buildings" -lco "SPATIAL_INDEX=NO" -nln andorra_buildings_osm
