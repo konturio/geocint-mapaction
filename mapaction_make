@@ -37,4 +37,4 @@ db/table/osm_buildings: db/table/osm_andorra db/function/parse_float db/function
 	
 data/out/andorra_buildings.gpkg: db/table/osm_buildings | data/out ## Andorra buildings (most recent) geopackage archive.
 	rm -f $@
-	ogr2ogr -f GPKG data/out/andorra_buildings.gpkg PG:'dbname=test' -sql "select * from osm_buildings" -lco "SPATIAL_INDEX=NO" -nln andorra_buildings_osm
+	ogr2ogr -f GPKG data/out/andorra_buildings.gpkg PG:'dbname=gis' -sql "select * from osm_buildings" -lco "SPATIAL_INDEX=NO" -nln andorra_buildings_osm
