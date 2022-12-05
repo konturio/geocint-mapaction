@@ -16,9 +16,11 @@ db/table/osm_andorra: data/mid/andorra.pbf | db/table ## Andorra OpenStreetMap d
 # ---------------- final goals block ------------
 
 dev: data/out/andorra_buildings.gpkg # dev
+	touch $@
 	echo "Dev target was built"
 	
 prod: data/out/andorra_buildings.gpkg # prod
+	touch $@
 	echo "Prod target was built"
 
 # ----------------- private code block -----------
