@@ -1,0 +1,23 @@
+data/in/mapaction: | data/in ## Dir for extract from planet pbf dump
+        mkdir -p $@
+
+data/out/mapaction: | data/out ## Dir for exported files
+        mkdir -p $@
+
+data/in/mapaction/per_country_pbf: | data/in/mapaction ## create per-country pbf files
+	bash scrypts/mapaction_pbf_loader.sh
+	touch $@
+
+db/table/map_action_country_tables_created: data/in/mapaction/per_country_pbf | db/table ## Create map action tables in database
+    psql -f mapaction.sql
+	touch $@
+
+db/table/map_action_country_tables_filled: db/table/map_action-country | db/table ## Fill map action tables in database
+    psql -f mapaction.sql
+	touch $@
+
+## produce thematic layers part
+
+data/out/mapaction/files_output: db/table/map_action_country_tables_filled |  data/out/mapaction ## Export from db to SHP and JSON
+	sh scripts/mapaction_export.sh
+	touch $@
