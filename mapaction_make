@@ -4,6 +4,9 @@ data/in/mapaction: | data/in ## Dir for extract from planet pbf dump
 data/out/mapaction: | data/out ## Dir for exported files
 	mkdir -p $@
 
+data/out/country_extractions: | data/out
+	mkdir -p $@
+
 data/in/mapaction/ne_10m_rivers_lake_centerlines.zip: | ## download ne_10m_rivers_lake_centerlines
 	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_rivers_lake_centerlines.zip" -o $@
 
@@ -13,8 +16,8 @@ data/in/mapaction/ne_10m_rivers_lake_centerlines: | data/in/mapaction ## ne_10m_
 data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp: data/in/mapaction/ne_10m_rivers_lake_centerlines.zip | data/in/mapaction/ne_10m_rivers_lake_centerlines ## unzip ne_10m_rivers_lake_centerlines
 	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines -d $@
 
-data/out/ne_10m_rivers_lake_centerlines_per_country_extractions: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out  ## ne_10m_rivers_lake_centerlines per country extractions
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp data/out/{country_code}/221_phys/{country_code}_phys_riv_ln_s0_naturalearth_pp_rivers.shp'
+data/out/country_extractions/ne_10m_rivers_lake_centerlines: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out/country_extractions  ## ne_10m_rivers_lake_centerlines per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_riv_ln_s0_naturalearth_pp_rivers'
 	touch $@
 
 data/in/mapaction/ne_10m_coastline.zip: | data/in/mapaction ## ne_10m_coastline
@@ -26,8 +29,8 @@ data/in/mapaction/ne_10m_coastline: | data/in/mapaction ## ne_10m_coastline
 data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp: data/in/mapaction/ne_10m_coastline.zip | data/in/mapaction/ne_10m_coastline ## unzip ne_10m_coastline
 	unzip data/in/mapaction/ne_10m_coastline -d $@
 
-data/out/ne_10m_coastline_per_country_extractions: data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp | data/out ## ne_10m_coastline per country extractions
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp data/out/{country_code}/211_elev/{country_code}_elev_cst_ln_s0_naturalearth_pp_coastline.shp'
+data/out/country_extractions/ne_10m_coastline: data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp | data/out/country_extractions ## ne_10m_coastline per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp data/out/country_extractions/{country_code}/211_elev/{country_code}_elev_cst_ln_s0_naturalearth_pp_coastline'
 	touch $@
 
 data/in/mapaction/ne_10m_roads.zip: | data/in/mapaction ## ne_10m_roads
@@ -39,8 +42,8 @@ data/in/mapaction/ne_10m_roads: | data/in/mapaction ## ne_10m_roads
 data/in/mapaction/ne_10m_roads/ne_10m_roads.shp: data/in/mapaction/ne_10m_roads.zip | data/in/mapaction/ne_10m_roads ## unzip ne_10m_roads
 	unzip data/in/mapaction/ne_10m_roads -d $@
 
-data/out/ne_10m_roads_per_country_extractions: data/in/mapaction/ne_10m_roads/ne_10m_roads.shp | data/out ## ne_10m_roads per country extractions
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_roads/ne_10m_roads.shp data/out/{country_code}/232_tran/{country_code}_tran_rds_ln_s0_naturalearth_pp_roads.shp'
+data/out/country_extractions/ne_10m_roads: data/in/mapaction/ne_10m_roads/ne_10m_roads.shp | data/out/country_extractions ## ne_10m_roads per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_roads/ne_10m_roads.shp data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_rds_ln_s0_naturalearth_pp_roads'
 	touch $@
 
 data/in/mapaction/ne_10m_populated_places.zip: | data/in/mapaction ## ne_10m_populated_placess
@@ -52,8 +55,8 @@ data/in/mapaction/ne_10m_populated_places: | data/in/mapaction ## ne_10m_populat
 data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp: data/in/mapaction/ne_10m_populated_places.zip | data/in/mapaction/ne_10m_populated_places ## unzip ne_10m_populated_placess
 	unzip data/in/mapaction/ne_10m_populated_places -d $@
 
-data/out/ne_10m_populated_places_per_country_extractions: data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp | data/out ## ne_10m_populated_placess per country extractions
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp data/out/{country_code}/229_stle/{country_code}_stle_stl_pt_s0_naturalearth_pp_maincities.shp'
+data/out/country_extractions/ne_10m_populated_places: data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp | data/out/country_extractions ## ne_10m_populated_placess per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp data/out/country_extractions/{country_code}/229_stle/{country_code}_stle_stl_pt_s0_naturalearth_pp_maincities'
 	touch $@
 
 data/in/mapaction/ne_10m_lakes.zip: | data/in/mapaction ## ne_10m_lakes
@@ -65,8 +68,11 @@ data/in/mapaction/ne_10m_lakes: | data/in/mapaction ## ne_10m_lakes
 data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp: data/in/mapaction/ne_10m_lakes.zip | data/in/mapaction/ne_10m_lakes ## unzip ne_10m_lakes
 	unzip data/in/mapaction/ne_10m_lakes -d $@
 
-data/out/ne_10m_lakes_per_country_extractions: data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp | data/out ## ne_10m_lakes per country extractions
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp data/out/{country_code}/221_phys/{country_code}_phys_lak_py_s0_naturalearth_pp_waterbodies.shp'
+data/out/country_extractions/ne_10m_lakes: data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp | data/out/country_extractions ## ne_10m_lakes per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_lak_py_s0_naturalearth_pp_waterbodies'
+	touch $@
+
+data/out/cmf: data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads
 	touch $@
 
 data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf | data/in/mapaction ## create per-country pbf files
@@ -85,3 +91,13 @@ db/table/mapaction_data: db/table/map_action_country_tables_filled | db/table ##
 data/out/mapaction/files_output: db/table/mapaction_data | data/out/mapaction ## Export from db to SHP and JSON
 	bash scripts/mapaction_export.sh
 	touch $@
+
+# blr_admn_ad3_py_s4_osm_pp_adminboundary3.json.zip:
+# 	wget https://mekillot-backet.website.yandexcloud.net/datasets/blr_admn_ad3_py_s4_osm_pp_adminboundary3.json.zip	> $@
+
+# blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json: blr_admn_ad3_py_s4_osm_pp_adminboundary3.json.zip
+# 	python scripts/build_ckan_dataset_description.py blr_admn_ad3_py_s4_osm_pp_adminboundary3.json.zip > $@
+
+# blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json_request: blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json
+# 	curl -H "Content-Type: application/json" -d @blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json -H "Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzA0ODY1ODAsImp0aSI6IkFOTGpFRGt6VldQdVJIcGhNWHBZVDJmY2pBZ0d5RHpyR3hqRTJjMDlBNjE2aWx5SV9IQXFnZV9ROXV6VTB0SHBIYVQtcFkwV0xWSkhwck5HIn0._A8Ht4DC4NZZmnwGZbL_zKzX2kbt0xQAvq-NU1U8sR4" -X POST "https://geocint.kontur.io/ckan/api/3/action/package_create"
+# 	curl -H "Content-Type: application/json" -d @blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json -H "Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzA0ODY1ODAsImp0aSI6IkFOTGpFRGt6VldQdVJIcGhNWHBZVDJmY2pBZ0d5RHpyR3hqRTJjMDlBNjE2aWx5SV9IQXFnZV9ROXV6VTB0SHBIYVQtcFkwV0xWSkhwck5HIn0._A8Ht4DC4NZZmnwGZbL_zKzX2kbt0xQAvq-NU1U8sR4" -X POST "https://geocint.kontur.io/ckan/api/3/action/package_update"
