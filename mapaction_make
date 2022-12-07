@@ -5,16 +5,16 @@ data/out/mapaction: | data/out ## Dir for exported files
 	mkdir -p $@
 
 data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf | data/in/mapaction ## create per-country pbf files
-	bash scripts/mapaction_pbf_loader.sh
+	ls static_data/mapaction/mapaction_poly_files/*.poly | parallel 'bash scripts/mapaction_pbf_single_loader.sh {}'
 	touch $@
 
 db/table/map_action_country_tables_filled: data/in/mapaction/per_country_pbf | db/table ## Fill map action tables in database
-	bash scripts/mapaction_pbf_filler.sh
+	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_osm_filler.sh {}'
 	touch $@
 
 db/table/mapaction_data: db/table/map_action_country_tables_filled | db/table ## Create and populate mapaction_data table
 	psql -f tables/mapaction_data_table.sql
-	bash scripts/mapaction_data_filler.sh
+	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_osm_data_filler.sh {}'
 	touch $@
 
 data/out/mapaction/files_output: db/table/mapaction_data | data/out/mapaction ## Export from db to SHP and JSON
