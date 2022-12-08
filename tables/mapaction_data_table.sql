@@ -1,6 +1,6 @@
-drop table if exists mapaction_data;
+drop table if exists :tablename;
 
-create table mapaction_data(id bigserial primary key,
+create table :tablename(id bigserial primary key,
     country_code text,
     ma_category text,
     ma_theme text,

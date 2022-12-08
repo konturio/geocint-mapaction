@@ -12,8 +12,7 @@ db/table/map_action_country_tables_filled: data/in/mapaction/per_country_pbf | d
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_osm_filler.sh {}'
 	touch $@
 
-db/table/mapaction_data: db/table/map_action_country_tables_filled | db/table ## Create and populate mapaction_data table
-	psql -f tables/mapaction_data_table.sql
+db/table/mapaction_data: db/table/map_action_country_tables_filled | db/table ## Create and populate mapaction_data tables
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_osm_data_filler.sh {}'
 	touch $@
 

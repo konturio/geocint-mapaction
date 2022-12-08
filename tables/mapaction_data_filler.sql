@@ -1,5 +1,5 @@
-with code as (select tags ->> 'ISO3166-1:alpha3' as country_code from :tablename where tags ->> 'ISO3166-1:alpha3' is not null limit 1)
-insert into mapaction_data(country_code, ma_category, ma_theme, ma_tag, fclass, feature_type, geom)
+with code as (select tags ->> 'ISO3166-1:alpha3' as country_code from :osm_table where tags ->> 'ISO3166-1:alpha3' is not null limit 1)
+insert into :ma_table(country_code, ma_category, ma_theme, ma_tag, fclass, feature_type, geom)
 select code.country_code,
 'tran',
     'rds',
@@ -7,7 +7,7 @@ select code.country_code,
     tags ->> 'highway',
     'line',
     geog::geometry as geom
-from code, :tablename
+from code, :osm_table
 where
     (tags @> '{"highway":"residential"}' or
     tags @> '{"highway":"service"}' or
@@ -24,8 +24,8 @@ where
     and geometrytype(geog) ~* 'linestring';
 
 
-with code as (select tags ->> 'ISO3166-1:alpha3' as country_code from :tablename where tags ->> 'ISO3166-1:alpha3' is not null limit 1)
-insert into mapaction_data(country_code, ma_category, ma_theme, ma_tag, fclass, feature_type, geom)
+with code as (select tags ->> 'ISO3166-1:alpha3' as country_code from :osm_table where tags ->> 'ISO3166-1:alpha3' is not null limit 1)
+insert into :ma_table(country_code, ma_category, ma_theme, ma_tag, fclass, feature_type, geom)
 select code.country_code,
 'tran',
     'rds',
@@ -33,7 +33,7 @@ select code.country_code,
     replace(tags ->> 'highway', '_link', '' ),
     'line',
     geog::geometry as geom
-from code, :tablename
+from code, :osm_table
 where
     tags @> '{"highway":"motorway"}' or
     tags @> '{"highway":"motorway_link"}' or
