@@ -5,7 +5,7 @@ select 'tran',
     'rds',
     'roads',
     tags ->> 'highway',
-    'line',
+    'ln',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -30,7 +30,7 @@ select 'tran',
     'rds',
     'mainroads',
     replace(tags ->> 'highway', '_link', '' ),
-    'line',
+    'ln',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -51,7 +51,7 @@ select 'tran',
     'rrd',
     'railway',
     tags ->> 'railway',
-    'line',
+    'ln',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -67,7 +67,7 @@ select 'tran',
     'rrd',
     'subwaytram',
     tags ->> 'railway',
-    'line',
+    'ln',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -82,7 +82,7 @@ select 'phys',
     'dam',
     'dam',
     tags ->> 'waterway',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -94,7 +94,7 @@ select 'educ',
     'edu',
     'school',
     tags ->> 'amenity',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -106,7 +106,7 @@ select 'educ',
     'uni',
     '',
     tags ->> 'amenity',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -120,7 +120,7 @@ select 'tran',
     'fte',
     'ferryterminal',
     tags ->> 'amenity',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -132,7 +132,7 @@ select 'tran',
     'fer',
     'ferryroute',
     tags ->> 'route',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -146,7 +146,7 @@ select 'tran',
     'por',
     'port',
     COALESCE(tags ->> 'landuse', tags ->> 'industrial'),
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -161,7 +161,7 @@ select 'cash',
     'bnk',
     'bank',
     tags ->> 'amenity',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -173,7 +173,7 @@ select 'cash',
     'atm',
     'atm',
     'atm',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -187,7 +187,7 @@ select 'heal',
     'hea',
     'healthcentres',
     tags ->> 'amenity',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -204,7 +204,7 @@ select 'heal',
     'hos',
     'hospital',
     tags ->> 'amenity',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -216,7 +216,7 @@ select 'cash',
     'mkt',
     'marketplace',
     tags ->> 'amenity',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -228,7 +228,7 @@ select 'cccm',
     'ref',
     'refugeesite',
     tags ->> 'amenity',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -240,7 +240,7 @@ select 'tran',
     'brg',
     'bridge',
     '',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -254,7 +254,7 @@ select 'util',
     'ppl',
     'pipeline',
     '',
-    'line',
+    'ln',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -268,7 +268,7 @@ select 'util',
     'pwl',
     'powerline',
     '',
-    'line',
+    'ln',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -282,7 +282,7 @@ select 'util',
     'pst',
     'powerstation',
     '',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -294,7 +294,7 @@ select 'util',
     'pst',
     'substation',
     '',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -306,7 +306,7 @@ select 'phys',
     'lak',
     'lake',
     '',
-    'polygon',
+    'py',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -321,7 +321,7 @@ select 'phys',
     'riv',
     'river',
     '',
-    'polygon',
+    'py',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -335,7 +335,7 @@ select 'phys',
     'riv',
     'river',
     '',
-    'line',
+    'ln',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -349,7 +349,7 @@ select 'tran',
     'can',
     'canal',
     '',
-    'line',
+    'ln',
     geog::geometry as geom,
     tags
 from :osm_table
@@ -363,7 +363,7 @@ select 'pois',
     'rel',
     'placeofworship',
     '',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -375,7 +375,7 @@ select 'pois',
     'bor',
     'bordercrossing',
     '',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -387,7 +387,7 @@ select 'stle',
     'stl',
     'settlements',
     '',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -404,7 +404,7 @@ select 'stle',
     'stle',
     'settlements',
     '',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
@@ -418,7 +418,7 @@ select 'wash',
     'toi',
     '',
     '',
-    'point',
+    'pt',
     case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags
 from :osm_table
