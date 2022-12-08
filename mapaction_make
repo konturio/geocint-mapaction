@@ -17,5 +17,6 @@ db/table/mapaction_data: db/table/map_action_country_tables_filled | db/table ##
 	touch $@
 
 data/out/mapaction/files_output: db/table/mapaction_data | data/out/mapaction ## Export from db to SHP and JSON
+    psql -f scripts/mapaction_data_export.sql
     ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@
