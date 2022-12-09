@@ -1103,9 +1103,12 @@ SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
     limit 1);
 =======
 UPDATE :ma_table
-SET country_code = iso_code
-FROM (select tags ->> 'ISO3166-1:alpha3' as iso_code
+SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
     FROM :osm_table
     where tags ->> 'ISO3166-1:alpha3' is not null
+<<<<<<< HEAD
     limit 1)
 >>>>>>> dc5968d (13288-create-dataset-export-per-country-both-json-and-shp)
+=======
+    limit 1);
+>>>>>>> 377fe8b (13288-create-dataset-export-per-country-both-json-and-shp)
