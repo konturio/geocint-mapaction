@@ -20,3 +20,5 @@ data/out/mapaction/files_output: db/table/mapaction_data | data/out/mapaction ##
 	psql -f scripts/mapaction_data_export.sql
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@
+
+dev: data/out/mapaction/files_output
