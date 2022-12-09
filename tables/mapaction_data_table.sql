@@ -438,8 +438,7 @@ where tags @> '{"amenity":"toilet"}';
 
 -- 
 UPDATE :ma_table
-SET country_code = iso_code
-FROM (select tags ->> 'ISO3166-1:alpha3' as iso_code
+SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
     FROM :osm_table
     where tags ->> 'ISO3166-1:alpha3' is not null
-    limit 1)
+    limit 1);
