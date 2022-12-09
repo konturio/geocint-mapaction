@@ -1,12 +1,14 @@
 #!/bin/bash
 
+# this script exports mapaction layers from db to json and SHP format
+# input: JAM.pbj
+# output: files according to naming conventions 
 OUTDIR=data/out/mapaction
 
 base_name=$(basename "$1")
-prefix_name=${base_name%.*}
+mapaction_table_name="mapaction_${base_name%.*}"
 #changing prefix osm_ to mapaction_
 #example "osm_tanzania" to "mapaction_tanzania"
-mapaction_table_name=${prefix_name/osm_/mapcation_}
 
 # generate layernames for export
 # MapAction naming convention 
