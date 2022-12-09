@@ -1075,6 +1075,29 @@ from :osm_table
 where tags @> '{"amenity":"water_source"}';
 
 -- 
+<<<<<<< HEAD
+drop type if exists wash_wts_water_source_pt;
+create type wash_wts_water_source_pt as(
+    "name" text,
+    "name:en" text,
+    "man_made" text,
+    "drinking_water" text,
+    "access" text
+    );
+
+insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
+select 'wash',
+    'wts',
+    'water_source',
+    tags ->> 'amenity',
+    'pt',
+    case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
+    tags,
+    osm_id
+from :osm_table
+where tags @> '{"amenity":"water_source"}';
+
+-- 
 UPDATE :ma_table
 SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
     FROM :osm_table
@@ -1082,8 +1105,13 @@ SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
     limit 1);
 =======
 UPDATE :ma_table
-SET country_code = iso_code
-FROM (select tags ->> 'ISO3166-1:alpha3' as iso_code
+SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
+    FROM :osm_table
+    where tags ->> 'ISO3166-1:alpha3' is not null
+    limit 1);
+=======
+UPDATE :ma_table
+SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
     FROM :osm_table
     where tags ->> 'ISO3166-1:alpha3' is not null
     limit 1)

@@ -59,14 +59,14 @@ data/out/ne_10m_populated_places_per_country_extractions: data/in/mapaction/ne_1
 data/in/mapaction/ne_10m_lakes.zip: | data/in/mapaction ## ne_10m_lakes
 	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_lakes.zip" -o $@
 
-data/in/mapaction/ne_10m_lakes: | data/in/mapaction ## ne_10m_lakes
+data/in/ne_10m_lakes: | data/in/mapaction ## ne_10m_lakes
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp: data/in/mapaction/ne_10m_lakes.zip | data/in/mapaction/ne_10m_lakes ## unzip ne_10m_lakes
 	unzip data/in/mapaction/ne_10m_lakes -d $@
 
 data/out/ne_10m_lakes_per_country_extractions: data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp | data/out ## ne_10m_lakes per country extractions
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp data/out/{country_code}/221_phys/{country_code}_phys_lak_py_s0_naturalearth_pp_waterbodies.shp'
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp pbf/out/{country_code}/221_phys/{country_code}_phys_lak_py_s0_naturalearth_pp_waterbodies.shp'
 	touch $@
 
 data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
