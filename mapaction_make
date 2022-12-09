@@ -22,3 +22,6 @@ data/out/mapaction/mapaction_export: db/table/mapaction_data_table | data/out/ma
 	touch $@
 
 dev: db/table/mapaction_data_table ## dev target
+	echo "dev target successfully build"
+	touch $@
+
