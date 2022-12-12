@@ -11,7 +11,15 @@ create table :ma_table(id bigserial primary key,
     geom geometry(geometry, 4326));
 
 
--- 
+--
+drop type if exists tran_rds_roads_ln;
+create type tran_rds_roads_ln as("name" text,
+    "oneway" text,
+    "max speed" text,
+    "bridge" text,
+    "tunnel" text,
+    "surface" text);
+
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
 select 'tran',
     'rds',

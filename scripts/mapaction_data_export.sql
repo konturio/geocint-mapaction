@@ -22,29 +22,21 @@ begin
     --  if type does not exist, return simple query
     if exists (select typname from pg_type where typname = typeName) THEN
         select format('SELECT id, fclass, v.*, geom
-            FROM    %7%I as s, 
+            FROM    %7$I as s, 
                     lateral jsonb_populate_record(null::%1$I, osm_minimum_tags) as v
             where (lower(country_code), lower(ma_category), lower(ma_theme), lower(ma_tag), lower(feature_type)) = 
                 (lower(%2$L), lower(%3$L), lower(%4$L), lower(%5$L), lower(%6$L))', 
-            typeName, geoextent, ma_category, ma_theme, ma_tag, feature_type, table_name)
+            typeName, geoextent, ma_category, ma_theme, ma_tag, feature_type, lower(table_name))
         into ogrExportQuery;
     else
         select format('SELECT id, fclass, geom
-            FROM %6%I
+            FROM %6$I
             where (lower(country_code), lower(ma_category), lower(ma_theme), lower(ma_tag), lower(feature_type)) = 
                 (lower(%1$L), lower(%2$L), lower(%3$L), lower(%4$L), lower(%5$L))', 
-            geoextent, ma_category, ma_theme, ma_tag, feature_type, table_name)
+            geoextent, ma_category, ma_theme, ma_tag, feature_type, lower(table_name))
         into ogrExportQuery;
     end if;
     return ogrExportQuery;
 END;
 $BODY$ 
 LANGUAGE plpgsql STABLE COST 100;
-
-drop type if exists tran_rds_roads_line;
-create type tran_rds_roads_line as("name" text,
-    "oneway" text,
-    "max speed" text,
-    "bridge" text,
-    "tunnel" text,
-    "surface" text);
