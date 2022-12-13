@@ -12,7 +12,6 @@ create table :ma_table(id bigserial primary key,
     geom geometry(geometry, 4326));
 
 
-<<<<<<< HEAD
 --
 drop type if exists tran_rds_roads_ln;
 create type tran_rds_roads_ln as("name" text,
@@ -23,22 +22,14 @@ create type tran_rds_roads_ln as("name" text,
     "surface" text);
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
--- 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'tran',
     'rds',
     'roads',
     tags ->> 'highway',
     'ln',
     geog::geometry as geom,
-<<<<<<< HEAD
     tags,
     osm_id
-=======
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where
     (tags @> '{"highway":"residential"}' or
@@ -56,7 +47,6 @@ where
     and geometrytype(geog) ~* 'linestring';
 
 -- 
-<<<<<<< HEAD
 drop type if exists tran_rds_mainroads_ln;
 create type tran_rds_mainroads_ln as(
     "name" text,
@@ -70,34 +60,23 @@ create type tran_rds_mainroads_ln as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'tran',
     'rds',
     'mainroads',
     replace(tags ->> 'highway', '_link', '' ),
     'ln',
     geog::geometry as geom,
-<<<<<<< HEAD
     tags,
     osm_id
 from :osm_table
 where 
     (tags @> '{"highway":"motorway"}' or
-=======
-    tags
-from :osm_table
-where 
-    tags @> '{"highway":"motorway"}' or
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
     tags @> '{"highway":"motorway_link"}' or
     tags @> '{"highway":"trunk"}' or
     tags @> '{"highway":"trunk_link"}' or
     tags @> '{"highway":"primary"}' or
     tags @> '{"highway":"primary_link"}' or
     tags @> '{"highway":"secondary"}' or
-<<<<<<< HEAD
     tags @> '{"highway":"secondary_link"}')
     and geometrytype(geog) ~* 'linestring';
 
@@ -114,25 +93,14 @@ create type tran_rrd_railway_ln as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-    tags @> '{"highway":"secondary_link"}'
-    and geometrytype(geog) ~* 'linestring';
-
--- 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'tran',
     'rrd',
     'railway',
     tags ->> 'railway',
     'ln',
     geog::geometry as geom,
-<<<<<<< HEAD
     tags,
     osm_id
-=======
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     (tags @> '{"railway":"rail"}' or
@@ -141,7 +109,6 @@ where
     and geometrytype(geog) ~* 'linestring';
 
 -- 
-<<<<<<< HEAD
 drop type if exists tran_rrd_subwaytram_ln;
 create type tran_rrd_subwaytram_ln as(
     "name" text,
@@ -154,21 +121,14 @@ create type tran_rrd_subwaytram_ln as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'tran',
     'rrd',
     'subwaytram',
     tags ->> 'railway',
     'ln',
     geog::geometry as geom,
-<<<<<<< HEAD
     tags,
     osm_id
-=======
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where
     (tags @> '{"railway":"subway"}' or
@@ -176,7 +136,6 @@ where
     and geometrytype(geog) ~* 'linestring';
 
 -- 
-<<<<<<< HEAD
 drop type if exists phys_dam_dam_pt;
 create type phys_dam_dam_pt as(
     "name" text,
@@ -184,27 +143,18 @@ create type phys_dam_dam_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'phys',
     'dam',
     'dam',
     tags ->> 'waterway',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"waterway":"dam"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists educ_edu_school_pt;
 create type educ_edu_school_pt as(
     "name" text,
@@ -213,27 +163,18 @@ create type educ_edu_school_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'educ',
     'edu',
     'school',
     tags ->> 'amenity',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"amenity":"school"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists educ_uni_pt;
 create type educ_uni_pt as(
     "name" text,
@@ -242,29 +183,20 @@ create type educ_uni_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'educ',
     'uni',
     '',
     tags ->> 'amenity',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"amenity":"college"}' or 
     tags @> '{"amenity":"university"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists tran_fte_ferryterminal_pt;
 create type tran_fte_ferryterminal_pt as(
     "name" text,
@@ -275,27 +207,18 @@ create type tran_fte_ferryterminal_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'tran',
     'fte',
     'ferryterminal',
     tags ->> 'amenity',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"amenity":"ferry_terminal"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists tran_fer_ferryroute_ln;
 create type tran_fer_ferryroute_ln as(
     "name" text,
@@ -305,30 +228,20 @@ create type tran_fer_ferryroute_ln as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'tran',
     'fer',
     'ferryroute',
     tags ->> 'route',
-<<<<<<< HEAD
     'ln',
     geog::geometry as geom,
     tags,
     osm_id
-=======
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"route":"ferry"}'
     and geometrytype(geog) ~* 'linestring';
 
 -- 
-<<<<<<< HEAD
 drop type if exists tran_por_port_pt;
 create type tran_por_port_pt as(
     "name" text,
@@ -338,22 +251,14 @@ create type tran_por_port_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'tran',
     'por',
     'port',
     COALESCE(tags ->> 'landuse', tags ->> 'industrial'),
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"landuse":"port"}' or
@@ -361,7 +266,6 @@ where
     tags @> '{"industrial":"port"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists cash_bnk_bank_pt;
 create type cash_bnk_bank_pt as(
     "name" text,
@@ -371,27 +275,18 @@ create type cash_bnk_bank_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'cash',
     'bnk',
     'bank',
     tags ->> 'amenity',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"amenity":"bank"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists cash_atm_atm_pt;
 create type cash_atm_atm_pt as(
     "name" text,
@@ -412,23 +307,12 @@ select 'cash',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'cash',
-    'atm',
-    'atm',
-    'atm',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"atm":"yes"}' or
     tags @> '{"amenity":"atm"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists heal_hea_healthcentres_pt;
 create type heal_hea_healthcentres_pt as(
     "name" text,
@@ -439,22 +323,14 @@ create type heal_hea_healthcentres_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'heal',
     'hea',
     'healthcentres',
     tags ->> 'amenity',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"amenity":"clinic"}' or
@@ -464,7 +340,6 @@ where
     tags @> '{"amenity":"pharmacy"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists heal_hos_hospital_pt;
 create type heal_hos_hospital_pt as(
     "name" text,
@@ -474,27 +349,18 @@ create type heal_hos_hospital_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'heal',
     'hos',
     'hospital',
     tags ->> 'amenity',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"amenity":"hospital"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists cash_mkt_marketplace_pt;
 create type cash_mkt_marketplace_pt as(
     "name" text,
@@ -503,50 +369,31 @@ create type cash_mkt_marketplace_pt as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'cash',
     'mkt',
     'marketplace',
     tags ->> 'amenity',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"amenity":"marketplace"}';
 
 -- 
-<<<<<<< HEAD
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 select 'cccm',
     'ref',
     'refugeesite',
     tags ->> 'amenity',
     'pt',
-<<<<<<< HEAD
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"amenity":"refugee_site"}';
 
 -- 
-<<<<<<< HEAD
-drop type if exists tran_brg_bridge_ln;
 create type tran_brg_bridge_ln as(
     "name" text,
     "name:en" text,
@@ -563,27 +410,7 @@ select 'tran',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'tran',
-    'brg',
-    'bridge',
-    '',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
-where 
-    tags @> '{"bridge":"yes"}'
-    and geometrytype(geog) ~* 'linestring';
-
--- 
-<<<<<<< HEAD
-drop type if exists util_ppl_pipeline_ln;
-create type util_ppl_pipeline_ln as(
-    "name" text,
-    "name:en" text,
     "location" text,
     "substance" text
     );
@@ -613,7 +440,6 @@ where
     and geometrytype(geog) ~* 'linestring';
 
 -- 
-<<<<<<< HEAD
 drop type if exists util_pwl_powerline_ln;
 create type util_pwl_powerline_ln as(
     "name" text,
@@ -632,23 +458,12 @@ select 'util',
     geog::geometry as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'util',
-    'pwl',
-    'powerline',
-    '',
-    'ln',
-    geog::geometry as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"power":"line"}'
     and geometrytype(geog) ~* 'linestring';
 
 -- 
-<<<<<<< HEAD
 drop type if exists util_pst_powerstation_pt;
 create type util_pst_powerstation_pt as(
     "name" text,
@@ -666,21 +481,10 @@ select 'util',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'util',
-    'pst',
-    'powerstation',
-    '',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"power":"plant"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists util_pst_substation_pt;
 create type util_pst_substation_pt as(
     "name" text,
@@ -699,21 +503,10 @@ select 'util',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'util',
-    'pst',
-    'substation',
-    '',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"power":"substation"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists util_mil_militaryinstallation_py;
 create type util_mil_militaryinstallation_py as(
     "name" text,
@@ -754,16 +547,6 @@ select 'phys',
     geog::geometry as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'phys',
-    'lak',
-    'lake',
-    '',
-    'py',
-    geog::geometry as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     (tags @> '{"water":"lake"}' or
@@ -771,7 +554,6 @@ where
     and geometrytype(geog) ~* 'polygon';
 
 -- 
-<<<<<<< HEAD
 drop type if exists phys_riv_river_py;
 create type phys_riv_river_py as(
     "name" text,
@@ -788,23 +570,12 @@ select 'phys',
     geog::geometry as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'phys',
-    'riv',
-    'river',
-    '',
-    'py',
-    geog::geometry as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"water":"river"}'
     and geometrytype(geog) ~* 'polygon';
 
 -- 
-<<<<<<< HEAD
 drop type if exists phys_riv_river_ln;
 create type phys_riv_river_ln as(
     "name" text,
@@ -868,49 +639,10 @@ select 'pois',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'phys',
-    'riv',
-    'river',
-    '',
-    'ln',
-    geog::geometry as geom,
-    tags
-from :osm_table
-where 
-    tags @> '{"water":"river"}'
-    and geometrytype(geog) ~* 'linestring';
-
--- 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'tran',
-    'can',
-    'canal',
-    '',
-    'ln',
-    geog::geometry as geom,
-    tags
-from :osm_table
-where 
-    tags @> '{"water":"canal"}'
-    and geometrytype(geog) ~* 'linestring';
-
--- 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'pois',
-    'rel',
-    'placeofworship',
-    '',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"amenity":"place_of_worship"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists pois_bor_bordercrossing_pt;
 create type pois_bor_bordercrossing_pt as(
     "name" text,
@@ -930,21 +662,10 @@ select 'pois',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'pois',
-    'bor',
-    'bordercrossing',
-    '',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"border":"border_control"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists stle_stl_settlements_pt;
 create type stle_stl_settlements_pt as(
     "name" text,
@@ -965,16 +686,6 @@ select 'stle',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'stle',
-    'stl',
-    'settlements',
-    '',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"place":"city"}' or
@@ -984,7 +695,6 @@ where
     tags @> '{"place":"hamlet"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists stle_stl_townscities_pt;
 create type stle_stl_townscities_pt as(
     "name" text,
@@ -1004,23 +714,12 @@ select 'stle',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'stle',
-    'stle',
-    'settlements',
-    '',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where 
     tags @> '{"place":"city"}' or
     tags @> '{"place":"town"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists wash_toi_toilets_pt;
 create type wash_toi_toilets_pt as(
     "name" text,
@@ -1038,16 +737,6 @@ select 'wash',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
-=======
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'wash',
-    'toi',
-    '',
-    '',
-    'pt',
-    case when geometrytype(geog::geometry) != 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 from :osm_table
 where tags @> '{"amenity":"toilet"}';
 
@@ -1075,7 +764,6 @@ from :osm_table
 where tags @> '{"amenity":"water_source"}';
 
 -- 
-<<<<<<< HEAD
 drop type if exists wash_wts_water_source_pt;
 create type wash_wts_water_source_pt as(
     "name" text,
@@ -1103,16 +791,3 @@ SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
     FROM :osm_table
     where tags ->> 'ISO3166-1:alpha3' is not null
     limit 1);
-=======
-UPDATE :ma_table
-SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
-    FROM :osm_table
-    where tags ->> 'ISO3166-1:alpha3' is not null
-    limit 1);
-=======
-UPDATE :ma_table
-SET country_code = (select tags ->> 'ISO3166-1:alpha3' as iso_code
-    FROM :osm_table
-    where tags ->> 'ISO3166-1:alpha3' is not null
-    limit 1)
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
