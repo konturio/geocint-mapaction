@@ -3,14 +3,7 @@
 # this script exports mapaction layers from db to json and SHP format
 # input: JAM.pbj
 # output: files according to naming conventions 
-<<<<<<< HEAD
-<<<<<<< HEAD
-OUTDIR=data/out/mapaction/
-=======
-=======
->>>>>>> dc5968d (13288-create-dataset-export-per-country-both-json-and-shp)
 OUTDIR=data/out/mapaction
->>>>>>> a1706a3 (13288-create-dataset-export-per-country-both-json-and-shp)
 
 base_name=$(basename "$1")
 mapaction_table_name="mapaction_${base_name%.*}"

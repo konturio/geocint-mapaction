@@ -738,9 +738,7 @@ select 'wash',
 from :osm_table
 where tags @> '{"amenity":"toilet"}';
 
--- 
-<<<<<<< HEAD
-<<<<<<< HEAD
+--
 drop type if exists wash_wts_water_source_pt;
 create type wash_wts_water_source_pt as(
     "name" text,
