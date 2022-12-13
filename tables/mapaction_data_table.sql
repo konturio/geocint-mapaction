@@ -70,14 +70,14 @@ select 'tran',
     osm_id
 from :osm_table
 where 
-    tags @> '{"highway":"motorway"}' or
+    (tags @> '{"highway":"motorway"}' or
     tags @> '{"highway":"motorway_link"}' or
     tags @> '{"highway":"trunk"}' or
     tags @> '{"highway":"trunk_link"}' or
     tags @> '{"highway":"primary"}' or
     tags @> '{"highway":"primary_link"}' or
     tags @> '{"highway":"secondary"}' or
-    tags @> '{"highway":"secondary_link"}'
+    tags @> '{"highway":"secondary_link"}')
     and geometrytype(geog) ~* 'linestring';
 
 -- 
@@ -175,13 +175,11 @@ from :osm_table
 where tags @> '{"amenity":"school"}';
 
 -- 
-drop type if exists tran_fte_ferryterminal_pt;
-create type tran_fte_ferryterminal_pt as(
+drop type if exists educ_uni_pt;
+create type educ_uni_pt as(
     "name" text,
     "name:en" text,
-    "ferry" text,
-    "cargo" text,
-    "public_transport" text
+    "addr:city" text
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
@@ -235,7 +233,7 @@ select 'tran',
     'ferryroute',
     tags ->> 'route',
     'ln',
-    case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
+    geog::geometry as geom,
     tags,
     osm_id
 from :osm_table
