@@ -21,7 +21,7 @@ data/out/mapaction/mapaction_export: db/table/mapaction_data_table | data/out/ma
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@
 
-dev: db/table/mapaction_data_table ## dev target
+dev: data/in/mapaction ## this runs when autos_tart.sh executes
 	echo "dev target successfully build"
 	touch $@
 
