@@ -21,7 +21,7 @@ begin
     --  check if exists type for additional columns for layer and return query
     --  if type does not exist, return simple query
     if exists (select typname from pg_type where typname = typeName) THEN
-        select format('SELECT id, fclass, v.*, geom
+        select format('SELECT osm_id, fclass, v.*, geom
             FROM    %7$I as s, 
                     lateral jsonb_populate_record(null::%1$I, osm_minimum_tags) as v
             where (lower(country_code), lower(ma_category), lower(ma_theme), lower(ma_tag), lower(feature_type)) = 
@@ -29,7 +29,7 @@ begin
             typeName, geoextent, ma_category, ma_theme, ma_tag, feature_type, lower(table_name))
         into ogrExportQuery;
     else
-        select format('SELECT id, fclass, geom
+        select format('SELECT osm_id, fclass, geom
             FROM %6$I
             where (lower(country_code), lower(ma_category), lower(ma_theme), lower(ma_tag), lower(feature_type)) = 
                 (lower(%1$L), lower(%2$L), lower(%3$L), lower(%4$L), lower(%5$L))', 
