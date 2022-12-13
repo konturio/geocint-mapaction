@@ -3,7 +3,7 @@
 # this script exports mapaction layers from db to json and SHP format
 # input: JAM.pbj
 # output: files according to naming conventions 
-OUTDIR=data/out/mapaction
+OUTDIR=data/out/mapaction/
 
 base_name=$(basename "$1")
 mapaction_table_name="mapaction_${base_name%.*}"
