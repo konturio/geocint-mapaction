@@ -15,6 +15,7 @@ data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.
 
 data/out/ne_10m_rivers_lake_centerlines_per_country_extractions: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out  ## ne_10m_rivers_lake_centerlines per country extractions
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp data/out/{country_code}/221_phys/{country_code}_phys_riv_ln_s0_naturalearth_pp_rivers.shp'
+	touch $@
 
 data/in/mapaction/ne_10m_coastline.zip: | data/in/mapaction ## ne_10m_coastline
 	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_coastline.zip" -o $@
