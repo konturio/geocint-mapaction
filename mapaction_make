@@ -89,3 +89,10 @@ data/out/mapaction/mapaction_export: db/table/mapaction_data_table | data/out/ma
 dev: data/in/mapaction ## this runs when autos_tart.sh executes
 	echo "dev target successfully build"
 	touch $@
+
+.PHONY: export_country
+export_country: data/in/mapaction | data/out/mapaction ## run as make export_country COUNTRY=blr.json
+	bash scripts/osm_pbf_extract.sh $(COUNTRY)
+	bash scripts/osm_data_import.sh $(COUNTRY)
+	bash scripts/mapaction_data_table.sh $(COUNTRY)
+	bash scripts/mapaction_export.sh $(COUNTRY)
