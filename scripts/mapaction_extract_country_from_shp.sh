@@ -24,5 +24,6 @@ zip -r -j $output_shp_zip_path "$(dirname $output_shp_name)" -x "*.geojson"
 output_geojson_zip_path="data/out/country_extractions/$(basename $output_geojson_name).zip"
 zip -r -j $output_geojson_zip_path $output_geojson_name
 
+# FIXME: s3 bucket name and endpoint url should be specified in env variables
 aws s3 --endpoint-url=https://storage.yandexcloud.net cp $output_shp_zip_path s3://mekillot-backet/akalenik/"$(basename $output_shp_zip_path)"
 aws s3 --endpoint-url=https://storage.yandexcloud.net cp $output_geojson_zip_path s3://mekillot-backet/akalenik/"$(basename $output_geojson_zip_path)"
