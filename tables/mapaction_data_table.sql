@@ -419,7 +419,7 @@ create type util_ppl_pipeline_ln as(
     "name" text,
     "name:en" text,
     "substance" text,
-    "location" text,
+    "location" text
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
