@@ -394,25 +394,32 @@ from :osm_table
 where tags @> '{"amenity":"refugee_site"}';
 
 -- 
-create type tran_brg_bridge_ln as(
+drop type if exists tran_brg_bridge_pt;
+create type tran_brg_bridge_pt as(
     "name" text,
     "name:en" text,
-    "bridge" text,
-    "substance" text
+    "bridge" text
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
 select 'tran',
     'brg',
     'bridge',
-    COALESCE(tags ->> 'man_made', tags ->> 'bridge'),
+    tags ->> 'man_made',
     'pt',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id
 from :osm_table
+where tags @> '{"man_made":"bridge"}';
+
+-- 
+drop type if exists util_ppl_pipeline_ln;
+create type util_ppl_pipeline_ln as(
+    "name" text,
+    "name:en" text,
+    "substance" text,
     "location" text,
-    "substance" text
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
@@ -424,14 +431,6 @@ select 'util',
     geog::geometry as geom,
     tags,
     osm_id
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags)
-select 'util',
-    'ppl',
-    'pipeline',
-    '',
-    'ln',
-    geog::geometry as geom,
-    tags
 from :osm_table
 where 
     tags @> '{"man_made":"pipeline"}'
