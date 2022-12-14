@@ -95,13 +95,3 @@ db/table/mapaction_data: db/table/map_action_country_tables_filled | db/table ##
 data/out/mapaction/files_output: db/table/mapaction_data | data/out/mapaction ## Export from db to SHP and JSON
 	bash scripts/mapaction_export.sh
 	touch $@
-
-# blr_admn_ad3_py_s4_osm_pp_adminboundary3.json.zip:
-# 	wget https://mekillot-backet.website.yandexcloud.net/datasets/blr_admn_ad3_py_s4_osm_pp_adminboundary3.json.zip	> $@
-
-# blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json: blr_admn_ad3_py_s4_osm_pp_adminboundary3.json.zip
-# 	python scripts/build_ckan_dataset_description.py blr_admn_ad3_py_s4_osm_pp_adminboundary3.json.zip > $@
-
-# blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json_request: blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json
-# 	curl -H "Content-Type: application/json" -d @blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json -H "Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzA0ODY1ODAsImp0aSI6IkFOTGpFRGt6VldQdVJIcGhNWHBZVDJmY2pBZ0d5RHpyR3hqRTJjMDlBNjE2aWx5SV9IQXFnZV9ROXV6VTB0SHBIYVQtcFkwV0xWSkhwck5HIn0._A8Ht4DC4NZZmnwGZbL_zKzX2kbt0xQAvq-NU1U8sR4" -X POST "https://geocint.kontur.io/ckan/api/3/action/package_create"
-# 	curl -H "Content-Type: application/json" -d @blr_admn_ad3_py_s4_osm_pp_adminboundary3.ckan.json -H "Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzA0ODY1ODAsImp0aSI6IkFOTGpFRGt6VldQdVJIcGhNWHBZVDJmY2pBZ0d5RHpyR3hqRTJjMDlBNjE2aWx5SV9IQXFnZV9ROXV6VTB0SHBIYVQtcFkwV0xWSkhwck5HIn0._A8Ht4DC4NZZmnwGZbL_zKzX2kbt0xQAvq-NU1U8sR4" -X POST "https://geocint.kontur.io/ckan/api/3/action/package_update"
