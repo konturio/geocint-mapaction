@@ -13,3 +13,11 @@ echo "country_code $country_code"
 # FIXME: s3 bucket name and endpoint url should be specified in env variables
 aws s3 --endpoint-url=https://storage.yandexcloud.net cp "data/out/cmf/$country_code.shp.zip" "s3://mekillot-backet/akalenik/cmf/$country_code.shp.zip"
 aws s3 --endpoint-url=https://storage.yandexcloud.net cp "data/out/cmf/$country_code.geojson.zip" "s3://mekillot-backet/akalenik/cmf/$country_code.geojson.zip"
+
+ckan_cmf_description_json_path="data/out/"$country_code"_ckan.json"
+python scripts/build_ckan_cmf_description.py $country_code > $ckan_cmf_description_json_path
+
+set +e
+curl -H "Content-Type: application/json" -d @$ckan_cmf_description_json_path -H "Authorization: $CKAN_API_KEY" -X POST "$CKAN_BASE_URL/api/3/action/package_create"
+curl -H "Content-Type: application/json" -d @$ckan_cmf_description_json_path -H "Authorization: $CKAN_API_KEY" -X POST "$CKAN_BASE_URL/api/3/action/package_update"
+set -e
