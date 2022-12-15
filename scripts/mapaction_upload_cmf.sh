@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# this script accepts path of country cmf directory as first argument,
+# creates zip archives for shp and geojson content and uploads them in s3
+# then scripts/build_ckan_cmf_description.py is used to generate ckan
+# dataset description from country code which is send to ckan
+
 set -e
 
 country_extraction_path=$1
