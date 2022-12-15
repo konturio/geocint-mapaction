@@ -13,3 +13,5 @@ echo "output_shp_name $output_shp_name"
 mkdir -p "$(dirname $output_shp_name)"
 
 ogr2ogr -clipsrc static_data/countries/$country_geojson_filename -lco ENCODING=UTF8 -skipfailures $output_shp_name $input_shp_name
+
+

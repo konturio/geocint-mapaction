@@ -136,6 +136,32 @@ where
     and geometrytype(geog) ~* 'linestring';
 
 -- 
+drop type if exists tran_rst_railway_station_pt;
+create type tran_rst_railway_station_pt as(
+    "name" text,
+    "name:en" text,
+    "int_name" text,
+    "train" text,
+    "station" text,
+    "subway" text
+    );
+
+insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
+select 'tran',
+    'rst',
+    'railway_station',
+    tags ->> 'railway',
+    'pt',
+    case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
+    tags,
+    osm_id
+from :osm_table
+where
+    tags @> '{"public_transport":"station"}' or
+    tags @> '{"railway":"station"}' or
+    tags @> '{"railway":"halt"}';
+
+-- 
 drop type if exists phys_dam_dam_pt;
 create type phys_dam_dam_pt as(
     "name" text,
@@ -175,8 +201,8 @@ from :osm_table
 where tags @> '{"amenity":"school"}';
 
 -- 
-drop type if exists educ_uni_pt;
-create type educ_uni_pt as(
+drop type if exists educ_uni_universities_pt;
+create type educ_uni_universities_pt as(
     "name" text,
     "name:en" text,
     "addr:city" text
@@ -185,7 +211,7 @@ create type educ_uni_pt as(
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
 select 'educ',
     'uni',
-    '',
+    'universities',
     tags ->> 'amenity',
     'pt',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
@@ -735,29 +761,7 @@ select 'wash',
     tags,
     osm_id
 from :osm_table
-where tags @> '{"amenity":"toilet"}';
-
---
-drop type if exists wash_wts_water_source_pt;
-create type wash_wts_water_source_pt as(
-    "name" text,
-    "name:en" text,
-    "man_made" text,
-    "drinking_water" text,
-    "access" text
-    );
-
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id)
-select 'wash',
-    'wts',
-    'water_source',
-    tags ->> 'amenity',
-    'pt',
-    case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
-    tags,
-    osm_id
-from :osm_table
-where tags @> '{"amenity":"water_source"}';
+where tags @> '{"amenity":"toilets"}';
 
 -- 
 drop type if exists wash_wts_water_source_pt;
@@ -779,7 +783,9 @@ select 'wash',
     tags,
     osm_id
 from :osm_table
-where tags @> '{"amenity":"water_source"}';
+where 
+    tags @> '{"amenity":"drinking_water"}' or
+    tags @> '{"amenity":"water_point"}';
 
 -- 
 UPDATE :ma_table
