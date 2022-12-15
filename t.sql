@@ -1,6 +1,6 @@
-drop table if exists :ma_table;
+drop table if exists gis.mapaction_by;
 
-create table :ma_table(id bigserial primary key,
+create table gis.mapaction_by(id bigserial primary key,
     country_code text,
     ma_category text,
     ma_theme text,
@@ -22,7 +22,7 @@ create type tran_rds_roads_ln as("name" text,
     "tunnel" text,
     "surface" text);
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'rds',
     'roads',
@@ -32,7 +32,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where
     (tags @> '{"highway":"residential"}' or
     tags @> '{"highway":"service"}' or
@@ -61,7 +61,7 @@ create type tran_rds_mainroads_ln as(
     "oneway" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'rds',
     'mainroads',
@@ -71,7 +71,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     (tags @> '{"highway":"motorway"}' or
     tags @> '{"highway":"motorway_link"}' or
@@ -95,7 +95,7 @@ create type tran_rrd_railway_ln as(
     "voltage" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'rrd',
     'railway',
@@ -105,7 +105,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     (tags @> '{"railway":"rail"}' or
     tags @> '{"railway":"narrow_gauge"}' or
@@ -124,7 +124,7 @@ create type tran_rrd_subwaytram_ln as(
     "voltage" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'rrd',
     'subwaytram',
@@ -134,7 +134,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where
     (tags @> '{"railway":"subway"}' or
     tags @> '{"railway":"tram"}')
@@ -151,7 +151,7 @@ create type tran_rst_railway_station_pt as(
     "subway" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'rst',
     'railway_station',
@@ -161,7 +161,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where
     tags @> '{"public_transport":"station"}' or
     tags @> '{"railway":"station"}' or
@@ -174,7 +174,7 @@ create type phys_dam_dam_pt as(
     "name:en" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'phys',
     'dam',
     'dam',
@@ -184,7 +184,7 @@ select 'phys',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"waterway":"dam"}';
 
 -- 
@@ -195,7 +195,7 @@ create type educ_edu_school_pt as(
     "addr:city" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'educ',
     'edu',
     'school',
@@ -205,7 +205,7 @@ select 'educ',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"amenity":"school"}';
 
 -- 
@@ -216,7 +216,7 @@ create type educ_uni_universities_pt as(
     "addr:city" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'educ',
     'uni',
     'universities',
@@ -226,7 +226,7 @@ select 'educ',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"amenity":"college"}' or 
     tags @> '{"amenity":"university"}';
@@ -241,7 +241,7 @@ create type tran_fte_ferryterminal_pt as(
     "public_transport" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'fte',
     'ferryterminal',
@@ -251,7 +251,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"amenity":"ferry_terminal"}';
 
 -- 
@@ -263,7 +263,7 @@ create type tran_fer_ferryroute_ln as(
     "port:type" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'fer',
     'ferryroute',
@@ -273,7 +273,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"route":"ferry"}'
     and geometrytype(geog) ~* 'linestring';
@@ -287,7 +287,7 @@ create type tran_por_port_pt as(
     "port:type" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'por',
     'port',
@@ -297,7 +297,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"landuse":"port"}' or
     tags @> '{"landuse":"harbour"}' or
@@ -312,7 +312,7 @@ create type cash_bnk_bank_pt as(
     "opening_hours" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'cash',
     'bnk',
     'bank',
@@ -322,7 +322,7 @@ select 'cash',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"amenity":"bank"}';
 
 -- 
@@ -337,7 +337,7 @@ create type cash_atm_atm_pt as(
     "opening_hours" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'cash',
     'atm',
     'atm',
@@ -347,7 +347,7 @@ select 'cash',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"atm":"yes"}' or
     tags @> '{"amenity":"atm"}';
@@ -362,7 +362,7 @@ create type heal_hea_healthcentres_pt as(
     "opening_hours" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'heal',
     'hea',
     'healthcentres',
@@ -372,7 +372,7 @@ select 'heal',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"amenity":"clinic"}' or
     tags @> '{"amenity":"doctors"}' or
@@ -389,7 +389,7 @@ create type heal_hos_hospital_pt as(
     "opening_hours" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'heal',
     'hos',
     'hospital',
@@ -399,7 +399,7 @@ select 'heal',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"amenity":"hospital"}';
 
 -- 
@@ -410,7 +410,7 @@ create type cash_mkt_marketplace_pt as(
     "opening_hours" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'cash',
     'mkt',
     'marketplace',
@@ -420,11 +420,11 @@ select 'cash',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"amenity":"marketplace"}';
 
 -- 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'cccm',
     'ref',
     'refugeesite',
@@ -434,7 +434,7 @@ select 'cccm',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"amenity":"refugee_site"}';
 
 -- 
@@ -445,7 +445,7 @@ create type tran_brg_bridge_pt as(
     "bridge" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'brg',
     'bridge',
@@ -455,7 +455,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"man_made":"bridge"}';
 
 -- 
@@ -467,7 +467,7 @@ create type util_ppl_pipeline_ln as(
     "location" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'util',
     'ppl',
     'pipeline',
@@ -477,7 +477,7 @@ select 'util',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"man_made":"pipeline"}'
     and geometrytype(geog) ~* 'linestring';
@@ -492,7 +492,7 @@ create type util_pwl_powerline_ln as(
     "circuits" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'util',
     'pwl',
     'powerline',
@@ -502,7 +502,7 @@ select 'util',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"power":"line"}'
     and geometrytype(geog) ~* 'linestring';
@@ -516,7 +516,7 @@ create type util_pst_powerstation_pt as(
     "building" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'util',
     'pst',
     'powerstation',
@@ -526,7 +526,7 @@ select 'util',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"power":"plant"}';
 
 -- 
@@ -539,7 +539,7 @@ create type util_pst_substation_pt as(
     "voltage" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'util',
     'pst',
     'substation',
@@ -549,7 +549,7 @@ select 'util',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"power":"substation"}';
 
 -- 
@@ -563,7 +563,7 @@ create type util_mil_militaryinstallation_py as(
     "bunker_type" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'util',
     'mil',
     'militaryinstallation',
@@ -573,7 +573,7 @@ select 'util',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags ? 'military'
     and geometrytype(geog::geometry) ~* 'polygon';
 
@@ -585,7 +585,7 @@ create type phys_lak_lake_py as(
     "water" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'phys',
     'lak',
     'lake',
@@ -595,7 +595,7 @@ select 'phys',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     (tags @> '{"water":"lake"}' or
     tags @> '{"water":"reservoir"}')
@@ -609,7 +609,7 @@ create type phys_riv_river_py as(
     "int_name" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'phys',
     'riv',
     'river',
@@ -619,7 +619,7 @@ select 'phys',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"water":"river"}'
     and geometrytype(geog) ~* 'polygon';
@@ -633,7 +633,7 @@ create type phys_riv_river_ln as(
     "tunnel" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'phys',
     'riv',
     'river',
@@ -643,7 +643,7 @@ select 'phys',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"waterway":"river"}'
     and geometrytype(geog) ~* 'linestring';
@@ -655,7 +655,7 @@ create type tran_can_canal_ln as(
     "name:en" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
     'can',
     'canal',
@@ -665,7 +665,7 @@ select 'tran',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"waterway":"canal"}'
     and geometrytype(geog) ~* 'linestring';
@@ -681,7 +681,7 @@ create type pois_rel_placeofworship_pt as(
     "tourism" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'pois',
     'rel',
     'placeofworship',
@@ -691,7 +691,7 @@ select 'pois',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"amenity":"place_of_worship"}';
 
 -- 
@@ -705,7 +705,7 @@ create type pois_bor_bordercrossing_pt as(
     "motor_vehicle" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'pois',
     'bor',
     'bordercrossing',
@@ -715,7 +715,7 @@ select 'pois',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"border":"border_control"}';
 
 -- 
@@ -729,7 +729,7 @@ create type stle_stl_settlements_pt as(
     "admin_level" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'stle',
     'stl',
     'settlements',
@@ -740,7 +740,7 @@ select 'stle',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"place":"city"}' or
     tags @> '{"place":"borough"}' or
@@ -758,7 +758,7 @@ create type stle_stl_townscities_pt as(
     "admin_level" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'stle',
     'stl',
     'townscities',
@@ -769,7 +769,7 @@ select 'stle',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"place":"city"}' or
     tags @> '{"place":"town"}';
@@ -783,7 +783,7 @@ create type wash_toi_toilets_pt as(
     "access" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'wash',
     'toi',
     'toilets',
@@ -793,7 +793,7 @@ select 'wash',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where tags @> '{"amenity":"toilets"}';
 
 -- 
@@ -806,7 +806,7 @@ create type wash_wts_water_source_pt as(
     "access" text
     );
 
-insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+insert into gis.mapaction_by(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'wash',
     'wts',
     'water_source',
@@ -816,14 +816,14 @@ select 'wash',
     tags,
     osm_id,
     osm_type
-from :osm_table
+from gis.osm_blr
 where 
     tags @> '{"amenity":"drinking_water"}' or
     tags @> '{"amenity":"water_point"}';
 
 -- 
-UPDATE :ma_table
-SET country_code = lower(select tags ->> 'ISO3166-1:alpha3' as iso_code
-    FROM :osm_table
+UPDATE gis.mapaction_by
+SET country_code = lower((select tags ->> 'ISO3166-1:alpha3' as iso_code
+    from gis.osm_blr
     where tags ->> 'ISO3166-1:alpha3' is not null
-    limit 1);
+    limit 1));
