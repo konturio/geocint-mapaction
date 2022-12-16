@@ -106,3 +106,4 @@ export_country: data/in/mapaction | data/out/mapaction ## run as make export_cou
 	bash scripts/osm_data_import.sh $(COUNTRY)
 	bash scripts/mapaction_data_table.sh $(COUNTRY)
 	bash scripts/mapaction_export.sh $(COUNTRY)
+	# bash scripts/mapaction_upload_cmf.sh $(shell echo data/out/country_extractions/$(basename $(VR) .json) )
