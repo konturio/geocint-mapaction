@@ -72,6 +72,16 @@ data/out/country_extractions/ne_10m_lakes: data/in/mapaction/ne_10m_lakes/ne_10m
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_lak_py_s0_naturalearth_pp_waterbodies'
 	touch $@
 
+data/in/mapaction/ourairports: | data/in/mapaction ## Our Airports
+	mkdir -p $@
+
+data/in/mapaction/ourairports/airports.csv: | data/in/mapaction/ourairports ## download airports.csv
+	curl "https://davidmegginson.github.io/ourairports-data/airports.csv" -o "$@"
+
+data/out/country_extractions/ourairports: data/in/mapaction/ourairports/airports.csv | data/out/country_extractions ## ourairports per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_csv.sh {} data/in/mapaction/ourairports/airports.csv data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_air_pt_s0_ourairports_pp_airports'
+	touch $@
+
 data/out/cmf: | data/out
 	mkdir -p $@
 
