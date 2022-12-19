@@ -82,6 +82,16 @@ data/out/country_extractions/ourairports: data/in/mapaction/ourairports/airports
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_csv.sh {} data/in/mapaction/ourairports/airports.csv data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_air_pt_s0_ourairports_pp_airports'
 	touch $@
 
+data/in/mapaction/worldports: | data/in/mapaction ## World Ports
+	mkdir -p $@
+
+data/in/mapaction/worldports/worldports.csv: | data/in/mapaction/worldports ## download worldports.csv
+	curl "https://msi.nga.mil/api/publications/download?type=view&key=16920959/SFH00000/UpdatedPub150.csv" -o "$@"
+
+data/out/country_extractions/worldports: data/in/mapaction/worldports/worldports.csv | data/out/country_extractions ## worldports per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_csv.sh {} data/in/mapaction/worldports/worldports.csv data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_por_pt_s0_worldports_pp_ports'
+	touch $@
+
 data/out/cmf: | data/out
 	mkdir -p $@
 
