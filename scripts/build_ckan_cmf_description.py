@@ -1,11 +1,14 @@
 import sys
 import os
 import json
+from urllib.parse import urljoin
 from ma_dictionaries import Geoextent
 from ma_dictionaries import FeatureCategory
 from ma_dictionaries import FeatureSource
 
 def ckan_cmf_description(filename):
+    # url to downloading zip dataset from enviroment
+    CNT_DATA_URL = os.environ['CKAN_DATA_URL']
     path, fname = os.path.split(filename)
     dataset_name = fname.split('.')[0] # file name without extention
     codes = dataset_name.split("_", 7)
@@ -32,11 +35,11 @@ def ckan_cmf_description(filename):
     print('             {"key": "permission",           "value": "pp"} ],')
     print('    "resources": [')
     print('        {"name":"'+short_geoextent+' Crash Move Folder in GeoJson format",')
-    print('         "url":"s3://geodata-eu-central-1-kontur-public/mapaction_dataset/'+geoextent+'.geojson.zip",')
+    print(f'         "url": "{urljoin(CNT_DATA_URL, geoextent)}.geojson.zip",')
     print('         "format": "GeoJson"')
     print('        },')
     print('        {"name":"'+short_geoextent+' Crash Move Folder as ESRI shape",')
-    print('         "url":"s3://geodata-eu-central-1-kontur-public/mapaction_dataset/'+geoextent+'.shp.zip",')
+    print(f'         "url":"{urljoin(CNT_DATA_URL, geoextent)}.shp.zip",')
     print('         "format": "ESRI shape"')
     print('        }]')
     print('}')
