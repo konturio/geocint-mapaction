@@ -1,0 +1,124 @@
+# configuration file
+file := ~/config.inc.sh
+# Add here export for every varible from configuration file that you are goint to use in targets
+export USER_NAME = $(shell sed -n -e '/^USER_NAME/p' ${file} | cut -d "=" -f 2)
+export SLACK_CHANNEL := $(shell sed -n -e '/^SLACK_CHANNEL/p' ${file} | cut -d "=" -f 2)
+export SLACK_BOT_NAME := $(shell sed -n -e '/^SLACK_BOT_NAME/p' ${file} | cut -d "=" -f 2)
+export SLACK_BOT_EMOJI := $(shell sed -n -e '/^SLACK_BOT_EMOJI/p' ${file} | cut -d "=" -f 2)
+export SLACK_BOT_KEY := $(shell sed -n -e '/^SLACK_BOT_KEY/p' ${file} | cut -d "=" -f 2)
+
+# these makefiles stored in geocint-runner and geocint-openstreetmap repositories
+# runner_make contains basic set of targets for creation project folder structure
+# osm_make contains contain set of targets for osm data processing
+include runner_make osm_make
+
+data/in/mapaction: | data/in ## Dir for extract from planet pbf dump
+	mkdir -p $@
+
+data/out/mapaction: | data/out ## Dir for exported files
+	mkdir -p $@
+
+data/out/country_extractions: | data/out
+	mkdir -p $@
+
+data/in/mapaction/ne_10m_rivers_lake_centerlines.zip: | ## download ne_10m_rivers_lake_centerlines
+	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_rivers_lake_centerlines.zip" -o $@
+
+data/in/mapaction/ne_10m_rivers_lake_centerlines: | data/in/mapaction ## ne_10m_rivers_lake_centerlines
+	mkdir -p $@
+
+data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp: data/in/mapaction/ne_10m_rivers_lake_centerlines.zip | data/in/mapaction/ne_10m_rivers_lake_centerlines ## unzip ne_10m_rivers_lake_centerlines
+	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines -d $@
+
+data/out/country_extractions/ne_10m_rivers_lake_centerlines: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out/country_extractions  ## ne_10m_rivers_lake_centerlines per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_riv_ln_s0_naturalearth_pp_rivers'
+	touch $@
+
+data/in/mapaction/ne_10m_coastline.zip: | data/in/mapaction ## ne_10m_coastline
+	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_coastline.zip" -o $@
+
+data/in/mapaction/ne_10m_coastline: | data/in/mapaction ## ne_10m_coastline
+	mkdir -p $@
+
+data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp: data/in/mapaction/ne_10m_coastline.zip | data/in/mapaction/ne_10m_coastline ## unzip ne_10m_coastline
+	unzip data/in/mapaction/ne_10m_coastline -d $@
+
+data/out/country_extractions/ne_10m_coastline: data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp | data/out/country_extractions ## ne_10m_coastline per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp data/out/country_extractions/{country_code}/211_elev/{country_code}_elev_cst_ln_s0_naturalearth_pp_coastline'
+	touch $@
+
+data/in/mapaction/ne_10m_roads.zip: | data/in/mapaction ## ne_10m_roads
+	curl "https://naciscdn.org/naturalearth/10m/cultural/ne_10m_roads.zip" -o $@
+
+data/in/mapaction/ne_10m_roads: | data/in/mapaction ## ne_10m_roads
+	mkdir -p $@
+
+data/in/mapaction/ne_10m_roads/ne_10m_roads.shp: data/in/mapaction/ne_10m_roads.zip | data/in/mapaction/ne_10m_roads ## unzip ne_10m_roads
+	unzip data/in/mapaction/ne_10m_roads -d $@
+
+data/out/country_extractions/ne_10m_roads: data/in/mapaction/ne_10m_roads/ne_10m_roads.shp | data/out/country_extractions ## ne_10m_roads per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_roads/ne_10m_roads.shp data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_rds_ln_s0_naturalearth_pp_roads'
+	touch $@
+
+data/in/mapaction/ne_10m_populated_places.zip: | data/in/mapaction ## ne_10m_populated_placess
+	curl "https://naciscdn.org/naturalearth/10m/cultural/ne_10m_populated_places.zip" -o $@
+
+data/in/mapaction/ne_10m_populated_places: | data/in/mapaction ## ne_10m_populated_placess
+	mkdir -p $@
+
+data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp: data/in/mapaction/ne_10m_populated_places.zip | data/in/mapaction/ne_10m_populated_places ## unzip ne_10m_populated_placess
+	unzip data/in/mapaction/ne_10m_populated_places -d $@
+
+data/out/country_extractions/ne_10m_populated_places: data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp | data/out/country_extractions ## ne_10m_populated_placess per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp data/out/country_extractions/{country_code}/229_stle/{country_code}_stle_stl_pt_s0_naturalearth_pp_maincities'
+	touch $@
+
+data/in/mapaction/ne_10m_lakes.zip: | data/in/mapaction ## ne_10m_lakes
+	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_lakes.zip" -o $@
+
+data/in/mapaction/ne_10m_lakes: | data/in/mapaction ## ne_10m_lakes
+	mkdir -p $@
+
+data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp: data/in/mapaction/ne_10m_lakes.zip | data/in/mapaction/ne_10m_lakes ## unzip ne_10m_lakes
+	unzip data/in/mapaction/ne_10m_lakes -d $@
+
+data/out/country_extractions/ne_10m_lakes: data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp | data/out/country_extractions ## ne_10m_lakes per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_lak_py_s0_naturalearth_pp_waterbodies'
+	touch $@
+
+data/out/cmf: | data/out
+	mkdir -p $@
+
+data/out/cmf_all: data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads | data/out/cmf
+	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
+	touch $@
+
+data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
+	ls static_data/countries/*.json | parallel 'bash scripts/osm_pbf_extract.sh {}'
+	touch $@
+
+db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create and populate "osm_[]" tables in db
+	ls data/in/mapaction/*.pbf | parallel 'bash scripts/osm_data_import.sh {}'
+	touch $@
+
+db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and populate "mapaction_[]" tables in db
+	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_data_table.sh {}'
+	touch $@
+
+data/out/mapaction/mapaction_export: db/table/mapaction_data_table | data/out/mapaction ## Export from db to SHP and JSON
+	psql -f scripts/mapaction_data_export.sql
+	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_export.sh {}'
+	touch $@
+
+dev: data/in/mapaction ## this runs when autos_tart.sh executes
+	echo "dev target successfully build"
+	touch $@
+
+.PHONY: export_country
+export_country: data/in/mapaction | data/out/mapaction ## run as make export_country COUNTRY=static_data/countries/blr.json
+	#bash scripts/osm_pbf_extract.sh $(COUNTRY)
+	#bash scripts/osm_data_import.sh $(COUNTRY)
+	#bash scripts/mapaction_data_table.sh $(COUNTRY)
+	#bash scripts/mapaction_export.sh $(COUNTRY)
+	#bash scripts/mapaction_upload_cmf.sh $(shell echo data/out/country_extractions/$(shell (basename $(COUNTRY) .json) ))
+
