@@ -1,7 +1,7 @@
 import sys
 import os
 import json
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from ma_dictionaries import Geoextent
 from ma_dictionaries import FeatureCategory
 from ma_dictionaries import FeatureSource
