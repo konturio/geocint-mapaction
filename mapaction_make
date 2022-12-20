@@ -72,6 +72,52 @@ data/out/country_extractions/ne_10m_lakes: data/in/mapaction/ne_10m_lakes/ne_10m
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_lak_py_s0_naturalearth_pp_waterbodies'
 	touch $@
 
+data/in/mapaction/ourairports: | data/in/mapaction ## Our Airports
+	mkdir -p $@
+
+data/in/mapaction/ourairports/airports.csv: | data/in/mapaction/ourairports ## download airports.csv
+	curl "https://davidmegginson.github.io/ourairports-data/airports.csv" -o "$@"
+
+data/out/country_extractions/ourairports: data/in/mapaction/ourairports/airports.csv | data/out/country_extractions ## ourairports per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_csv.sh {} data/in/mapaction/ourairports/airports.csv data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_air_pt_s0_ourairports_pp_airports'
+	touch $@
+
+data/in/mapaction/worldports: | data/in/mapaction ## World Ports
+	mkdir -p $@
+
+data/in/mapaction/worldports/worldports.csv: | data/in/mapaction/worldports ## download worldports.csv
+	curl "https://msi.nga.mil/api/publications/download?type=view&key=16920959/SFH00000/UpdatedPub150.csv" -o "$@"
+
+data/out/country_extractions/worldports: data/in/mapaction/worldports/worldports.csv | data/out/country_extractions ## worldports per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_csv.sh {} data/in/mapaction/worldports/worldports.csv data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_por_pt_s0_worldports_pp_ports'
+	touch $@
+
+data/in/mapaction/wfp_railroads: | data/in/mapaction ## WFP Railroads
+	mkdir -p $@
+
+data/in/mapaction/wfp_railroads.zip: | data/in/mapaction ## download wfp_railroads.zip
+	curl "https://geonode.wfp.org/geoserver/wfs?format_options=charset%3AUTF-8&typename=geonode%3Awld_trs_railways_wfp&outputFormat=SHAPE-ZIP&version=1.0.0&service=WFS&request=GetFeature" -o "$@"
+
+data/in/mapaction/wfp_railroads/wld_trs_railways_wfp.shp: data/in/mapaction/wfp_railroads.zip | data/in/mapaction/wfp_railroads ## unzip wfp_railroads.zip
+	unzip data/in/mapaction/wfp_railroads -d data/in/mapaction/wfp_railroads
+
+data/out/country_extractions/wfp_railroads: data/in/mapaction/wfp_railroads/wld_trs_railways_wfp.shp | data/out/country_extractions ## wfp railroads per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/wfp_railroads/wld_trs_railways_wfp.shp data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_rrd_ln_s0_wfp_pp_railways'
+	touch $@
+
+data/in/mapaction/global_power_plant_database: | data/in/mapaction ## Global Power Plant Database
+	mkdir -p $@
+
+data/in/mapaction/global_power_plant_database.zip: | data/in/mapaction ## download global_power_plant_database.zip
+	curl "https://wri-dataportal-prod.s3.amazonaws.com/manual/global_power_plant_database_v_1_3.zip" -o "$@"
+
+data/in/mapaction/global_power_plant_database/global_power_plant_database.csv: data/in/mapaction/global_power_plant_database.zip | data/in/mapaction/global_power_plant_database ## unzip global_power_plant_database.zip
+	unzip data/in/mapaction/global_power_plant_database -d data/in/mapaction/global_power_plant_database
+
+data/out/country_extractions/global_power_plant_database: data/in/mapaction/global_power_plant_database/global_power_plant_database.csv | data/out/country_extractions ## global_power_plant_database.csv per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_csv.sh {} data/in/mapaction/global_power_plant_database/global_power_plant_database.csv data/out/country_extractions/{country_code}/233_util/{country_code}_util_pst_pt_s0_gppd_pp_powerplants'
+	touch $@
+
 data/out/cmf: | data/out
 	mkdir -p $@
 
