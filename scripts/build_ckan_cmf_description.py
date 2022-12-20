@@ -1,14 +1,14 @@
 import sys
 import os
 import json
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from ma_dictionaries import Geoextent
 from ma_dictionaries import FeatureCategory
 from ma_dictionaries import FeatureSource
 
 def ckan_cmf_description(filename):
     # url to downloading zip dataset from enviroment
-    CNT_DATA_URL = (os.environ['CKAN_DATA_URL']).replace('s3', 'http')
+    CNT_DATA_URL = os.environ['CKAN_DATA_URL']
     path, fname = os.path.split(filename)
     dataset_name = fname.split('.')[0] # file name without extention
     codes = dataset_name.split("_", 7)
