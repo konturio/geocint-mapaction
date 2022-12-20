@@ -163,7 +163,7 @@ data/out/mapaction/mapaction_export: db/table/mapaction_data_table db/table/mapa
 	touch $@
 
 dev: data/in/mapaction ## this runs when autos_tart.sh executes
-	echo "dev target successfully build"
+	echo "dev target successfully build" | python scripts/slack_message.py $SLACK_CHANNEL \"$SLACK_BOT_NAME\" $SLACK_BOT_EMOJI
 	touch $@
 
 .PHONY: export_country
