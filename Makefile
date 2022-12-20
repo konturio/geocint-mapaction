@@ -150,11 +150,11 @@ data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf | data/in/
 	ls static_data/countries/*.json | parallel 'bash scripts/osm_pbf_extract.sh {}'
 	touch $@
 
-db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create and populate "osm_[]" tables in db
+db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create and populate osm_[] tables in db
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/osm_data_import.sh {}'
 	touch $@
 
-db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and populate "mapaction_[]" tables in db
+db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and populate mapaction_[] tables in db
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_data_table.sh {}'
 	touch $@
 
@@ -170,7 +170,7 @@ data/out/mapaction/mapaction_export: db/table/mapaction_data_table db/table/mapa
 	touch $@
 
 dev: data/in/mapaction ## this runs when autos_tart.sh executes
-	echo "dev target successfully build" | python scripts/slack_message.py $SLACK_CHANNEL \"$SLACK_BOT_NAME\" $SLACK_BOT_EMOJI
+	echo "dev target successfully build" | python scripts/slack_message.py $$SLACK_CHANNEL ${SLACK_BOT_NAME} $$SLACK_BOT_EMOJI
 	touch $@
 
 .PHONY: export_country
