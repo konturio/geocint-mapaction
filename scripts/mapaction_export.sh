@@ -21,7 +21,7 @@ done < <( psql -t -A -F , -c "select a.dir_name from gis.mapaction_directories a
 # geoextent_category_theme_geometry_scale_source_permission[_FreeText]
 # geoextent - country_code (tags ->> 'ISO3166-1:alpha3')
 # category_theme_geometry - columnms in mapaction table
-# scale - s0-3 -for country it is s0
+# scale - s4 large scale mapping
 # source - 'osm'
 # permission - pp public dataset
 while IFS="," read -r country_code ma_category ma_theme feature_type ma_tag dir_name
