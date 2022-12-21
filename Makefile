@@ -2,7 +2,7 @@
 
 # configuration file
 file := ~/config.inc.sh
-# Add here export for every varible from configuration file that you are goint to use in targets
+# Add here export for every varible from configuration file that you are going to use in targets
 export USER_NAME = $(shell sed -n -e '/^USER_NAME/p' ${file} | cut -d "=" -f 2)
 export SLACK_CHANNEL = $(shell sed -n -e '/^SLACK_CHANNEL/p' ${file} | cut -d "=" -f 2)
 export SLACK_BOT_NAME = $(shell sed -n -e '/^SLACK_BOT_NAME/p' ${file} | cut -d "=" -f 2)
