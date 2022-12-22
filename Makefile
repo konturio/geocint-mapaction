@@ -131,7 +131,8 @@ data/in/mapaction/wfp_railroads.zip: | data/in/mapaction ## download wfp_railroa
 	curl "https://geonode.wfp.org/geoserver/wfs?format_options=charset%3AUTF-8&typename=geonode%3Awld_trs_railways_wfp&outputFormat=SHAPE-ZIP&version=1.0.0&service=WFS&request=GetFeature" -o "$@"
 
 data/in/mapaction/wfp_railroads/wld_trs_railways_wfp.shp: data/in/mapaction/wfp_railroads.zip | data/in/mapaction/wfp_railroads ## unzip wfp_railroads.zip
-	unzip data/in/mapaction/wfp_railroads -d data/in/mapaction/wfp_railroads
+	unzip data/in/mapaction/wfp_railroads.zip -d data/in/mapaction/wfp_railroads
+	touch $@
 
 data/out/country_extractions/wfp_railroads: data/in/mapaction/wfp_railroads/wld_trs_railways_wfp.shp | data/out/country_extractions ## wfp railroads per country extractions
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/wfp_railroads/wld_trs_railways_wfp.shp data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_rrd_ln_s0_wfp_pp_railways'
@@ -157,7 +158,7 @@ data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out
 	find data/out/country_extractions/ -name "*.shp" | parallel 'bash scripts/mapaction_upload_dataset.sh {}'
 	touch $@
 
-data/out/cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
+data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
@@ -184,7 +185,7 @@ data/out/mapaction_export: db/table/mapaction_data_table db/table/mapaction_dire
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@
 
-dev: data/in/mapaction ## this runs when autos_tart.sh executes
+dev: data/out/upload_datasets_all data/out/upload_cmf_all ## this runs when autos_tart.sh executes
 	echo "dev target successfully build" | python scripts/slack_message.py $$SLACK_CHANNEL ${SLACK_BOT_NAME} $$SLACK_BOT_EMOJI
 	touch $@
 
