@@ -92,7 +92,7 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         ckan_dataset_description["resources"] = [
             {
                 "name": dataset_title + " in GeoJson format",
-                "url": S3_DATASET_BASE_URL + dataset_name + ".json.zip",
+                "url": S3_DATASET_BASE_URL + dataset_name + ".geojson.zip",
                 "format": "GeoJson",
             },
             {
