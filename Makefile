@@ -157,7 +157,7 @@ data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out
 	find data/out/country_extractions/ -name "*.shp" | parallel 'bash scripts/mapaction_upload_dataset.sh {}'
 	touch $@
 
-data/out/cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
+data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
@@ -184,7 +184,7 @@ data/out/mapaction_export: db/table/mapaction_data_table db/table/mapaction_dire
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@
 
-dev: data/in/mapaction ## this runs when autos_tart.sh executes
+dev: data/out/upload_datasets_all data/out/upload_cmf_all ## this runs when autos_tart.sh executes
 	echo "dev target successfully build" | python scripts/slack_message.py $$SLACK_CHANNEL ${SLACK_BOT_NAME} $$SLACK_BOT_EMOJI
 	touch $@
 
