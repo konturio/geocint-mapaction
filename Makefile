@@ -8,6 +8,10 @@ export SLACK_CHANNEL = $(shell sed -n -e '/^SLACK_CHANNEL/p' ${file} | cut -d "=
 export SLACK_BOT_NAME = $(shell sed -n -e '/^SLACK_BOT_NAME/p' ${file} | cut -d "=" -f 2)
 export SLACK_BOT_EMOJI = $(shell sed -n -e '/^SLACK_BOT_EMOJI/p' ${file} | cut -d "=" -f 2)
 export SLACK_BOT_KEY = $(shell sed -n -e '/^SLACK_BOT_KEY/p' ${file} | cut -d "=" -f 2)
+export CKAN_DATA_S3_URL = $(shell sed -n -e '/^CKAN_DATA_S3_URL/p' ${file} | cut -d "=" -f 2)
+export CKAN_DATA_URL = $(shell sed -n -e '/^CKAN_DATA_URL/p' ${file} | cut -d "=" -f 2)
+export CKAN_BASE_URL = $(shell sed -n -e '/^CKAN_BASE_URL/p' ${file} | cut -d "=" -f 2)
+export CKAN_API_KEY = $(shell sed -n -e '/^CKAN_API_KEY/p' ${file} | cut -d "=" -f 2)
 
 # these makefiles stored in geocint-runner and geocint-openstreetmap repositories
 # runner_make contains basic set of targets for creation project folder structure
@@ -149,7 +153,7 @@ data/out/country_extractions/global_power_plant_database: data/in/mapaction/glob
 data/out/cmf: | data/out
 	mkdir -p $@
 
-data/out/cmf_all: data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads | data/out/cmf
+data/out/cmf_all: data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out/cmf
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
@@ -168,10 +172,10 @@ db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and
 db/table/mapaction_directories: ## Load into db structure of directory to use it while export
 	psql -c "drop table if exists mapaction_directories;"
 	psql -c "create table mapaction_directories(dir_name text);"
-	cat /static_data/directories/directories.csv | psql -c "copy mapaction_directories from stdin;"
+	cat static_data/directories/directories.csv | psql -c "copy mapaction_directories from stdin;"
 	touch $@
 
-data/out/mapaction/mapaction_export: db/table/mapaction_data_table db/table/mapaction_directories | data/out/country_extractions ## Export from db to SHP and JSON
+data/out/mapaction_export: db/table/mapaction_data_table db/table/mapaction_directories | data/out/country_extractions ## Export from db to SHP and JSON
 	psql -f scripts/mapaction_data_export.sql
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@

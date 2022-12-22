@@ -18,7 +18,7 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     dataset_name = fname.split(".")[0]  # NOTE: this file name without extention
     codes = dataset_name.split("_", 7)
 
-    S3_DATASER_BASE_URL = os.environ['CKAN_DATA_URL']
+    S3_DATASET_BASE_URL = os.environ['CKAN_DATA_URL']
 
     geoextent = codes[0]
     category = codes[1]
@@ -92,12 +92,12 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         ckan_dataset_description["resources"] = [
             {
                 "name": dataset_title + " in GeoJson format",
-                "url": S3_DATASER_BASE_URL + dataset_name + ".json.zip",
+                "url": S3_DATASET_BASE_URL + dataset_name + ".json.zip",
                 "format": "GeoJson",
             },
             {
                 "name": dataset_title + " as ESRI shape",
-                "url": S3_DATASER_BASE_URL + dataset_name + ".shp.zip",
+                "url": S3_DATASET_BASE_URL + dataset_name + ".shp.zip",
                 "format": "ESRI shape",
             },
         ]
@@ -105,7 +105,7 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         ckan_dataset_description["resources"] = [
             {
                 "name": dataset_title + " in TIFF format",
-                "url": S3_DATASER_BASE_URL + dataset_name + ".tif.zip",
+                "url": S3_DATASET_BASE_URL + dataset_name + ".tif.zip",
                 "format": "TIFF",
             }
         ]
@@ -114,7 +114,7 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         ckan_dataset_description["resources"] = [
             {
                 "name": dataset_title + " in CSV format",
-                "url": S3_DATASER_BASE_URL + dataset_name + ".csv.zip",
+                "url": S3_DATASET_BASE_URL + dataset_name + ".csv.zip",
                 "format": "CSV",
             }
         ]
