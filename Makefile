@@ -46,7 +46,8 @@ data/in/mapaction/ne_10m_rivers_lake_centerlines: | data/in/mapaction ## ne_10m_
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp: data/in/mapaction/ne_10m_rivers_lake_centerlines.zip | data/in/mapaction/ne_10m_rivers_lake_centerlines ## unzip ne_10m_rivers_lake_centerlines
-	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines -d $@
+	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines.zio -d data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines
+	touch $@
 
 data/out/country_extractions/ne_10m_rivers_lake_centerlines: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out/country_extractions  ## ne_10m_rivers_lake_centerlines per country extractions
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_riv_ln_s0_naturalearth_pp_rivers'
@@ -59,7 +60,8 @@ data/in/mapaction/ne_10m_coastline: | data/in/mapaction ## ne_10m_coastline
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp: data/in/mapaction/ne_10m_coastline.zip | data/in/mapaction/ne_10m_coastline ## unzip ne_10m_coastline
-	unzip data/in/mapaction/ne_10m_coastline -d $@
+	unzip data/in/mapaction/ne_10m_coastline.zip -d data/in/mapaction/ne_10m_coastline/
+	touch $@
 
 data/out/country_extractions/ne_10m_coastline: data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp | data/out/country_extractions ## ne_10m_coastline per country extractions
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp data/out/country_extractions/{country_code}/211_elev/{country_code}_elev_cst_ln_s0_naturalearth_pp_coastline'
@@ -72,7 +74,8 @@ data/in/mapaction/ne_10m_roads: | data/in/mapaction ## ne_10m_roads
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_roads/ne_10m_roads.shp: data/in/mapaction/ne_10m_roads.zip | data/in/mapaction/ne_10m_roads ## unzip ne_10m_roads
-	unzip data/in/mapaction/ne_10m_roads -d $@
+	unzip data/in/mapaction/ne_10m_roads.zip -d data/in/mapaction/ne_10m_roads
+	touch $@
 
 data/out/country_extractions/ne_10m_roads: data/in/mapaction/ne_10m_roads/ne_10m_roads.shp | data/out/country_extractions ## ne_10m_roads per country extractions
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_roads/ne_10m_roads.shp data/out/country_extractions/{country_code}/232_tran/{country_code}_tran_rds_ln_s0_naturalearth_pp_roads'
@@ -85,7 +88,8 @@ data/in/mapaction/ne_10m_populated_places: | data/in/mapaction ## ne_10m_populat
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp: data/in/mapaction/ne_10m_populated_places.zip | data/in/mapaction/ne_10m_populated_places ## unzip ne_10m_populated_placess
-	unzip data/in/mapaction/ne_10m_populated_places -d $@
+	unzip data/in/mapaction/ne_10m_populated_places.zip -d data/in/mapaction/ne_10m_populated_places/
+	touch $@
 
 data/out/country_extractions/ne_10m_populated_places: data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp | data/out/country_extractions ## ne_10m_populated_placess per country extractions
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp data/out/country_extractions/{country_code}/229_stle/{country_code}_stle_stl_pt_s0_naturalearth_pp_maincities'
@@ -98,7 +102,8 @@ data/in/mapaction/ne_10m_lakes: | data/in/mapaction ## ne_10m_lakes
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp: data/in/mapaction/ne_10m_lakes.zip | data/in/mapaction/ne_10m_lakes ## unzip ne_10m_lakes
-	unzip data/in/mapaction/ne_10m_lakes -d $@
+	unzip data/in/mapaction/ne_10m_lakes.zip -d data/in/mapaction/ne_10m_lakes/
+	touch $@
 
 data/out/country_extractions/ne_10m_lakes: data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp | data/out/country_extractions ## ne_10m_lakes per country extractions
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_lak_py_s0_naturalearth_pp_waterbodies'
@@ -145,7 +150,8 @@ data/in/mapaction/global_power_plant_database.zip: | data/in/mapaction ## downlo
 	curl "https://wri-dataportal-prod.s3.amazonaws.com/manual/global_power_plant_database_v_1_3.zip" -o "$@"
 
 data/in/mapaction/global_power_plant_database/global_power_plant_database.csv: data/in/mapaction/global_power_plant_database.zip | data/in/mapaction/global_power_plant_database ## unzip global_power_plant_database.zip
-	unzip data/in/mapaction/global_power_plant_database -d data/in/mapaction/global_power_plant_database
+	unzip data/in/mapaction/global_power_plant_database.zip -d data/in/mapaction/global_power_plant_database
+	touch $@
 
 data/out/country_extractions/global_power_plant_database: data/in/mapaction/global_power_plant_database/global_power_plant_database.csv | data/out/country_extractions ## global_power_plant_database.csv per country extractions
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_csv.sh {} data/in/mapaction/global_power_plant_database/global_power_plant_database.csv data/out/country_extractions/{country_code}/233_util/{country_code}_util_pst_pt_s0_gppd_pp_powerplants'
