@@ -15,12 +15,14 @@ create table :ma_table(id bigserial primary key,
 
 --
 drop type if exists tran_rds_roads_ln;
-create type tran_rds_roads_ln as("name" text,
+create type tran_rds_roads_ln as(
+    "name" text,
     "oneway" text,
     "max speed" text,
     "bridge" text,
     "tunnel" text,
-    "surface" text);
+    "surface" text
+    );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'tran',
@@ -716,7 +718,7 @@ select 'pois',
     osm_id,
     osm_type
 from :osm_table
-where tags @> '{"border":"border_control"}';
+where tags @> '{"barrier":"border_control"}';
 
 -- 
 drop type if exists stle_stl_settlements_pt;
@@ -822,6 +824,74 @@ where
     tags @> '{"amenity":"water_point"}';
 
 -- 
+drop type if exists shel_eaa_emergency_pt;
+create type shel_eaa_emergency_pt as(
+    "name" text,
+    "name:en" text,
+    "evacuation_center" text
+    );
+
+insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+select 'shel',
+    'eaa',
+    'emergency',
+    tags ->> 'emergency ',
+    'pt',
+    case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
+    tags,
+    osm_id,
+    osm_type
+from :osm_table
+where 
+    tags @> '{"emergency ":"assembly_point"}';
+
+--
+drop type if exists elev_cst_coastline_ln;
+create type elev_cst_coastline_ln as(
+    "name" text,
+    "source" text,
+    "place" text
+    );
+
+insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+select 'elev',
+    'cst',
+    'coastline',
+    tags ->> 'natural',
+    'ln',
+    geog::geometry as geom,
+    tags,
+    osm_id,
+    osm_type
+from :osm_table
+where
+    tags @> '{"natural":"coastline"}'
+    and geometrytype(geog) ~* 'linestring';
+
+-- --
+-- drop type if exists bldg_bdg_building_py;
+-- create type bldg_bdg_building_py as(
+--     "name" text,
+--     "name:en" text,
+--     "type" text,
+--     "amenity" text
+--     );
+
+-- insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+-- select 'bldg',
+--     'bdg',
+--     'building',
+--     tags ->> 'building',
+--     'py',
+--     geog::geometry as geom,
+--     tags,
+--     osm_id,
+--     osm_type
+-- from :osm_table
+-- where tags ? 'building'
+--     and geometrytype(geog::geometry) ~* 'polygon';
+
+--
 UPDATE :ma_table
 SET country_code = lower((select tags ->> 'ISO3166-1:alpha3' as iso_code
     FROM :osm_table
