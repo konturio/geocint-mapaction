@@ -868,28 +868,28 @@ where
     tags @> '{"natural":"coastline"}'
     and geometrytype(geog) ~* 'linestring';
 
--- --
--- drop type if exists bldg_bdg_building_py;
--- create type bldg_bdg_building_py as(
---     "name" text,
---     "name:en" text,
---     "type" text,
---     "amenity" text
---     );
+--
+drop type if exists bldg_bdg_building_py;
+create type bldg_bdg_building_py as(
+    "name" text,
+    "name:en" text,
+    "type" text,
+    "amenity" text
+    );
 
--- insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
--- select 'bldg',
---     'bdg',
---     'building',
---     tags ->> 'building',
---     'py',
---     geog::geometry as geom,
---     tags,
---     osm_id,
---     osm_type
--- from :osm_table
--- where tags ? 'building'
---     and geometrytype(geog::geometry) ~* 'polygon';
+insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+select 'bldg',
+    'bdg',
+    'building',
+    tags ->> 'building',
+    'py',
+    geog::geometry as geom,
+    tags,
+    osm_id,
+    osm_type
+from :osm_table
+where tags ? 'building'
+    and geometrytype(geog::geometry) ~* 'polygon';
 
 --
 UPDATE :ma_table
