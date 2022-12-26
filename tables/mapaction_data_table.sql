@@ -891,6 +891,31 @@ where tags @> '{"boundary":"administrative"}'
     ))::jsonb
 
 -- 
+insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+select 'admn',
+    'ad3',
+    'adminboundary3',
+    tags ->> 'admin_level',
+    'py',
+    geog::geometry as geom,
+    tags,
+    osm_id,
+    osm_type
+from :osm_table
+where tags @> '{"boundary":"administrative"}'
+    and geometrytype(geog::geometry) ~* 'polygon'
+    and tags ->> 'admin_level' ~ '^\d+$'
+    and tags ->> 'admin_level' in (select distinct tags ->> 'admin_level'
+        from :osm_table
+        where  tags @> '{"boundary":"administrative"}'
+            and tags ? 'admin_level'
+            and geometrytype(geog::geometry) ~* 'polygon'
+            and tags ->> 'admin_level' ~ '^\d+$'
+        order by 1
+        offset 3
+    );
+
+-- 
 UPDATE :ma_table
 SET country_code = lower((select tags ->> 'ISO3166-1:alpha3' as iso_code
     FROM :osm_table
