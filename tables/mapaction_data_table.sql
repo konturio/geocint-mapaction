@@ -890,6 +890,7 @@ where tags @> '{"boundary":"administrative"}'
         limit 1
     ))::jsonb
 
+
 -- 
 UPDATE :ma_table
 SET country_code = lower((select tags ->> 'ISO3166-1:alpha3' as iso_code
