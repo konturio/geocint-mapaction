@@ -14,7 +14,7 @@ OUTDIR="data/out/country_extractions/${base_name%.*}"
 while IFS="," read -r dir_name
 do
     mkdir -p $OUTDIR/$dir_name
-done < <( psql -t -A -F , -c "select a.dir_name from gis.mapaction_directories as a, (select ma_category from ${mapaction_table_name} group by 1) as b where dir_name ~* ma_category")
+done < <( psql -t -A -F , -c "select a.dir_name from mapaction_directories as a, (select ma_category from ${mapaction_table_name} group by 1) as b where dir_name ~* ma_category")
 
 # generate layernames for export
 # MapAction naming convention 
