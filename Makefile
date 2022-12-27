@@ -180,7 +180,7 @@ db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_data_table.sh {}'
 	touch $@
 
-db/table/mapaction_directories: ## Load into db structure of directory to use it while export
+db/table/mapaction_directories: | db/table ## Load into db structure of directory to use it while export
 	psql -c "drop table if exists mapaction_directories;"
 	psql -c "create table mapaction_directories(dir_name text);"
 	cat static_data/directories/directories.csv | psql -c "copy mapaction_directories from stdin;"
