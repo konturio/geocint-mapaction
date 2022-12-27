@@ -168,8 +168,11 @@ data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/coun
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
-data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
-	ls static_data/countries/*.json | parallel 'bash scripts/osm_pbf_extract.sh {}'
+data/out/osmium_extract_config.json: | data/out ## generate config for osmium-extract
+	python scripts/generate_osmium_extract_config.py > $@
+
+data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf data/out/osmium_extract_config.json | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
+	osmium extract --config data/out/osmium_extract_config.json data/planet-latest-updated.osm.pbf
 	touch $@
 
 db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create and populate osm_[] tables in db
