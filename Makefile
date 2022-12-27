@@ -46,7 +46,7 @@ data/in/mapaction/ne_10m_rivers_lake_centerlines: | data/in/mapaction ## ne_10m_
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp: data/in/mapaction/ne_10m_rivers_lake_centerlines.zip | data/in/mapaction/ne_10m_rivers_lake_centerlines ## unzip ne_10m_rivers_lake_centerlines
-	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines.zip -d data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines
+	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines.zip -d data/in/mapaction/ne_10m_rivers_lake_centerlines
 	touch $@
 
 data/out/country_extractions/ne_10m_rivers_lake_centerlines: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out/country_extractions  ## ne_10m_rivers_lake_centerlines per country extractions
