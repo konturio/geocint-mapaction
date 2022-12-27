@@ -39,7 +39,7 @@ data/out/mapaction: | data/out ## Dir for exported files
 data/out/country_extractions: | data/out
 	mkdir -p $@
 
-data/in/mapaction/ne_10m_rivers_lake_centerlines.zip: | ## download ne_10m_rivers_lake_centerlines
+data/in/mapaction/ne_10m_rivers_lake_centerlines.zip: | data/in/mapaction ## download ne_10m_rivers_lake_centerlines
 	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_rivers_lake_centerlines.zip" -o $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines: | data/in/mapaction ## ne_10m_rivers_lake_centerlines
