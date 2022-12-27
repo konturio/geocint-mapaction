@@ -46,7 +46,7 @@ data/in/mapaction/ne_10m_rivers_lake_centerlines: | data/in/mapaction ## ne_10m_
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp: data/in/mapaction/ne_10m_rivers_lake_centerlines.zip | data/in/mapaction/ne_10m_rivers_lake_centerlines ## unzip ne_10m_rivers_lake_centerlines
-	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines.zio -d data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines
+	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines.zip -d data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines
 	touch $@
 
 data/out/country_extractions/ne_10m_rivers_lake_centerlines: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out/country_extractions  ## ne_10m_rivers_lake_centerlines per country extractions
@@ -168,11 +168,11 @@ data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/coun
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
-data/out/osmium_extract_config.json: | data/out ## generate config for osmium-extract
+osmium_extract_config.json: ## generate config for osmium-extract
 	python scripts/generate_osmium_extract_config.py > $@
 
-data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf data/out/osmium_extract_config.json | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
-	osmium extract --config data/out/osmium_extract_config.json data/planet-latest-updated.osm.pbf
+data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf osmium_extract_config.json | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
+	osmium extract --config osmium_extract_config.json data/planet-latest-updated.osm.pbf
 	touch $@
 
 db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create and populate osm_[] tables in db
