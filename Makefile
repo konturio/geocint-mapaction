@@ -39,14 +39,14 @@ data/out/mapaction: | data/out ## Dir for exported files
 data/out/country_extractions: | data/out
 	mkdir -p $@
 
-data/in/mapaction/ne_10m_rivers_lake_centerlines.zip: | ## download ne_10m_rivers_lake_centerlines
+data/in/mapaction/ne_10m_rivers_lake_centerlines.zip: | data/in/mapaction ## download ne_10m_rivers_lake_centerlines
 	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_rivers_lake_centerlines.zip" -o $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines: | data/in/mapaction ## ne_10m_rivers_lake_centerlines
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp: data/in/mapaction/ne_10m_rivers_lake_centerlines.zip | data/in/mapaction/ne_10m_rivers_lake_centerlines ## unzip ne_10m_rivers_lake_centerlines
-	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines.zio -d data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines
+	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines.zip -d data/in/mapaction/ne_10m_rivers_lake_centerlines
 	touch $@
 
 data/out/country_extractions/ne_10m_rivers_lake_centerlines: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out/country_extractions  ## ne_10m_rivers_lake_centerlines per country extractions
@@ -168,8 +168,11 @@ data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/coun
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
-data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
-	ls static_data/countries/*.json | parallel 'bash scripts/osm_pbf_extract.sh {}'
+osmium_extract_config.json: ## generate config for osmium-extract
+	python scripts/generate_osmium_extract_config.py > $@
+
+data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf osmium_extract_config.json | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
+	osmium extract --config osmium_extract_config.json data/planet-latest-updated.osm.pbf
 	touch $@
 
 db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create and populate osm_[] tables in db
@@ -180,7 +183,7 @@ db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and
 	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_data_table.sh {}'
 	touch $@
 
-db/table/mapaction_directories: ## Load into db structure of directory to use it while export
+db/table/mapaction_directories: | db/table ## Load into db structure of directory to use it while export
 	psql -c "drop table if exists mapaction_directories;"
 	psql -c "create table mapaction_directories(dir_name text);"
 	cat static_data/directories/directories.csv | psql -c "copy mapaction_directories from stdin;"
