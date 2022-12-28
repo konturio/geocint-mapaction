@@ -17,8 +17,8 @@ echo "country_code $country_code"
 
 # FIX: CKAN_DATA_S3_URL url from env to s3 bucket
 # CKAN_DATA_S3_URL=s3://geodata-eu-central-1-kontur-public/mapaction_dataset/
-aws s3 cp "data/out/cmf/$country_code.shp.zip" $CKAN_DATA_S3_URL$country_code"_cmf_shp.zip" --acl public-read
-aws s3 cp "data/out/cmf/$country_code.geojson.zip" $CKAN_DATA_S3_URL$country_code"_cmf_geojson.zip" --acl public-read
+aws s3 cp "data/out/cmf/$country_code""_cmf_shp.zip" $CKAN_DATA_S3_URL$country_code"_cmf_shp.zip" --acl public-read
+aws s3 cp "data/out/cmf/$country_code""_cmf_geojson.zip" $CKAN_DATA_S3_URL$country_code"_cmf_geojson.zip" --acl public-read
 
 ckan_cmf_description_json_path="data/out/"$country_code"_ckan.json"
 python scripts/build_ckan_cmf_description.py $country_code > $ckan_cmf_description_json_path
