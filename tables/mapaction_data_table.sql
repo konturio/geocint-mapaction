@@ -834,7 +834,7 @@ select 'admn',
     osm_type
 from :osm_table
 where tags @> '{"boundary":"administrative"}'
-    and tags @> '{"admin_level":"2"}'
+    and tags @> '{"admin_level":"2"}' -- this value describes country boundaries
     and geometrytype(geog::geometry) ~* 'polygon'
     and tags ->> 'admin_level' ~ '^\d+$';
 
@@ -853,6 +853,7 @@ from :osm_table
 where tags @> '{"boundary":"administrative"}'
     and geometrytype(geog::geometry) ~* 'polygon'
     and tags ->> 'admin_level' ~ '^\d+$'
+    -- this sub query finds next value after admin_level=2, it can be 3,4, using offset 1 because 2 is the first value
     and tags @> format('{"admin_level":%1$I}', (select distinct (tags ->> 'admin_level')::int
         from :osm_table
         where  tags @> '{"boundary":"administrative"}'
@@ -879,6 +880,7 @@ from :osm_table
 where tags @> '{"boundary":"administrative"}'
     and geometrytype(geog::geometry) ~* 'polygon'
     and tags ->> 'admin_level' ~ '^\d+$'
+    -- this sub query finds next value after ad1, it can be 4,5,6, using offset 2
     and tags @> format('{"admin_level":%1$I}', (select distinct (tags ->> 'admin_level')::int
         from :osm_table
         where  tags @> '{"boundary":"administrative"}'
@@ -905,6 +907,7 @@ from :osm_table
 where tags @> '{"boundary":"administrative"}'
     and geometrytype(geog::geometry) ~* 'polygon'
     and tags ->> 'admin_level' ~ '^\d+$'
+    -- this sub query finds next value after ad2, using offset 3 (1 for ad1, 2 for ad2, 3 for other values)
     and tags ->> 'admin_level' in (select distinct tags ->> 'admin_level'
         from :osm_table
         where  tags @> '{"boundary":"administrative"}'
