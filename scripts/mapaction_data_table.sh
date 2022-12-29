@@ -6,4 +6,4 @@
 base_name=$(basename "$1")
 osm_table_name="osm_${base_name%.*}"
 mapaction_table_name="${osm_table_name/osm_/mapaction_}"
-psql -f tables/mapaction_data_table.sql -v osm_table=${osm_table_name} -v ma_table=${mapaction_table_name}
+psql -1 -f tables/mapaction_data_table.sql -v osm_table=${osm_table_name} -v ma_table=${mapaction_table_name}

@@ -864,7 +864,7 @@ where tags @> '{"boundary":"administrative"}'
         order by 1
         offset 1
         limit 1
-    ))::jsonb
+    ))::jsonb;
 
 -- 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
@@ -890,7 +890,7 @@ where tags @> '{"boundary":"administrative"}'
         order by 1
         offset 2
         limit 1
-    ))::jsonb
+    ))::jsonb;
 
 -- 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
