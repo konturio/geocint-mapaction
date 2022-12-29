@@ -31,9 +31,9 @@ do
     # $dir_name is directory according to category
     # generate sql string for ogr, if there are additional columns for layer
     sql=$(psql -t -A -F , -c "select mapaction_data_export('${mapaction_table_name}', '${country_code}', '${ma_category}', '${ma_theme}', '${ma_tag}', '${feature_type}');")
-    ogr2ogr -f "ESRI Shapefile" $OUTDIR/$dir_name/$output.shp PG:"dbname=$DB_NAME" -sql "${sql}" -lco ENCODING=UTF8
+    ogr2ogr -f "ESRI Shapefile" $OUTDIR/$dir_name/$output.shp PG:"dbname=$USER_NAME" -sql "${sql}" -lco ENCODING=UTF8
     rm -f $OUTDIR/$dir_name/$output.geojson
-    ogr2ogr -f "GeoJSON" $OUTDIR/$dir_name/$output.geojson PG:"dbname=$DB_NAME" -sql "${sql}" -lco WRITE_NAME=NO
+    ogr2ogr -f "GeoJSON" $OUTDIR/$dir_name/$output.geojson PG:"dbname=$USER_NAME" -sql "${sql}" -lco WRITE_NAME=NO
 done < <( psql -t -A -F , -c "SELECT country_code, ma_category, ma_theme, feature_type, ma_tag, dir_name FROM ${mapaction_table_name}, mapaction_directories where dir_name ~* ma_category group by 1,2,3,4,5,6")
 
 # delete empty directories if exists
