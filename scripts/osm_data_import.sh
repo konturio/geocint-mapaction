@@ -6,6 +6,6 @@
 base_name=$(basename "$1")
 prefix_name="osm_${base_name%.*}"
 input="data/in/mapaction/${base_name/json/pbf}"
-psql -f tables/osm_data_table.sql -v tablename=${prefix_name}
+psql -1 -f tables/osm_data_table.sql -v tablename=${prefix_name}
 osmium export -c static_data/mapaction_osmium.config.json -f pg $input -v --progress | psql -c "copy $prefix_name from stdin;"
-psql -c "create index on $prefix_name using gin (tags);"
+psql -1 -c "create index on $prefix_name using gin (tags);"
