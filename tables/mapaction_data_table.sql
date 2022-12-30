@@ -855,7 +855,7 @@ from :osm_table
 where tags @> '{"boundary":"administrative"}'
     and geometrytype(geog::geometry) ~* 'polygon'
     and tags ->> 'admin_level' ~ '^\d+$'
-    and tags @> format('{"admin_level":%1$I}', (select distinct (tags ->> 'admin_level')::int
+    and tags @> format('{"admin_level":%1$I}', coalesce((select distinct (tags ->> 'admin_level')::int
         from :osm_table
         where  tags @> '{"boundary":"administrative"}'
             and tags ? 'admin_level'
@@ -864,7 +864,7 @@ where tags @> '{"boundary":"administrative"}'
         order by 1
         offset 1
         limit 1
-    ))::jsonb;
+    ), 4))::jsonb;
 
 -- 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
@@ -881,7 +881,7 @@ from :osm_table
 where tags @> '{"boundary":"administrative"}'
     and geometrytype(geog::geometry) ~* 'polygon'
     and tags ->> 'admin_level' ~ '^\d+$'
-    and tags @> format('{"admin_level":%1$I}', (select distinct (tags ->> 'admin_level')::int
+    and tags @> format('{"admin_level":%1$I}', coalesce((select distinct (tags ->> 'admin_level')::int
         from :osm_table
         where  tags @> '{"boundary":"administrative"}'
             and tags ? 'admin_level'
@@ -890,7 +890,7 @@ where tags @> '{"boundary":"administrative"}'
         order by 1
         offset 2
         limit 1
-    ))::jsonb;
+    ), 6))::jsonb;
 
 -- 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
