@@ -199,8 +199,8 @@ dev: data/out/upload_datasets_all data/out/upload_cmf_all ## this runs when auto
 	touch $@
 
 .PHONY: export_country
-export_country: db/table/mapaction_directories | data/out/country_extractions ## run as make export_country COUNTRY=static_data/countries/blr.json
-	#bash scripts/osm_pbf_extract.sh $(COUNTRY)
+export_country: db/table/mapaction_directories data/in/mapaction data/mid/mapaction data/out/mapaction | data/out/country_extractions ## run as make export_country COUNTRY=static_data/countries/blr.json
+	#osmium extract --overwrite --polygon=$(COUNTRY) data/planet-latest-updated.osm.pbf -o data/mid/mapaction/$(shell (basename $(COUNTRY) .json) ).pbf
 	#bash scripts/osm_data_import.sh $(COUNTRY)
 	#bash scripts/mapaction_data_table.sh $(COUNTRY)
 	#bash scripts/mapaction_export.sh $(COUNTRY)
