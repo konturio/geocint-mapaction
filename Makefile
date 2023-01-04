@@ -176,11 +176,11 @@ data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf osmium_ext
 	touch $@
 
 db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create and populate osm_[] tables in db
-	ls data/in/mapaction/*.pbf | parallel 'bash scripts/osm_data_import.sh {}'
+	ls static_data/countries/*.json | parallel 'bash scripts/osm_data_import.sh {}'
 	touch $@
 
 db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and populate mapaction_[] tables in db
-	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_data_table.sh {}'
+	ls static_data/countries/*.json | parallel 'bash scripts/mapaction_data_table.sh {}'
 	touch $@
 
 db/table/mapaction_directories: | db/table ## Load into db structure of directory to use it while export
@@ -191,7 +191,7 @@ db/table/mapaction_directories: | db/table ## Load into db structure of director
 
 data/out/mapaction_export: db/table/mapaction_data_table db/table/mapaction_directories | data/out/country_extractions ## Export from db to SHP and JSON
 	psql -1 -f scripts/mapaction_data_export.sql
-	ls data/in/mapaction/*.pbf | parallel 'bash scripts/mapaction_export.sh {}'
+	ls static_data/countries/*.json | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@
 
 dev: data/out/upload_datasets_all data/out/upload_cmf_all ## this runs when autos_tart.sh executes
