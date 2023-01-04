@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # this script creates osm_{} table in db, imports data and creates index for this table
 # input: JAM.pbf
 # output: osm_jam table in db
