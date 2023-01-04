@@ -171,7 +171,10 @@ data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/coun
 osmium_extract_config.json: ## generate config for osmium-extract
 	python scripts/generate_osmium_extract_config.py > $@
 
-data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf osmium_extract_config.json | data/in/mapaction ## create per-country extracts pbf files from planet.pbf
+data/mid/mapaction: | data/mid ## create directory data/mid/mapaction
+	mkdir -p $@
+
+data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf osmium_extract_config.json | data/mid/mapaction ## create per-country extracts pbf files from planet.pbf
 	osmium extract --config osmium_extract_config.json --overwrite data/planet-latest-updated.osm.pbf
 	touch $@
 
