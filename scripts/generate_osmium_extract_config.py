@@ -15,7 +15,7 @@ def main():
 
             extracts.append(
                 {
-                    "output": f"data/in/mapaction/{country_code}.pbf",
+                    "output": f"data/mid/mapaction/{country_code}.pbf",
                     "output_format": "pbf",
                     "description": country_code,
                     "polygon": {

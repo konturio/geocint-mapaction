@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # this script exports mapaction layers from db to json and SHP format
 # input: JAM.pbj
 # output: files according to naming conventions 
