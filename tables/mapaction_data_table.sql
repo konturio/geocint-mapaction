@@ -824,6 +824,12 @@ where
     tags @> '{"amenity":"water_point"}';
 
 -- 
+drop type if exists admn_ad0_adminboundary0_py;
+create type admn_ad0_adminboundary0_py as(
+    "name" text,
+    "name:en" text
+    );
+
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'admn',
     'ad0',
@@ -840,7 +846,13 @@ where tags @> '{"boundary":"administrative"}'
     and geometrytype(geog::geometry) ~* 'polygon'
     and tags ->> 'admin_level' ~ '^\d+$';
 
--- 
+--
+drop type if exists admn_ad1_adminboundary1_py;
+create type admn_ad1_adminboundary1_py as(
+    "name" text,
+    "name:en" text
+    );
+
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'admn',
     'ad1',
@@ -866,7 +878,13 @@ where tags @> '{"boundary":"administrative"}'
         limit 1
     ), 4))::jsonb;
 
--- 
+--
+drop type if exists admn_ad2_adminboundary2_py;
+create type admn_ad2_adminboundary2_py as(
+    "name" text,
+    "name:en" text
+    );
+
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'admn',
     'ad2',
@@ -892,7 +910,13 @@ where tags @> '{"boundary":"administrative"}'
         limit 1
     ), 6))::jsonb;
 
--- 
+--
+drop type if exists admn_ad3_adminboundary3_py;
+create type admn_ad3_adminboundary3_py as(
+    "name" text,
+    "name:en" text
+    );
+
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'admn',
     'ad3',
