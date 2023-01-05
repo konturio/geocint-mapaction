@@ -39,6 +39,7 @@ Note: S3 paths should be specified with trailing slash /. Variable values should
 
 EXAMPLE
 
+    # CKAN Configuration
     # Url of your CKAN instance 
     CKAN_BASE_URL=https://ckan.test.io/ckan
 
