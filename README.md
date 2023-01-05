@@ -35,5 +35,7 @@ The following sections describe how to specify credentials for S3 storage and CK
 2. `CKAN_API_KEY` in `config.in.sh` should be set to API key manually generated from CKAN UI (User Profile > Manage > API tokens). You can find more information in CKAN [documentation](https://docs.ckan.org/en/2.9/api/#authentication-and-api-tokens).
 3. In `config.inc.sh` variable `CKAN_DATA_S3_URL` should be specified to path in S3 where you expect datasets to be uploaded, for example `s3://geodata-eu-central-1-kontur-public/mapaction_dataset/` and variable `CKAN_DATA_URL` should point at the same path in S3 as `CKAN_DATA_S3_URL` but using http protocol, for example `https://geodata-eu-central-1-kontur-public.s3.amazonaws.com/mapaction_dataset/`.
 
+Note: Paths should be specified with trailing slash / and without quotes. 
+
 
 
