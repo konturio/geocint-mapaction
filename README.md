@@ -7,7 +7,7 @@ It is based on Kontur Geocint technology.
 
 This pipeline downloads data from various sources, including OpenStreetMap, HDX and others, and produces geospatial datasets, in form of geojsons and ESRI shapefiles, which are uploaded to S3 compatible storage and to CKAN.
 
-## Installation and cofiguration
+## Installation and configuration
 
 In order to make it running, you need two other repositories:
 
