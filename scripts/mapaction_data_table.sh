@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # this scirpt create mapaction_[] table and populates it with data from osm_[] table
 # input: JAM.pbf
 # output: mapaction_jam table
