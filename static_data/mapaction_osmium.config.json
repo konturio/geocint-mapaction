@@ -9,20 +9,29 @@
     "user": false,
     "way_nodes": false
   },
-  "linear_tags": [
-    "highway",
-    "barrier",
-    "natural=coastline"
-  ],
+  "linear_tags": null,
   "area_tags": [
     "aeroway",
     "amenity",
+    "area",
     "building",
+    "harbour",
+    "historic",
     "landuse",
     "leisure",
     "man_made",
+    "military",
     "natural!=coastline",
-    "waterway=riverbank"
+    "office",
+    "place",
+    "power",
+    "public_transport",
+    "shop",
+    "sport",
+    "tourism",
+    "water",
+    "waterway=riverbank",
+    "wetland"
   ],
   "exclude_tags": [
     "created_by",
@@ -30,4 +39,3 @@
   ],
   "include_tags": []
 }
-
