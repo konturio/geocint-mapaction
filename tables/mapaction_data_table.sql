@@ -351,8 +351,8 @@ select 'cash',
     osm_type
 from :osm_table
 where 
-    tags @> '{"atm":"yes"}' or
-    tags @> '{"amenity":"atm"}';
+    (tags @> '{"atm":"yes"}' or tags @> '{"amenity":"atm"}') and
+    not tags @> '{"amenity":"bank"}';
 
 -- 
 drop type if exists heal_hea_healthcentres_pt;
