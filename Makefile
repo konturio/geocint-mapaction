@@ -53,20 +53,6 @@ data/out/country_extractions/ne_10m_rivers_lake_centerlines: data/in/mapaction/n
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp data/out/country_extractions/{country_code}/221_phys/{country_code}_phys_riv_ln_s0_naturalearth_pp_rivers'
 	touch $@
 
-data/in/mapaction/ne_10m_coastline.zip: | data/in/mapaction ## ne_10m_coastline
-	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_coastline.zip" -o $@
-
-data/in/mapaction/ne_10m_coastline: | data/in/mapaction ## ne_10m_coastline
-	mkdir -p $@
-
-data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp: data/in/mapaction/ne_10m_coastline.zip | data/in/mapaction/ne_10m_coastline ## unzip ne_10m_coastline
-	unzip data/in/mapaction/ne_10m_coastline.zip -d data/in/mapaction/ne_10m_coastline/
-	touch $@
-
-data/out/country_extractions/ne_10m_coastline: data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp | data/out/country_extractions ## ne_10m_coastline per country extractions
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/ne_10m_coastline/ne_10m_coastline.shp data/out/country_extractions/{country_code}/211_elev/{country_code}_elev_cst_ln_s0_naturalearth_pp_coastline'
-	touch $@
-
 data/in/mapaction/ne_10m_roads.zip: | data/in/mapaction ## ne_10m_roads
 	curl "https://naciscdn.org/naturalearth/10m/cultural/ne_10m_roads.zip" -o $@
 
@@ -160,11 +146,11 @@ data/out/country_extractions/global_power_plant_database: data/in/mapaction/glob
 data/out/cmf: | data/out ## create directory for CMFs
 	mkdir -p $@
 
-data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out ## upload datasets in CKAN
+data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out ## upload datasets in CKAN
 	find data/out/country_extractions/ -name "*.shp" | parallel 'bash scripts/mapaction_upload_dataset.sh {}'
 	touch $@
 
-data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_coastline data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
+data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
