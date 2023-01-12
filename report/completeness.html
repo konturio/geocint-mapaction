@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <title>Mapaction Completeness Report</title>
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <!-- Note fot Mapction. You can change favicon with yours -->
+    <link rel="stylesheet" href='completeness.css'>
+    <link href='https://fonts.googleapis.com/css?family=IBM Plex Sans Condensed' rel='stylesheet'>
+    <script src="countryList.js" type="text/javascript"> </script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div id="completenessTable"></div>
+</body>
+
+<script>
+    const selectCountry = `Please select a country`
+    //Note for Mapaction. You can change logo with yours.
+    let headers = `
+            <div id="compReport">
+                <img class="img" src='Kontur_logo_main.png' />
+             <div class="vertical-center">
+            <p>COMPLETENESS REPORT</p>
+            </div>
+            </div>
+                <h1 id="countryHeader">${selectCountry}</h2>
+                    <div>
+                        <input autocomplete="false" type="text" id="countryInput" name="search" onkeyup="filterCountriesFnc()" placeholder="Search for country .." />
+                        </div>
+                    <div>
+                    <select id="countrySelect" size="3" onchange="countrySelectFnc()">`;
+    Object.keys(countries).forEach(function (key) {
+        headers += `<option value=${key}>${countries[key]}</option>`;
+    })
+    headers += "</select></div>";
+
+    document.getElementById("header").innerHTML = headers;
+
+    function formatDate(date) {
+        if (date == null || date == "") {
+            return "";
+        }
+
+        date = new Date(date);
+        let aaaa = date.getFullYear();
+        let gg = date.getDate();
+        let mm = (date.getMonth() + 1);
+
+        if (gg < 10)
+            gg = "0" + gg;
+
+        if (mm < 10)
+            mm = "0" + mm;
+
+        let cur_day = aaaa + "-" + mm + "-" + gg;
+
+        let hours = date.getHours()
+        let minutes = date.getMinutes()
+        let seconds = date.getSeconds();
+
+        if (hours < 10)
+            hours = "0" + hours;
+
+        if (minutes < 10)
+            minutes = "0" + minutes;
+
+        if (seconds < 10)
+            seconds = "0" + seconds;
+
+        return cur_day + " " + hours + ":" + minutes + ":" + seconds;
+    }
+
+    async function getStatus(_country, _countryValue) {
+        let response = await fetch("completeness_" + _countryValue + ".json").then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Something went wrong');
+        })
+            .then((responseJson) => {
+                document.getElementById("countryHeader").innerHTML = `Completeness report for ${_country}`;
+                let completenessTable = `
+            <h2>Available datasets</h3>
+            <table id="compTable" class="sortable">
+                    <tr class="header">
+                        <th>Dataset</th>
+                        <th>Source</th>
+                        <th>Category</th>
+                        <th>Theme</th>
+                        <th>Type</th>
+                        <th>Acquired Datasets - Date</th>
+                    </tr>`
+
+                for (let i = 0; i < responseJson.length; i++) {
+                    completenessTable +=
+                        `<tr class=${responseJson[i].class}>
+                        <td>${responseJson[i].dataset}</td>
+                        <td>${responseJson[i].source}</td>
+                        <td>${responseJson[i].category}</td>
+                        <td>${responseJson[i].theme}</td>
+                        <td>${responseJson[i].type}</td><td>`
+                    responseJson[i].acquiredDatasets.forEach((fileName, idx) => {
+                        completenessTable +=
+                            `<table><tr>
+                            <td width="50%" class="tdAlign">${fileName}</td>
+                            <td width="50%" class="tdAlign">${formatDate(responseJson[i].dateTime[idx])}</td>
+                            </tr></table>
+                            `
+                    });
+                    completenessTable += "</td></tr>"
+                }
+
+                completenessTable += "</table>";
+
+                const completeness = document.getElementById("completenessTable");
+                completeness.innerHTML = completenessTable;
+            })
+            .catch((error) => {
+                let errorTxt = "No data for selected country!"
+                document.getElementById("countryHeader").innerHTML = selectCountry;
+                document.getElementById("completenessTable").innerHTML = `<h1 id="countryHeader">${errorTxt}</h2>`;
+                console.log(errorTxt + error)
+            });
+    }
+
+    function filterCountriesFnc() {
+        let keyword = document.getElementById("countryInput").value;
+        let countries = document.getElementById("countrySelect");
+        for (let i = 0; i < countries.length; i++) {
+            let txt = countries.options[i].text;
+            if (txt.substring(0, keyword.length).toLowerCase() !== keyword.toLowerCase() && keyword.trim() !== "") {
+                countries.options[i].style.display = 'none';
+            } else {
+                countries.options[i].style.display = 'list-item';
+            }
+        }
+    }
+
+    function countrySelectFnc() {
+        let countries = document.getElementById("countrySelect");
+        let selectedCountry = countries.selectedOptions[0];
+        getStatus(selectedCountry.innerText, selectedCountry.value);
+    }
+</script>
+
+</html>
