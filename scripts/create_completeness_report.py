@@ -88,7 +88,7 @@ def match_datsets(record, files, geoextent_all):
     return matched_datasets, timeValues
 
 completeness = []
-def create_json(country_code, dat, files, main_folder):
+def create_json(country_code, dat, files):
     for record in dat:
         matchedData = match_datsets(record, files, country_code)
         fileNames = matchedData[0]
@@ -135,26 +135,23 @@ def create_json(country_code, dat, files, main_folder):
 
     completeness.append(dataRecord)
 
-    fo = open(main_folder + "/report/completeness_" + country_code + ".json", 'w', encoding="utf-8")
+    fo = open("/report/completeness_" + country_code + ".json", 'w', encoding="utf-8")
     fo.write(json.dumps(completeness))
     fo.close()
 
 
 def main():
-    # make_profile folder
-    main_folder = sys.argv[1]
+    # country tag. "tza" for tanzania
+    country_code = sys.argv[1]
     
     # related country data folder
-    country_data_folder = sys.argv[2]
-
-    # country tag. "tza" for tanzania
-    country_code = sys.argv[3]
+    country_data_folder = f"/data/out/country_extractions/{country_code}"
 
     files = get_datasets_filenames_datetime(country_code, country_data_folder)
 
-    dat = loadCsv(main_folder + "/static_data/completeness_test.csv", separator=',', skipheaders=True)
+    dat = loadCsv("/static_data/completeness_test.csv", separator=',', skipheaders=True)
     
-    create_json(country_code, dat, files, main_folder)
+    create_json(country_code, dat, files)
 
 if __name__ == '__main__':
     main()
