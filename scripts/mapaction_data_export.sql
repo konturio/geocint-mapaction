@@ -11,13 +11,22 @@ CREATE OR REPLACE FUNCTION mapaction_data_export(
 RETURNS text AS
 $BODY$
 DECLARE
-    typeName text := trim(lower(format('%1$s%2$s%3$s%4$s', 
-        COALESCE(ma_category, ''), 
-        COALESCE(format('_%1$s', ma_theme), ''),
-        COALESCE(format('_%1$s', ma_tag), ''),
-        COALESCE(format('_%1$s', feature_type), ''))));
+    typeName text := '';
     ogrExportQuery text := '';
 begin
+    --  special case for layer 'pois_poi'
+    --  typeName := 'pois_poi'
+    if ma_category = 'pois' and ma_theme = 'poi' then
+        typeName := trim(lower(format('%1$s%2$s', 
+            COALESCE(ma_category, ''), 
+            COALESCE(format('_%1$s', ma_theme)))));
+    else
+        typeName := trim(lower(format('%1$s%2$s%3$s%4$s', 
+            COALESCE(ma_category, ''), 
+            COALESCE(format('_%1$s', ma_theme), ''),
+            COALESCE(format('_%1$s', ma_tag), ''),
+            COALESCE(format('_%1$s', feature_type), ''))));
+    end if;
     --  check if exists type for additional columns for layer and return query
     --  if type does not exist, return simple query
     if exists (select typname from pg_type where typname = typeName) THEN

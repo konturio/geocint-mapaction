@@ -31,7 +31,7 @@ do
     # if ma_tag is empty discard last "_" and convert name to lowercase
     output=$(echo "${country_code}_${ma_category}_${ma_theme}_${feature_type}_s4_osm_pp_${ma_tag}" | sed 's/_$//g' | sed -e 's/\(.*\)/\L\1/')
     # $dir_name is directory according to category
-    # generate sql string for ogr, if there are additional columns for layer
+    # generate sql string for ogr, if there are additional columns for layer, and special case for pois layer
     sql=$(psql -t -A -F , -c "select mapaction_data_export('${mapaction_table_name}', '${country_code}', '${ma_category}', '${ma_theme}', '${ma_tag}', '${feature_type}');")
     ogr2ogr -f "ESRI Shapefile" $OUTDIR/$dir_name/$output.shp PG:"dbname=$USER_NAME" -sql "${sql}" -lco ENCODING=UTF8
     rm -f $OUTDIR/$dir_name/$output.geojson

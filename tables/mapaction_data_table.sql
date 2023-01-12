@@ -1009,6 +1009,376 @@ where tags ? 'building'
     and geometrytype(geog::geometry) ~* 'polygon';
 
 --
+drop type if exists pois_poi;
+create type pois_poi as(
+    "name" text,
+    "name:en" text,
+    "type" text,
+    "amenity" text,
+    "office" text,
+    "landuse" text,
+    "leisure" text,
+    "sport" text,
+    "tourism" text,
+    "shop" text,
+    "vending" text,
+    "historic" text,
+    "emergency" text,
+    "man_made" text
+    );
+
+with q as (select * from :osm_table where geometrytype(geog::geometry) !~* 'linestring')
+, public as (
+    select 'police' as fclass, * from q where tags @> '{"amenity":"police"}'
+    union all
+    select 'fire_station', * from q where tags @> '{"amenity":"fire_station"}'
+    union all
+    select 'post_box', * from q where tags @> '{"amenity":"post_box"}'
+    union all
+    select 'post_office', * from q where tags @> '{"amenity":"post_office"}'
+    union all
+    select 'telephone', * from q where tags @> '{"amenity":"telephone"}'
+    union all
+    select 'library', * from q where tags @> '{"amenity":"library"}'
+    union all
+    select 'town_hall', * from q where tags @> '{"amenity":"townhall"}'
+    union all
+    select 'courthouse', * from q where tags @> '{"amenity":"courthouse"}'
+    union all
+    select 'prison', * from q where tags @> '{"amenity":"prison"}'
+    union all
+    select 'embassy', * from q where tags @> '{"amenity":"embassy"}' or tags @> '{"office":"diplomatic"}'
+    union all
+    select 'community_centre', * from q where tags @> '{"amenity":"community_centre"}'
+    union all
+    select 'nursing_home', * from q where tags @> '{"amenity":"nursing_home"}'
+    union all
+    select 'arts_centre', * from q where tags @> '{"amenity":"arts_centre"}'
+    union all
+    select 'graveyard', * from q where tags @> '{"amenity":"grave_yard"}' or tags @> '{"landuse":"cemetery"}'
+    union all
+    select 'market_place', * from q where tags @> '{"amenity":"marketplace"}'
+    union all
+    select 'recycling', * from q where tags @> '{"amenity":"recycling"}' and not (tags @> '{"recycling:glass":"yes"}' or tags @> '{"recycling:glass_bottles":"yes"}' or tags @> '{"recycling:paper":"yes"}' or tags @> '{"recycling:clothes":"yes"}' or tags @> '{"recycling:scrap_metal":"yes"}')
+    union all
+    select 'recycling_glass', * from q where tags @> '{"recycling:glass":"yes"}' or tags @> '{"recycling:glass_bottles":"yes"}'
+    union all
+    select 'recycling_paper', * from q where tags @> '{"recycling:paper":"yes"}'
+    union all
+    select 'recycling_clothes', * from q where tags @> '{"recycling:clothes":"yes"}'
+    union all
+    select 'recycling_metal', * from q where tags @> '{"recycling:scrap_metal":"yes"}'
+)
+, education as (
+    select 'university' as fclass, * from q where tags @> '{"amenity":"university"}'
+    union all
+    select 'school', * from q where tags @> '{"amenity":"school"}'
+    union all
+    select 'kindergarten', * from q where tags @> '{"amenity":"kindergarten"}'
+    union all
+    select 'college', * from q where tags @> '{"amenity":"college"}'
+    union all
+    select 'public_building', * from q where tags @> '{"amenity":"public_building"}'
+)
+, health as (
+    select 'pharmacy' as fclass, * from q where tags @> '{"amenity":"pharmacy"}'
+    union all
+    select 'hospital', * from q where tags @> '{"amenity":"hospital"}'
+    union all
+    select 'clinic', * from q where tags @> '{"amenity":"clinic"}'
+    union all
+    select 'doctors', * from q where tags @> '{"amenity":"doctors"}'
+    union all
+    select 'dentist', * from q where tags @> '{"amenity":"dentist"}'
+    union all
+    select 'veterinary', * from q where tags @> '{"amenity":"veterinary"}'
+)
+, leisure as (
+    select 'theatre' as fclass, * from q where tags @> '{"amenity":"theatre"}'
+    union all
+    select 'nightclub', * from q where tags @> '{"amenity":"nightclub"}'
+    union all
+    select 'cinema', * from q where tags @> '{"amenity":"cinema"}'
+    union all
+    select 'park', * from q where tags @> '{"leisure":"park"}'
+    union all
+    select 'playground', * from q where tags @> '{"leisure":"playground"}'
+    union all
+    select 'dog_park', * from q where tags @> '{"leisure":"dog_park"}'
+)
+, sports as (
+    select 'sports_centre' as fclass, * from q where tags @> '{"leisure":"sports_centre"}'
+    union all
+    select 'pitch', * from q where tags @> '{"leisure":"pitch"}'
+    union all
+    select 'swimming_pool', * from q where tags @> '{"amenity":"swimming_pool"}' or tags @> '{"leisure":"swimming_pool"}' or tags @> '{"sport":"swimming"}' or tags @> '{"leisure":"water_park"}'
+    union all
+    select 'tennis_court', * from q where tags @> '{"sport":"tennis"}'
+    union all
+    select 'golf_course', * from q where tags @> '{"leisure":"golf_course"}'
+    union all
+    select 'stadium', * from q where tags @> '{"leisure":"stadium"}'
+    union all
+    select 'ice_rink', * from q where tags @> '{"leisure":"ice_rink"}'
+)
+, catering as (
+    select 'restaurant' as fclass, * from q where tags @> '{"amenity":"restaurant"}'
+    union all
+    select 'fast_food', * from q where tags @> '{"amenity":"fast_food"}'
+    union all
+    select 'cafe', * from q where tags @> '{"amenity":"cafe"}'
+    union all
+    select 'pub', * from q where tags @> '{"amenity":"pub"}'
+    union all
+    select 'bar', * from q where tags @> '{"amenity":"bar"}'
+    union all
+    select 'food_court', * from q where tags @> '{"amenity":"food_court"}'
+    union all
+    select 'biergarten', * from q where tags @> '{"amenity":"biergarten"}'
+)
+, accommodation as (
+    select 'hotel' as fclass, * from q where tags @> '{"tourism":"hotel"}'
+    union all
+    select 'motel', * from q where tags @> '{"tourism":"motel"}'
+    union all
+    select 'bed_and_breakfast', * from q where tags @> '{"tourism":"bed_and_breakfast"}'
+    union all
+    select 'guesthouse', * from q where tags @> '{"tourism":"guest_house"}'
+    union all
+    select 'hostel', * from q where tags @> '{"tourism":"hostel"}'
+    union all
+    select 'chalet', * from q where tags @> '{"tourism":"chalet"}'
+    union all
+    select 'shelter', * from q where tags @> '{"amenity":"shelter"}'
+    union all
+    select 'camp_site', * from q where tags @> '{"tourism":"camp_site"}'
+    union all
+    select 'alpine_hut', * from q where tags @> '{"tourism":"alpine_hut"}'
+    union all
+    select 'caravan_site', * from q where tags @> '{"tourism":"caravan_site"}'
+)
+, shopping as (
+    select 'supermarket' as fclass, * from q where tags @> '{"shop":"supermarket"}'
+    union all
+    select 'bakery', * from q where tags @> '{"shop":"bakery"}'
+    union all
+    select 'kiosk', * from q where tags @> '{"shop":"kiosk"}'
+    union all
+    select 'mall', * from q where tags @> '{"shop":"mall"}'
+    union all
+    select 'department_store', * from q where tags @> '{"shop":"department_store"}'
+    union all
+    select 'general', * from q where tags @> '{"shop":"general"}'
+    union all
+    select 'convenience', * from q where tags @> '{"shop":"convenience"}'
+    union all
+    select 'clothes', * from q where tags @> '{"shop":"clothes"}'
+    union all
+    select 'florist', * from q where tags @> '{"shop":"florist"}'
+    union all
+    select 'chemist', * from q where tags @> '{"shop":"chemist"}'
+    union all
+    select 'bookshop', * from q where tags @> '{"shop":"books"}'
+    union all
+    select 'butcher', * from q where tags @> '{"shop":"butcher"}'
+    union all
+    select 'shoe_shop', * from q where tags @> '{"shop":"shoes"}'
+    union all
+    select 'beverages', * from q where tags @> '{"shop":"alcohol"}' or tags @> '{"shop":"beverages"}'
+    union all
+    select 'optician', * from q where tags @> '{"shop":"optician"}'
+    union all
+    select 'jeweller', * from q where tags @> '{"shop":"jewelry"}'
+    union all
+    select 'gift_shop', * from q where tags @> '{"shop":"gift"}'
+    union all
+    select 'sports_shop', * from q where tags @> '{"shop":"sports"}'
+    union all
+    select 'stationery', * from q where tags @> '{"shop":"stationery"}'
+    union all
+    select 'outdoor_shop', * from q where tags @> '{"shop":"outdoor"}'
+    union all
+    select 'mobile_phone_shop', * from q where tags @> '{"shop":"mobile_phone"}'
+    union all
+    select 'toy_shop', * from q where tags @> '{"shop":"toys"}'
+    union all
+    select 'newsagent', * from q where tags @> '{"shop":"newsagent"}'
+    union all
+    select 'greengrocer', * from q where tags @> '{"shop":"greengrocer"}'
+    union all
+    select 'beauty_shop', * from q where tags @> '{"shop":"beauty"}'
+    union all
+    select 'video_shop', * from q where tags @> '{"shop":"video"}'
+    union all
+    select 'car_dealership', * from q where tags @> '{"shop":"car"}'
+    union all
+    select 'bicycle_shop', * from q where tags @> '{"shop":"bicycle"}'
+    union all
+    select 'doityourself', * from q where tags @> '{"shop":"doityourself"}' and tags @> '{"shop":"hardware"}'
+    union all
+    select 'furniture_shop', * from q where tags @> '{"shop":"furniture"}'
+    union all
+    select 'computer_shop', * from q where tags @> '{"shop":"computer"}'
+    union all
+    select 'garden_centre', * from q where tags @> '{"shop":"garden_centre"}'
+    union all
+    select 'hairdresser', * from q where tags @> '{"shop":"hairdresser"}'
+    union all
+    select 'car_repair', * from q where tags @> '{"shop":"car_repair"}'
+    union all
+    select 'car_rental', * from q where tags @> '{"amenity":"car_rental"}'
+    union all
+    select 'car_wash', * from q where tags @> '{"amenity":"car_wash"}'
+    union all
+    select 'car_sharing', * from q where tags @> '{"amenity":"car_sharing"}'
+    union all
+    select 'bicycle_rental', * from q where tags @> '{"amenity":"bicycle_rental"}'
+    union all
+    select 'travel_agent', * from q where tags @> '{"shop":"travel_agency"}'
+    union all
+    select 'laundry', * from q where tags @> '{"shop":"laundry"}' or tags @> '{"shop":"dry_cleaning"}'
+    union all
+    select 'vending_machine', * from q where tags @> '{"amenity":"vending_machine"}' and not (tags @> '{"vending":"cigarettes"}' or tags @> '{"vending":"parking_tickets"}')
+    union all
+    select 'vending_cigarette', * from q where tags @> '{"vending":"cigarettes"}'
+    union all
+    select 'vending_parking', * from q where tags @> '{"vending":"parking_tickets"}'
+)
+, money as (
+    select 'bank' as fclass, * from q where tags @> '{"amenity":"bank"}'
+    union all
+    select 'atm', * from q where tags @> '{"amenity":"atm"}'
+)
+, tourism as (
+    select 'tourist_info' as fclass, * from q where tags @> '{"tourism":"information"}' and not (tags @> '{"information":"map"}' or tags @> '{"information":"board"}' or tags @> '{"information":"guidepost"}')
+    union all
+    select 'tourist_map', * from q where tags @> '{"information":"map"}'
+    union all
+    select 'tourist_board', * from q where tags @> '{"information":"board"}'
+    union all
+    select 'tourist_guidepost', * from q where tags @> '{"information":"guidepost"}'
+    union all
+    select 'attraction', * from q where tags @> '{"tourism":"attraction"}'
+    union all
+    select 'museum', * from q where tags @> '{"tourism":"museum"}'
+    union all
+    select 'monument', * from q where tags @> '{"historic":"monument"}'
+    union all
+    select 'memorial', * from q where tags @> '{"historic":"memorial"}'
+    union all
+    select 'art', * from q where tags @> '{"tourism":"artwork"}'
+    union all
+    select 'castle', * from q where tags @> '{"historic":"castle"}'
+    union all
+    select 'ruins', * from q where tags @> '{"historic":"ruins"}'
+    union all
+    select 'archaeological', * from q where tags @> '{"historic":"archaeological_site"}'
+    union all
+    select 'wayside_cross', * from q where tags @> '{"historic":"wayside_cross"}'
+    union all
+    select 'wayside_shrine', * from q where tags @> '{"historic":"wayside_shrine"}'
+    union all
+    select 'battlefield', * from q where tags @> '{"historic":"battlefield"}'
+    union all
+    select 'fort', * from q where tags @> '{"historic":"fort"}'
+    union all
+    select 'picnic_site', * from q where tags @> '{"tourism":"picnic_site"}'
+    union all
+    select 'viewpoint', * from q where tags @> '{"tourism":"viewpoint"}'
+    union all
+    select 'zoo', * from q where tags @> '{"tourism":"zoo"}'
+    union all
+    select 'theme_park', * from q where tags @> '{"tourism":"theme_park"}'
+)
+, miscpoi as (
+    select 'toilet' as fclass, * from q where tags @> '{"amenity":"toilets"}'
+    union all
+    select 'bench', * from q where tags @> '{"amenity":"bench"}'
+    union all
+    select 'drinking_water', * from q where tags @> '{"amenity":"drinking_water"}'
+    union all
+    select 'fountain', * from q where tags @> '{"amenity":"fountain"}'
+    union all
+    select 'hunting_stand', * from q where tags @> '{"amenity":"hunting_stand"}'
+    union all
+    select 'waste_basket', * from q where tags @> '{"amenity":"waste_basket"}'
+    union all
+    select 'camera_surveillance', * from q where tags @> '{"man_made":"surveillance"}'
+    union all
+    select 'emergency_phone', * from q where tags @> '{"amenity":"emergency_phone"}' or tags @> '{"emergency":"phone"}'
+    union all
+    select 'fire_hydrant', * from q where tags @> '{"amenity":"fire_hydrant"}' or tags @>  '{"emergency":"fire_hydrant"}'
+    union all
+    select 'emergency_access', * from q where tags @> '{"highway":"emergency_access _point"}'
+    union all
+    select 'tower', * from q where tags @> '{"man_made":"tower"}' and not (tags @> '{"tower:type":"communication"}' or tags @> '{"man_made":"water_tower"}' or tags @> '{"tower:type":"observation"}' or tags @> '{"man_made":"windmill"}' or tags @> '{"man_made":"lighthouse"}')
+    union all
+    select 'tower_comms', * from q where tags @> '{"tower:type":"communication"}'
+    union all
+    select 'water_tower', * from q where tags @> '{"man_made":"water_tower"}'
+    union all
+    select 'tower_observation', * from q where tags @> '{"tower:type":"observation"}'
+    union all
+    select 'windmill', * from q where tags @> '{"man_made":"windmill"}'
+    union all
+    select 'lighthouse', * from q where tags @> '{"man_made":"lighthouse"}'
+    union all
+    select 'wastewater_plant', * from q where tags @> '{"man_made":"wastewater_plant"}'
+    union all
+    select 'water_well', * from q where tags @> '{"man_made":"water_well"}'
+    union all
+    select 'water_mill', * from q where tags @> '{"man_made":"watermill"}'
+    union all
+    select 'water_works', * from q where tags @> '{"man_made":"water_works"}'
+)
+, res as (
+    select 'public' as ma_tag, * from public
+    union all
+    select 'education' as ma_tag, * from education
+    union all
+    select 'health' as ma_tag, * from health
+    union all
+    select 'leisure' as ma_tag, * from leisure
+    union all
+    select 'sports' as ma_tag, * from sports
+    union all
+    select 'catering' as ma_tag, * from catering
+    union all
+    select 'accommodation' as ma_tag, * from accommodation
+    union all
+    select 'shopping' as ma_tag, * from shopping
+    union all
+    select 'money' as ma_tag, * from money
+    union all
+    select 'tourism' as ma_tag, * from tourism
+    union all
+    select 'miscpoi' as ma_tag, * from miscpoi
+)
+insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
+select 'pois',
+    'poi',
+    ma_tag,
+    fclass,
+    'pt',
+    case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
+    tags,
+    osm_id,
+    osm_type
+from res
+union all
+select 'pois',
+    'poi',
+    ma_tag,
+    fclass,
+    'py',
+    geog::geometry as geom,
+    tags,
+    osm_id,
+    osm_type
+from res
+where geometrytype(geog::geometry) ~* 'POLYGON';
+
+--
 UPDATE :ma_table
 SET country_code = lower((select tags ->> 'ISO3166-1:alpha3' as iso_code
     FROM :osm_table
