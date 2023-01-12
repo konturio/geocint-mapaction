@@ -763,7 +763,8 @@ insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom,
 select 'stle',
     'stl',
     'townscities',
-    CASE WHEN tags @> '{"capital":"yes"}' THEN 'national_capital'
+    CASE WHEN tags @> '{"is_capital":"country"}' or tags @> '{"admin_level":"2"}' or (tags @> '{"capital":"yes"}' and not tags ? 'admin_level')
+    THEN 'national_capital'
     ELSE tags ->> 'place' END,
     'pt',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
