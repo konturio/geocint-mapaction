@@ -135,21 +135,21 @@ def create_json(country_code, dat, files):
 
     completeness.append(dataRecord)
 
-    fo = open("/report/completeness_" + country_code + ".json", 'w', encoding="utf-8")
+    fo = open("report/completeness_" + country_code + ".json", 'w', encoding="utf-8")
     fo.write(json.dumps(completeness))
     fo.close()
 
 
 def main():
-    # country tag. "tza" for tanzania
-    country_code = sys.argv[1]
+    # input from bash find command
+    # example: data/out/country_extractions/tza
+    country_data_folder = sys.argv[1]
     
-    # related country data folder
-    country_data_folder = f"/data/out/country_extractions/{country_code}"
+    country_code = os.path.basename(country_data_folder)
 
     files = get_datasets_filenames_datetime(country_code, country_data_folder)
 
-    dat = loadCsv("/static_data/completeness_test.csv", separator=',', skipheaders=True)
+    dat = loadCsv("static_data/completeness_test.csv", separator=',', skipheaders=True)
     
     create_json(country_code, dat, files)
 
