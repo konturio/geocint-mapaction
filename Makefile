@@ -36,8 +36,19 @@ data/in/mapaction: | data/in ## Dir for extract from planet pbf dump
 data/out/mapaction: | data/out ## Dir for exported files
 	mkdir -p $@
 
-data/out/country_extractions: | data/out
+data/out/country_extractions: | data/out ## create directory for country extractions
 	mkdir -p $@
+
+data/in/mapaction/healthsites-world.zip: | data/in/mapaction ## download heathsites world dataset
+	curl "https://mekillot-backet.website.yandexcloud.net/healthsites/World.zip" -o $@
+
+data/in/mapaction/healthsites/World-node.shp: data/in/mapaction/healthsites-world.zip | data/in/mapaction ## unzip heathsites dataset
+	unzip data/in/mapaction/healthsites-world.zip -d data/in/mapaction/healthsites
+	touch $@
+
+data/out/country_extractions/healthsites: data/in/mapaction/healthsites/World-node.shp | data/out/country_extractions  ## make healthsites per country extractions
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/healthsites/World-node.shp data/out/country_extractions/{country_code}/215_heal/{country_code}_heal_hea_pt_s4_healtsites_pp_healthfacilities'
+	touch $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines.zip: | data/in/mapaction ## download ne_10m_rivers_lake_centerlines
 	curl "https://naciscdn.org/naturalearth/10m/physical/ne_10m_rivers_lake_centerlines.zip" -o $@
