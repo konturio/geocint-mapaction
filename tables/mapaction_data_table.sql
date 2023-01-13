@@ -833,7 +833,7 @@ create type admn_ad0_adminboundary0_py as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
-explain select 'admn',
+select 'admn',
     'ad0',
     'adminboundary0',
     tags ->> 'admin_level',
