@@ -183,7 +183,7 @@ db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create
 	ls static_data/countries/*.json | parallel 'bash scripts/osm_data_import.sh {}'
 	touch $@
 
-db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and populate mapaction_[] tables in db
+db/table/mapaction_data_table: db/table/osm_data_import db/table/water_polygons | db/table ## Create and populate mapaction_[] tables in db
 	ls static_data/countries/*.json | parallel 'bash scripts/mapaction_data_table.sh {}'
 	touch $@
 
@@ -205,8 +205,8 @@ data/in/mapaction/water-polygons-split-4326/water_polygons.shp: data/in/mapactio
 	unzip data/in/mapaction/water-polygons-split-4326.zip -d data/in/mapaction
 	touch $@
 
-db/table/water_polygons: data/in/mapaction/water-polygons-split-4326/water_polygons.shp | data/in/mapaction ## import into database
-	ogr2ogr --config PG_USE_COPY YES -overwrite -f PostgreSQL PG:"dbname=$USER_NAME" data/in/mapaction/water-polygons-split-4326/water_polygons.shp -nlt GEOMETRY -lco GEOMETRY_NAME=geom -nln water_polygons
+db/table/water_polygons: data/in/mapaction/water-polygons-split-4326/water_polygons.shp | data/in/mapaction ## import water_polygons into database
+	ogr2ogr --config PG_USE_COPY YES -overwrite -f PostgreSQL PG:"dbname=$$USER_NAME" data/in/mapaction/water-polygons-split-4326/water_polygons.shp -nlt GEOMETRY -lco GEOMETRY_NAME=geom -nln water_polygons
 	touch $@
 
 

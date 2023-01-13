@@ -833,16 +833,19 @@ create type admn_ad0_adminboundary0_py as(
     );
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
-select 'admn',
+explain select 'admn',
     'ad0',
     'adminboundary0',
     tags ->> 'admin_level',
     'py',
-    geog::geometry as geom,
+    ST_Difference(geog::geometry, clipgeom) as geom,
     tags,
     osm_id,
     osm_type
-from :osm_table
+from :osm_table as a, 
+    lateral (select st_union(b.geom) as clipgeom
+        from gis.water_polygons as b
+        where ST_Intersects(geog::geometry, b.geom)) as clip
 where tags @> '{"boundary":"administrative"}'
     and tags @> '{"admin_level":"2"}'
     and geometrytype(geog::geometry) ~* 'polygon'
