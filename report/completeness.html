@@ -3,7 +3,7 @@
 <head>
     <title>Mapaction Completeness Report</title>
     <link rel="icon" href="favicon.png" type="image/x-icon">
-    <!-- Note fot Mapction. You can change favicon with yours -->
+    <!-- Note for Mapction. You can change favicon with yours -->
     <link rel="stylesheet" href='completeness.css'>
     <link href='https://fonts.googleapis.com/css?family=IBM Plex Sans Condensed' rel='stylesheet'>
     <script src="countryList.js" type="text/javascript"> </script>
@@ -39,7 +39,7 @@
 
     function formatDate(date) {
         if (date == null || date == "") {
-            return "";
+            return null;
         }
 
         date = new Date(date);
@@ -72,11 +72,12 @@
     }
 
     async function getStatus(_country, _countryValue) {
+        fetchError = "No data for selected country!"
         let response = await fetch("completeness_" + _countryValue + ".json").then((response) => {
             if (response.ok) {
                 return response.json();
             }
-            throw new Error('Something went wrong');
+            throw new Error(fetchError);
         })
             .then((responseJson) => {
                 document.getElementById("countryHeader").innerHTML = `Completeness report for ${_country}`;
@@ -117,10 +118,13 @@
                 completeness.innerHTML = completenessTable;
             })
             .catch((error) => {
-                let errorTxt = "No data for selected country!"
+                let errorTxt = "Something went wrong!"
+                if (error.message === fetchError) {
+                    errorTxt = fetchError;
+                }
                 document.getElementById("countryHeader").innerHTML = selectCountry;
                 document.getElementById("completenessTable").innerHTML = `<h1 id="countryHeader">${errorTxt}</h2>`;
-                console.log(errorTxt + error)
+                console.log(error.message)
             });
     }
 
