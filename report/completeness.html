@@ -99,7 +99,7 @@
                 document.getElementById("countryHeader").innerHTML = `Completeness report for ${_country}`;
                 let completenessTable = `
             <h2>Available datasets</h3>
-            <table id="compTable" class="sortable">
+            <table id="compTable">
                     <tr class="header">
                         <th>Dataset</th>
                         <th>Source</th>
@@ -119,10 +119,12 @@
                         <td>${responseJson[i].type}</td><td>`
                     responseJson[i].acquiredDatasets.forEach((fileName, idx) => {
                         completenessTable +=
-                            `<table><tr>
-                            <td width="50%" class="tdAlign">${fileName}</td>
-                            <td width="50%" class="tdAlign">${formatDate(responseJson[i].dateTime[idx])}</td>
-                            </tr></table>
+                            `<table class="tableAlign">
+                                <tr>
+                                    <td>${fileName}</td>
+                                    <td class="tdAlign">${formatDate(responseJson[i].dateTime[idx])}</td>
+                                </tr>
+                            </table>
                             `
                     });
                     completenessTable += "</td></tr>"

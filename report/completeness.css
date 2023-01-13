@@ -106,5 +106,9 @@ h2 {
 }
 
 .tdAlign {
-    text-align: center !important; 
+    text-align:right !important;
+}
+
+.tableAlign {
+    width: 100% !important;
 }
