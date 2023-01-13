@@ -6,7 +6,6 @@
     <!-- Note for Mapction. You can change favicon with yours -->
     <link rel="stylesheet" href='completeness.css'>
     <link href='https://fonts.googleapis.com/css?family=IBM Plex Sans Condensed' rel='stylesheet'>
-    <script src="countryList.js" type="text/javascript"> </script>
 </head>
 
 <body>
@@ -15,9 +14,20 @@
 </body>
 
 <script>
+    let countries;
+    let errorTxt = "Something went wrong!"
     const selectCountry = `Please select a country`
-    //Note for Mapaction. You can change logo with yours.
-    let headers = `
+
+    fetch("countryList.json").then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error(errorTxt);
+    })
+        .then((responseJson) => {
+            countries = responseJson;
+            //Note for Mapaction. You can change logo with yours.
+            let headers = `
             <div id="compReport">
                 <img class="img" src='Kontur_logo_main.png' />
              <div class="vertical-center">
@@ -30,12 +40,18 @@
                         </div>
                     <div>
                     <select id="countrySelect" size="3" onchange="countrySelectFnc()">`;
-    Object.keys(countries).forEach(function (key) {
-        headers += `<option value=${key}>${countries[key]}</option>`;
-    })
-    headers += "</select></div>";
+            Object.keys(countries).forEach(function (key) {
+                headers += `<option value=${key}>${countries[key]}</option>`;
+            })
+            headers += "</select></div>";
 
-    document.getElementById("header").innerHTML = headers;
+            document.getElementById("header").innerHTML = headers;
+        })
+        .catch((error) => {
+            document.write(errorTxt)
+            console.log(error.message)
+        });
+
 
     function formatDate(date) {
         if (date == null || date == "") {
@@ -73,7 +89,7 @@
 
     async function getStatus(_country, _countryValue) {
         fetchError = "No data for selected country!"
-        let response = await fetch("completeness_" + _countryValue + ".json").then((response) => {
+        await fetch("completeness_" + _countryValue + ".json").then((response) => {
             if (response.ok) {
                 return response.json();
             }
@@ -118,7 +134,6 @@
                 completeness.innerHTML = completenessTable;
             })
             .catch((error) => {
-                let errorTxt = "Something went wrong!"
                 if (error.message === fetchError) {
                     errorTxt = fetchError;
                 }
