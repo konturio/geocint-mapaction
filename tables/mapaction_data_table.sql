@@ -838,7 +838,7 @@ select 'admn',
     'adminboundary0',
     tags ->> 'admin_level',
     'py',
-    ST_Difference(geog::geometry, clipgeom) as geom,
+    coalesce(ST_Difference(geog::geometry, clipgeom), geog::geometry) as geom,
     tags,
     osm_id,
     osm_type
