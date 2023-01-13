@@ -165,6 +165,10 @@ data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/coun
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
+create_completeness_report: data/out/upload_cmf_all | data/out/country_extractions ## create separate report for each country directory
+	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'python scripts/create_completeness_report.py {}'
+	touch $@
+
 osmium_extract_config.json: ## generate config for osmium-extract
 	python scripts/generate_osmium_extract_config.py > $@
 
