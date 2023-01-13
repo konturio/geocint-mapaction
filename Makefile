@@ -198,6 +198,18 @@ data/out/mapaction_export: db/table/mapaction_data_table db/table/mapaction_dire
 	ls static_data/countries/*.json | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@
 
+data/in/mapaction/water-polygons-split-4326.zip: | data/in/mapaction ## download water-polygons-split-4326.zip
+	curl https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip -o $@
+
+data/in/mapaction/water-polygons-split-4326/water_polygons.shp: data/in/mapaction/water-polygons-split-4326.zip | data/in/mapaction ## unzip
+	unzip data/in/mapaction/water-polygons-split-4326.zip -d data/in/mapaction
+	touch $@
+
+db/table/water_polygons: data/in/mapaction/water-polygons-split-4326/water_polygons.shp | data/in/mapaction ## import into database
+	ogr2ogr --config PG_USE_COPY YES -overwrite -f PostgreSQL PG:"dbname=$USER_NAME" data/in/mapaction/water-polygons-split-4326/water_polygons.shp -nlt GEOMETRY -lco GEOMETRY_NAME=geom -nln water_polygons
+	touch $@
+
+
 dev: data/out/upload_datasets_all data/out/upload_cmf_all ## this runs when autos_tart.sh executes
 	echo "dev target successfully build" | python scripts/slack_message.py $$SLACK_CHANNEL ${SLACK_BOT_NAME} $$SLACK_BOT_EMOJI
 	touch $@
