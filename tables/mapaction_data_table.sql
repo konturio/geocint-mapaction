@@ -838,11 +838,14 @@ select 'admn',
     'adminboundary0',
     tags ->> 'admin_level',
     'py',
-    geog::geometry as geom,
+    coalesce(ST_Difference(geog::geometry, clipgeom), geog::geometry) as geom,
     tags,
     osm_id,
     osm_type
-from :osm_table
+from :osm_table as a, 
+    lateral (select st_union(b.geom) as clipgeom
+        from gis.water_polygons as b
+        where ST_Intersects(geog::geometry, b.geom)) as clip
 where tags @> '{"boundary":"administrative"}'
     and tags @> '{"admin_level":"2"}'
     and geometrytype(geog::geometry) ~* 'polygon'
