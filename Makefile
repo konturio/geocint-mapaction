@@ -39,10 +39,10 @@ data/out/mapaction: | data/out ## Dir for exported files
 data/out/country_extractions: | data/out ## create directory for country extractions
 	mkdir -p $@
 
-data/in/mapaction/healthsites-world.zip: | data/in/mapaction ## download heathsites world dataset
+data/in/mapaction/healthsites-world.zip: | data/in/mapaction ## download healthsites world dataset
 	curl "https://mekillot-backet.website.yandexcloud.net/healthsites/World.zip" -o $@
 
-data/in/mapaction/healthsites/World-node.shp: data/in/mapaction/healthsites-world.zip | data/in/mapaction ## unzip heathsites dataset
+data/in/mapaction/healthsites/World-node.shp: data/in/mapaction/healthsites-world.zip | data/in/mapaction ## unzip healthsites dataset
 	unzip data/in/mapaction/healthsites-world.zip -d data/in/mapaction/healthsites
 	touch $@
 
