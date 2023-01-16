@@ -47,7 +47,7 @@ data/in/mapaction/healthsites/World-node.shp: data/in/mapaction/healthsites-worl
 	touch $@
 
 data/out/country_extractions/healthsites: data/in/mapaction/healthsites/World-node.shp | data/out/country_extractions  ## make healthsites per country extractions
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/healthsites/World-node.shp data/out/country_extractions/{country_code}/215_heal/{country_code}_heal_hea_pt_s4_healtsites_pp_healthfacilities'
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_shp.sh {} data/in/mapaction/healthsites/World-node.shp data/out/country_extractions/{country_code}/215_heal/{country_code}_heal_hea_pt_s4_healthsites_pp_healthfacilities'
 	touch $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines.zip: | data/in/mapaction ## download ne_10m_rivers_lake_centerlines
