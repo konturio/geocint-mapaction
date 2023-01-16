@@ -72,7 +72,7 @@ During this process we are filtering osm features and saving them into the disti
 #### Generating layer **admn_ad[0-3]_adminboundary[0-3]_py**
 
 * For layer **ad0** we use filter: 
-`tags @> '{"admin_level":"2"}'`
+`tags @> '{"admin_level":"2"}'`. Also countries that include "12 nautical miles from the baseline of a coastal State" are clipped with water polygons from [osmdata.openstreetmap.de](https://osmdata.openstreetmap.de/data/water-polygons.html)
 
 * For layer **ad1** we use next value in admin_level after 2 (possible values are *3* or *4*)
 
