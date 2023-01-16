@@ -374,6 +374,7 @@ FeatureSource = {
     "gps": "GPS",
     "gpw": "Gridded Population of the World",
     "grump": "Global Rural-Urban Mapping Project",
+    "healthsites": "healthsites.io",
     "hit": "Hazard Identification Tool",
     "hydrosheds": "HydroSHEDS",
     "igad": "Intergovernmental Authority on Develpoment",

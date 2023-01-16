@@ -65,6 +65,8 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         ckan_dataset_description["url"] = "https://geonode.wfp.org/layers"
     elif source == "ourairports":
         ckan_dataset_description["url"] = "https://ourairports.com/data"
+    elif source == "healthsites":
+        ckan_dataset_description["url"] = "https://www.healthsites.io/"
 
     ckan_dataset_description["tags"] = [
         {
