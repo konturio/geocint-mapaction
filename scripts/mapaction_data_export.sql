@@ -21,6 +21,7 @@ begin
             COALESCE(ma_category, ''), 
             COALESCE(format('_%1$s', ma_theme)))));
     else
+    -- [ma_category]_[ma_theme]_[ma_tag]_[feature_type]
         typeName := trim(lower(format('%1$s%2$s%3$s%4$s', 
             COALESCE(ma_category, ''), 
             COALESCE(format('_%1$s', ma_theme), ''),

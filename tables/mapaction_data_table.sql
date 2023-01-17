@@ -1363,26 +1363,14 @@ with q as (select * from :osm_table where geometrytype(geog::geometry) !~* 'line
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'pois',
     'poi',
-    ma_tag,
+    'pointofinterest',
     fclass,
     'pt',
     case when geometrytype(geog::geometry) !~* 'POINT' then st_centroid(geog::geometry) else geog::geometry end as geom,
     tags,
     osm_id,
     osm_type
-from res
-union all
-select 'pois',
-    'poi',
-    ma_tag,
-    fclass,
-    'py',
-    geog::geometry as geom,
-    tags,
-    osm_id,
-    osm_type
-from res
-where geometrytype(geog::geometry) ~* 'POLYGON';
+from res;
 
 --
 UPDATE :ma_table
