@@ -75,7 +75,6 @@ def match_datsets(record, files, geoextent_all):
                 and (record[FLD_THEME] == '*' or theme == record[FLD_THEME]) \
                 and (record[FLD_SOURCE] == '*' or record[FLD_SOURCE] == source)\
                 and geometry_type == record[FLD_TYPE]:
-            # print (dataset_name & dateTime)
             if matched_datasets.count(dataset_name) == 0:
                 matched_datasets.append(dataset_name)
                 index = files[0].index(dataset_name)
