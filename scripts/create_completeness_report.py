@@ -1,6 +1,8 @@
-import os, time
+import os
+import time
 import sys
 import json
+
 
 def loadCsv(strInputFile, encoding="utf-8", separator="|", skipheaders=False):
     cells = []
@@ -73,7 +75,6 @@ def match_datsets(record, files, geoextent_all):
                 and (record[FLD_THEME] == '*' or theme == record[FLD_THEME]) \
                 and (record[FLD_SOURCE] == '*' or record[FLD_SOURCE] == source)\
                 and geometry_type == record[FLD_TYPE]:
-            #print (dataset_name & dateTime)
             if matched_datasets.count(dataset_name) == 0:
                 matched_datasets.append(dataset_name)
                 index = files[0].index(dataset_name)
@@ -87,7 +88,10 @@ def match_datsets(record, files, geoextent_all):
     # return both file names and datetime
     return matched_datasets, timeValues
 
+
 completeness = []
+
+
 def create_json(country_code, dat, files):
     for record in dat:
         matchedData = match_datsets(record, files, country_code)
@@ -99,12 +103,12 @@ def create_json(country_code, dat, files):
             table_row_class = "failed"
 
         dataRecord = {"class": table_row_class,
-             "dataset": record[1],
-             "source": record[2],
-             "category": record[3],
-             "theme": record[4],
-             "type": record[5]
-             }
+                      "dataset": record[1],
+                      "source": record[2],
+                      "category": record[3],
+                      "theme": record[4],
+                      "type": record[5]
+                      }
 
         multiFileNames = []
         multiDates = []
@@ -117,12 +121,12 @@ def create_json(country_code, dat, files):
         completeness.append(dataRecord)
 
     dataRecord = {"class": "ok",
-         "dataset": "other useful datasets",
-         "source": "*",
-         "category": "*",
-         "theme": "*",
-         "type": "*"
-         }
+                  "dataset": "other useful datasets",
+                  "source": "*",
+                  "category": "*",
+                  "theme": "*",
+                  "type": "*"
+                  }
 
     multiFileNames = []
     multiDates = []
@@ -135,7 +139,13 @@ def create_json(country_code, dat, files):
 
     completeness.append(dataRecord)
 
-    fo = open("report/completeness_" + country_code + ".json", 'w', encoding="utf-8")
+    completeness_report_folder = "completeness_report"
+
+    if not os.path.exists(completeness_report_folder):
+        os.makedirs(completeness_report_folder)
+
+    fo = open(completeness_report_folder + "/completeness_" +
+              country_code + ".json", 'w', encoding="utf-8")
     fo.write(json.dumps(completeness))
     fo.close()
 
@@ -144,14 +154,16 @@ def main():
     # input from bash find command
     # example: data/out/country_extractions/tza
     country_data_folder = sys.argv[1]
-    
+
     country_code = os.path.basename(country_data_folder)
 
     files = get_datasets_filenames_datetime(country_code, country_data_folder)
 
-    dat = loadCsv("static_data/completeness_test.csv", separator=',', skipheaders=True)
-    
+    dat = loadCsv("static_data/completeness_test.csv",
+                  separator=',', skipheaders=True)
+
     create_json(country_code, dat, files)
+
 
 if __name__ == '__main__':
     main()
