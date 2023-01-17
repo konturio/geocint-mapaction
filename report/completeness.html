@@ -89,7 +89,7 @@
 
     async function getStatus(_country, _countryValue) {
         fetchError = "No data for selected country!"
-        await fetch("completeness_" + _countryValue + ".json").then((response) => {
+        await fetch("../completeness_report/completeness_" + _countryValue + ".json").then((response) => {
             if (response.ok) {
                 return response.json();
             }
