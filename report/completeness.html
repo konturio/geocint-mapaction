@@ -82,6 +82,8 @@
             .then((responseJson) => {
                 document.getElementById("countryHeader").innerHTML = `Completeness report for ${_country}`;
                 let completenessTable = `
+            <div class='legendRed'>No data if background is red</div>
+            <div class='legendAny'>* refers to any source, data, category, etc.</div>
             <h2>Available datasets</h3>
             <table id="compTable">
                     <tr class="header">

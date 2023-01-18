@@ -121,7 +121,7 @@ def create_json(country_code, dat, files):
         completeness.append(dataRecord)
 
     dataRecord = {"class": "ok",
-                  "dataset": "other useful datasets",
+                  "dataset": "Other Useful Datasets",
                   "source": "*",
                   "category": "*",
                   "theme": "*",
