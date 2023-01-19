@@ -32,9 +32,9 @@ body {
 #compTable td {
     text-align: left;
     padding: 5px;
-    border-right: solid 1px #f2f2f2;
-    border-left: solid 1px #f2f2f2;
-    border-bottom: solid 1px #f2f2f2;
+    border-right: solid 1px white;
+    border-left: solid 1px white;
+    border-bottom: solid 1px white;
 }
 
 #compTable th {
@@ -51,6 +51,19 @@ tr.started {
 
 tr.failed {
     background-color: #ff9999;
+}
+
+.legendRed {
+    display: table;
+    background-color: #ff9999;
+    margin-left: 10%;
+    padding: 3px;
+}
+
+.legendAny {
+    display: table;
+    margin-left: 10%;
+    padding: 3px;
 }
 
 .img {
@@ -106,9 +119,15 @@ h2 {
 }
 
 .tdAlign {
-    text-align:right !important;
+    text-align: right !important;
 }
 
 .tableAlign {
     width: 100% !important;
+}
+
+.tableAlign td {
+    border-right: none !important;
+    border-left: none !important;
+    border-bottom: none !important;
 }
