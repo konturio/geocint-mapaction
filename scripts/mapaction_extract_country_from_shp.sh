@@ -14,7 +14,7 @@ mkdir -p "$(dirname $output_shp_name)"
 ogr2ogr -clipsrc static_data/countries/$country_geojson_filename -skipfailures $output_geojson_name $input_shp_name
 
 # if number of features = 0 then delete geojson and do not create .shp
-res=$(ogrinfo -so -al $output_shp_name | grep "Feature Count:" | sed 's/Feature Count: //g')
+res=$(ogrinfo -so -al $output_geojson_name | grep "Feature Count:" | sed 's/Feature Count: //g')
 if [ $res -eq 0 ]; then
     rm -f $output_geojson_name
 else
