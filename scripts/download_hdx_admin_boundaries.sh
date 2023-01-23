@@ -29,6 +29,10 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
         cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_adminboundary0."$file_extension
+
+        if [ $file_extension = "shp" ]; then
+            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_adminboundary0.geojson" $filename
+        fi
     done
 
     for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/**/*adm1*
@@ -36,6 +40,10 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
         cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_adminboundary1."$file_extension
+
+        if [ $file_extension = "shp" ]; then
+            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_adminboundary1.geojson" $filename
+        fi
     done
 
     for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/**/*adm2*
@@ -43,5 +51,9 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
         cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_adminboundary2."$file_extension
+
+        if [ $file_extension = "shp" ]; then
+            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_adminboundary2.geojson" $filename
+        fi
     done
 fi
