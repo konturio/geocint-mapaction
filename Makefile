@@ -39,6 +39,9 @@ data/out/mapaction: | data/out ## Dir for exported files
 data/out/country_extractions: | data/out ## create directory for country extractions
 	mkdir -p $@
 
+data/out/country_extractions/ocha_admin_boundaries: | data/in data/out ## process OCHA admin boundaries
+	ls static_data/countries | parallel 'bash scripts/download_hdx_admin_boundaries.sh {}'
+
 data/in/mapaction/healthsites-world.zip: | data/in/mapaction ## download healthsites world dataset
 	curl "https://mekillot-backet.website.yandexcloud.net/healthsites/World.zip" -o $@
 
@@ -157,11 +160,11 @@ data/out/country_extractions/global_power_plant_database: data/in/mapaction/glob
 data/out/cmf: | data/out ## create directory for CMFs
 	mkdir -p $@
 
-data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/mapaction_export | data/out ## upload datasets in CKAN
+data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export | data/out ## upload datasets in CKAN
 	find data/out/country_extractions/ -name "*.shp" | parallel 'bash scripts/mapaction_upload_dataset.sh {}'
 	touch $@
 
-data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
+data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
