@@ -34,7 +34,7 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     dataset_description = "This dataset contains " + dataset_hum_name.upper() + ", extracted from " + FeatureSource[source] + " data for " + short_geoextent + ". "
 
     if str(number_of_objects) != "Unknown":
-        dataset_description = dataset_description + " There are " + str(number_of_objects) + " objects. "
+        dataset_description = dataset_description + " Number of objects is " + str(number_of_objects) + ". "
     if strFilter != "":
         dataset_description = dataset_description + " Original filter is " + strFilter + "."
 
