@@ -763,7 +763,7 @@ create type stle_stl_townscities_pt as(
 
 insert into :ma_table(ma_category, ma_theme, ma_tag, fclass, feature_type, geom, osm_minimum_tags, osm_id, osm_type)
 select 'stle',
-    'stl',
+    'stle',
     'townscities',
     CASE WHEN tags @> '{"is_capital":"country"}' or tags @> '{"admin_level":"2"}' or (tags @> '{"capital":"yes"}' and not tags ? 'admin_level')
     THEN 'national_capital'
