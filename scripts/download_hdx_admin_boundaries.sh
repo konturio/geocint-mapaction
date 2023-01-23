@@ -10,14 +10,18 @@ echo $country_code
 ckan_package_json_path=$(mktemp)
 
 if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/package_show?id=cod-ab-$country_code"; then
-    shp_download_url=$(cat $ckan_package_json_path | jq --raw-output '.result.resources[] | .download_url' | grep --ignore-case "shp")
-    shp_filename=$(basename $shp_download_url)
-
     mkdir -p data/in/mapaction/ocha_admin_boundaries
-    wget -O data/in/mapaction/ocha_admin_boundaries/$shp_filename $shp_download_url
-
     mkdir -p data/in/mapaction/ocha_admin_boundaries/$country_code
-    unzip data/in/mapaction/ocha_admin_boundaries/$shp_filename -d data/in/mapaction/ocha_admin_boundaries/$country_code
+
+    for download_url in $(cat $ckan_package_json_path | jq --raw-output '.result.resources[] | .download_url')
+    do
+        filename=$(basename $download_url)
+        file_extension=${filename##*.}
+        wget -q -O data/in/mapaction/ocha_admin_boundaries/$filename $download_url
+        if [ $file_extension = "zip" ]; then
+            unzip data/in/mapaction/ocha_admin_boundaries/$filename -d data/in/mapaction/ocha_admin_boundaries/$country_code
+        fi
+    done
 
     for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/*adm0*
     do
