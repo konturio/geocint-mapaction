@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+shopt -s globstar
 
 country_geojson_filename=$(basename "$1")
 country_code="${country_geojson_filename%%.*}"
@@ -23,21 +24,21 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
         fi
     done
 
-    for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/*adm0*
+    for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/**/*adm0*
     do
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
         cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_adminboundary0."$file_extension
     done
 
-    for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/*adm1*
+    for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/**/*adm1*
     do
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
         cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_adminboundary1."$file_extension
     done
 
-    for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/*adm2*
+    for filename in data/in/mapaction/ocha_admin_boundaries/$country_code/**/*adm2*
     do
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
