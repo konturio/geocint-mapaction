@@ -1,9 +1,10 @@
 ## -------------- EXPORT BLOCK ------------------------
 
 # configuration file
-file := ~/config.inc.sh
+file := ${GEOCINT_WORK_DIRECTORY}/config.inc.sh
 # Add here export for every varible from configuration file that you are going to use in targets
-export USER_NAME = $(shell sed -n -e '/^USER_NAME/p' ${file} | cut -d "=" -f 2)
+export PGUSER = $(shell sed -n -e '/^PGUSER/p' ${file} | cut -d "=" -f 2)
+export PGDATABASE = $(shell sed -n -e '/^PGDATABASE/p' ${file} | cut -d "=" -f 2)
 export SLACK_CHANNEL = $(shell sed -n -e '/^SLACK_CHANNEL/p' ${file} | cut -d "=" -f 2)
 export SLACK_BOT_NAME = $(shell sed -n -e '/^SLACK_BOT_NAME/p' ${file} | cut -d "=" -f 2)
 export SLACK_BOT_EMOJI = $(shell sed -n -e '/^SLACK_BOT_EMOJI/p' ${file} | cut -d "=" -f 2)
