@@ -31,7 +31,7 @@ def ckan_cmf_description(filename):
     print('    "extras": [')
     print('             {"key": "last_known_edit", "value": "unknown"},')
     print('             {"key": "geoextent",            "value": "'+ geoextent +'"},')
-    print('             {"key": "source",               "value": "osm"},')
+    print('             {"key": "source",               "value": "Various public sources, including OSM, HDX and others"},')
     print('             {"key": "permission",           "value": "pp"} ],')
     print('    "resources": [')
     print('        {"name":"'+short_geoextent+' Active Data in GeoJson format",')
