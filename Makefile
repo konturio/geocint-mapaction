@@ -88,7 +88,7 @@ data/in/mapaction/ne_10m_populated_places: | data/in/mapaction ## ne_10m_populat
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp: data/in/mapaction/ne_10m_populated_places.zip | data/in/mapaction/ne_10m_populated_places ## unzip ne_10m_populated_placess
-	unzip data/in/mapaction/ne_10m_populated_places.zip -d data/in/mapaction/ne_10m_populated_places/
+	unzip -o data/in/mapaction/ne_10m_populated_places.zip -d data/in/mapaction/ne_10m_populated_places/
 	touch $@
 
 data/out/country_extractions/ne_10m_populated_places: data/in/mapaction/ne_10m_populated_places/ne_10m_populated_places.shp | data/out/country_extractions ## ne_10m_populated_placess per country extractions
