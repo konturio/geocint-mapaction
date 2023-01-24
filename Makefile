@@ -46,7 +46,7 @@ data/in/mapaction/healthsites-world.zip: | data/in/mapaction ## download healths
 	curl "https://mekillot-backet.website.yandexcloud.net/healthsites/World.zip" -o $@
 
 data/in/mapaction/healthsites/World-node.shp: data/in/mapaction/healthsites-world.zip | data/in/mapaction ## unzip healthsites dataset
-	unzip data/in/mapaction/healthsites-world.zip -d data/in/mapaction/healthsites
+	unzip -o data/in/mapaction/healthsites-world.zip -d data/in/mapaction/healthsites
 	touch $@
 
 data/out/country_extractions/healthsites: data/in/mapaction/healthsites/World-node.shp | data/out/country_extractions  ## make healthsites per country extractions
@@ -60,7 +60,7 @@ data/in/mapaction/ne_10m_rivers_lake_centerlines: | data/in/mapaction ## ne_10m_
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp: data/in/mapaction/ne_10m_rivers_lake_centerlines.zip | data/in/mapaction/ne_10m_rivers_lake_centerlines ## unzip ne_10m_rivers_lake_centerlines
-	unzip data/in/mapaction/ne_10m_rivers_lake_centerlines.zip -d data/in/mapaction/ne_10m_rivers_lake_centerlines
+	unzip -o data/in/mapaction/ne_10m_rivers_lake_centerlines.zip -d data/in/mapaction/ne_10m_rivers_lake_centerlines
 	touch $@
 
 data/out/country_extractions/ne_10m_rivers_lake_centerlines: data/in/mapaction/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp | data/out/country_extractions  ## ne_10m_rivers_lake_centerlines per country extractions
@@ -74,7 +74,7 @@ data/in/mapaction/ne_10m_roads: | data/in/mapaction ## ne_10m_roads
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_roads/ne_10m_roads.shp: data/in/mapaction/ne_10m_roads.zip | data/in/mapaction/ne_10m_roads ## unzip ne_10m_roads
-	unzip data/in/mapaction/ne_10m_roads.zip -d data/in/mapaction/ne_10m_roads
+	unzip -o data/in/mapaction/ne_10m_roads.zip -d data/in/mapaction/ne_10m_roads
 	touch $@
 
 data/out/country_extractions/ne_10m_roads: data/in/mapaction/ne_10m_roads/ne_10m_roads.shp | data/out/country_extractions ## ne_10m_roads per country extractions
@@ -102,7 +102,7 @@ data/in/mapaction/ne_10m_lakes: | data/in/mapaction ## ne_10m_lakes
 	mkdir -p $@
 
 data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp: data/in/mapaction/ne_10m_lakes.zip | data/in/mapaction/ne_10m_lakes ## unzip ne_10m_lakes
-	unzip data/in/mapaction/ne_10m_lakes.zip -d data/in/mapaction/ne_10m_lakes/
+	unzip -o data/in/mapaction/ne_10m_lakes.zip -d data/in/mapaction/ne_10m_lakes/
 	touch $@
 
 data/out/country_extractions/ne_10m_lakes: data/in/mapaction/ne_10m_lakes/ne_10m_lakes.shp | data/out/country_extractions ## ne_10m_lakes per country extractions
@@ -136,7 +136,7 @@ data/in/mapaction/wfp_railroads.zip: | data/in/mapaction ## download wfp_railroa
 	curl "https://geonode.wfp.org/geoserver/wfs?format_options=charset%3AUTF-8&typename=geonode%3Awld_trs_railways_wfp&outputFormat=SHAPE-ZIP&version=1.0.0&service=WFS&request=GetFeature" -o "$@"
 
 data/in/mapaction/wfp_railroads/wld_trs_railways_wfp.shp: data/in/mapaction/wfp_railroads.zip | data/in/mapaction/wfp_railroads ## unzip wfp_railroads.zip
-	unzip data/in/mapaction/wfp_railroads.zip -d data/in/mapaction/wfp_railroads
+	unzip -o data/in/mapaction/wfp_railroads.zip -d data/in/mapaction/wfp_railroads
 	touch $@
 
 data/out/country_extractions/wfp_railroads: data/in/mapaction/wfp_railroads/wld_trs_railways_wfp.shp | data/out/country_extractions ## wfp railroads per country extractions
@@ -150,7 +150,7 @@ data/in/mapaction/global_power_plant_database.zip: | data/in/mapaction ## downlo
 	curl "https://wri-dataportal-prod.s3.amazonaws.com/manual/global_power_plant_database_v_1_3.zip" -o "$@"
 
 data/in/mapaction/global_power_plant_database/global_power_plant_database.csv: data/in/mapaction/global_power_plant_database.zip | data/in/mapaction/global_power_plant_database ## unzip global_power_plant_database.zip
-	unzip data/in/mapaction/global_power_plant_database.zip -d data/in/mapaction/global_power_plant_database
+	unzip -o data/in/mapaction/global_power_plant_database.zip -d data/in/mapaction/global_power_plant_database
 	touch $@
 
 data/out/country_extractions/global_power_plant_database: data/in/mapaction/global_power_plant_database/global_power_plant_database.csv | data/out/country_extractions ## global_power_plant_database.csv per country extractions
@@ -205,7 +205,7 @@ data/in/mapaction/water-polygons-split-4326.zip: | data/in/mapaction ## download
 	curl https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip -o $@
 
 data/in/mapaction/water-polygons-split-4326/water_polygons.shp: data/in/mapaction/water-polygons-split-4326.zip | data/in/mapaction ## unzip
-	unzip data/in/mapaction/water-polygons-split-4326.zip -d data/in/mapaction
+	unzip -o data/in/mapaction/water-polygons-split-4326.zip -d data/in/mapaction
 	touch $@
 
 db/table/water_polygons: data/in/mapaction/water-polygons-split-4326/water_polygons.shp | data/in/mapaction ## import water_polygons into database

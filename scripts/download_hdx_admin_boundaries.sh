@@ -20,7 +20,7 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
         file_extension=${filename##*.}
         wget -q -O data/in/mapaction/ocha_admin_boundaries/$filename $download_url
         if [ $file_extension = "zip" ]; then
-            unzip data/in/mapaction/ocha_admin_boundaries/$filename -d data/in/mapaction/ocha_admin_boundaries/$country_code
+            unzip -o data/in/mapaction/ocha_admin_boundaries/$filename -d data/in/mapaction/ocha_admin_boundaries/$country_code
         fi
     done
 
