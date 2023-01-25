@@ -210,7 +210,7 @@ data/in/mapaction/water-polygons-split-4326/water_polygons.shp: data/in/mapactio
 	touch $@
 
 db/table/water_polygons: data/in/mapaction/water-polygons-split-4326/water_polygons.shp | data/in/mapaction ## import water_polygons into database
-	ogr2ogr --config PG_USE_COPY YES -overwrite -f PostgreSQL PG:"dbname=$$USER_NAME" data/in/mapaction/water-polygons-split-4326/water_polygons.shp -nlt GEOMETRY -lco GEOMETRY_NAME=geom -nln water_polygons
+	ogr2ogr --config PG_USE_COPY YES -overwrite -f PostgreSQL PG:"dbname=$$PGDATABASE" data/in/mapaction/water-polygons-split-4326/water_polygons.shp -nlt GEOMETRY -lco GEOMETRY_NAME=geom -nln water_polygons
 	touch $@
 
 dev: data/out/upload_datasets_all data/out/upload_cmf_all create_completeness_report ## this runs when autos_tart.sh executes
