@@ -28,10 +28,11 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
     do
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
-        cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_adminboundary0."$file_extension
+        display_name=$(cat static_data/admin_level_display_names.json | jq --raw-output ".${country_code}.adm0 // \"adminboundary0\"")
+        cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_"$display_name"."$file_extension
 
         if [ $file_extension = "shp" ]; then
-            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_adminboundary0.geojson" $filename
+            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_"$display_name".geojson" $filename
         fi
     done
 
@@ -39,10 +40,11 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
     do
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
-        cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_adminboundary1."$file_extension
+        display_name=$(cat static_data/admin_level_display_names.json | jq --raw-output ".${country_code}.adm1 // \"adminboundary1\"")
+        cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_"$display_name"."$file_extension
 
         if [ $file_extension = "shp" ]; then
-            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_adminboundary1.geojson" $filename
+            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_"$display_name".geojson" $filename
         fi
     done
 
@@ -50,10 +52,11 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
     do
         file_extension=${filename##*.}
         mkdir -p "data/out/country_extractions/"$country_code"/202_admn/"
-        cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_adminboundary2."$file_extension
+        display_name=$(cat static_data/admin_level_display_names.json | jq --raw-output ".${country_code}.adm2 // \"adminboundary2\"")
+        cp $filename "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_"$display_name"."$file_extension
 
         if [ $file_extension = "shp" ]; then
-            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_adminboundary2.geojson" $filename
+            ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_"$display_name".geojson" $filename
         fi
     done
 fi

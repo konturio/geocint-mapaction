@@ -1,0 +1,10 @@
+{
+  "blr": {
+    "adm1": "region",
+    "adm2": "district"
+  },
+  "tza": {
+    "adm1": "region",
+    "adm2": "district"
+  }
+}
