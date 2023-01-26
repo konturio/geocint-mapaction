@@ -29,7 +29,6 @@ def ckan_cmf_description(filename):
     print('    "groups": [{"name": "'+geoextent+'"}')
     print('              ],')
     print('    "extras": [')
-    print('             {"key": "last_known_edit", "value": "unknown"},')
     print('             {"key": "geoextent",            "value": "'+ geoextent +'"},')
     print('             {"key": "source",               "value": "Various public sources, including OSM, HDX and others"},')
     print('             {"key": "permission",           "value": "pp"} ],')
