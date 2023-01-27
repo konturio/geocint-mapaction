@@ -13,7 +13,7 @@ def format_tag(s):
     return s.lower()
 
 
-def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilter, last_known_edit):
+def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilter):
     path, fname = os.path.split(strOutputFileName)
     dataset_name = fname.split(".")[0]  # NOTE: this file name without extention
     codes = dataset_name.split("_", 7)
@@ -37,9 +37,6 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         dataset_description = dataset_description + " Number of objects is " + str(number_of_objects) + ". "
     if strFilter != "":
         dataset_description = dataset_description + " Original filter is " + strFilter + "."
-
-    if last_known_edit != "Unknown":
-        dataset_description = dataset_description + " Last known edit timestamp: " + last_known_edit
 
     # NOTE: it's not a json escaping, but  a particularly perverted bug of curl, it does not undertand equal sign
     dataset_description = dataset_description.replace("=", "%3D")
@@ -80,7 +77,6 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     ckan_dataset_description["groups"] = [{"name": geoextent}]
 
     ckan_dataset_description["extras"] = [
-        {"key": "last_known_edit", "value": last_known_edit},
         {"key": "geoextent", "value": geoextent},
         {"key": "category", "value": category},
         {"key": "theme", "value": theme},
@@ -134,7 +130,7 @@ def main():
         command = "dataset"
 
     if command == "dataset":
-        print(json.dumps(build_ckan_dataset_description(strInputFileName, "Unknown", "", "Unknown")))
+        print(json.dumps(build_ckan_dataset_description(strInputFileName, "Unknown", "")))
     elif command == "cmf":
         raise Exception("TODO: Crash Move Folder printer")
     else:
