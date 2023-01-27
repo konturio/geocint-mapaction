@@ -67,6 +67,9 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     elif source == "unocha":
         ckan_dataset_description["url"] = "https://data.humdata.org/organization/un-ocha"
         ckan_dataset_description["license_id"] = "cc-by"
+    elif source == "worldpop":
+        ckan_dataset_description["url"] = "https://hub.worldpop.org/"
+        ckan_dataset_description["license_id"] = "cc-by"
 
     ckan_dataset_description["tags"] = [
         {
