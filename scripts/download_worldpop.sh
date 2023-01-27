@@ -26,7 +26,7 @@ if [ "${resolution}" = "100m" ]; then
         "https://data.worldpop.org/GIS/Population/Global_2000_2020/2020/${country_code_upper}/${country_code}_ppp_2020_UNadj.tif"
 else
     curl -s -f -o "data/out/country_extractions/${country_code}/223_popu/${country_code}_popu_pop_ras_s1_worldpop_pp_PopDensity_2020UNad.tif" \
-        "https://data.worldpop.org/GIS/Population_Density/Global_2000_2020_1km_UNadj/2000/${country_code_upper}/${country_code}_pd_2000_1km_UNadj.tif"
+        "https://data.worldpop.org/GIS/Population_Density/Global_2000_2020_1km_UNadj/2020/${country_code_upper}/${country_code}_pd_2020_1km_UNadj.tif"
 fi
 
 exit 0
