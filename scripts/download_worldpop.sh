@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # this script downloads worldPop tif files per country
-# input params: country_json_file, resolution(100m|1km)
-#           static-data/countries/ARG.json, 100m
+# input params: country_json_file resolution(100m|1km)
+#           static-data/countries/ARG.json 100m
 # output: data/out/country_extractions/arg/223_popu/arg_popu_pop_ras_s1_worldpop_pp_2020UNadj_100m.tif
-#           static-data/countries/ARG.json, 1km
+#           static-data/countries/ARG.json 1km
 # output: data/out/country_extractions/arg/223_popu/arg_popu_pop_ras_s1_worldpop_pp_PopDensity_2020UNad.tif
 # if URL is wrong or if failed to download - this script will fail and target will also fail
 
