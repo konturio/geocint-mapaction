@@ -16,7 +16,7 @@ export CKAN_API_KEY = $(shell sed -n -e '/^CKAN_API_KEY/p' ${file} | cut -d "=" 
 
 # these makefiles stored in geocint-runner and geocint-openstreetmap repositories
 # runner_make contains basic set of targets for creation project folder structure
-# osm_make contains contain set of targets for osm data processing
+# osm_make contains set of targets for osm data processing
 include runner_make osm_make
 
 ## ------------- CONTROL BLOCK -------------------------
@@ -161,11 +161,11 @@ data/out/country_extractions/global_power_plant_database: data/in/mapaction/glob
 data/out/cmf: | data/out ## create directory for CMFs
 	mkdir -p $@
 
-data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export | data/out ## upload datasets in CKAN
+data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export data/out/country_extractions/worldpop1km data/out/country_extractions/worldpop100m | data/out ## upload datasets in CKAN
 	find data/out/country_extractions/ -name "*.shp" | parallel 'bash scripts/mapaction_upload_dataset.sh {}'
 	touch $@
 
-data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export | data/out/cmf ## upload CMFs in CKAN
+data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export data/out/country_extractions/worldpop1km data/out/country_extractions/worldpop100m | data/out/cmf ## upload CMFs in CKAN
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
@@ -213,7 +213,15 @@ db/table/water_polygons: data/in/mapaction/water-polygons-split-4326/water_polyg
 	ogr2ogr --config PG_USE_COPY YES -overwrite -f PostgreSQL PG:"dbname=$$PGDATABASE" data/in/mapaction/water-polygons-split-4326/water_polygons.shp -nlt GEOMETRY -lco GEOMETRY_NAME=geom -nln water_polygons
 	touch $@
 
-dev: data/out/upload_datasets_all data/out/upload_cmf_all create_completeness_report ## this runs when autos_tart.sh executes
+data/out/country_extractions/worldpop100m: | data/out/country_extractions ## download worldpop100m for every country
+	ls static-data/countries | parallel 'bash scripts/download_worldpop.sh {}'
+	touch $@
+
+data/out/country_extractions/worldpop1km: | data/out/country_extractions ## download worldpop1km for every country
+	ls static-data/countries | parallel 'bash scripts/download_worldpop.sh {} 1km'
+	touch $@
+
+dev: data/out/upload_datasets_all data/out/upload_cmf_all create_completeness_report ## this runs when auto_start.sh executes
 	echo "dev target successfully build" | python scripts/slack_message.py $$SLACK_CHANNEL ${SLACK_BOT_NAME} $$SLACK_BOT_EMOJI
 	touch $@
 
