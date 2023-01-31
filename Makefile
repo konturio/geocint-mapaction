@@ -8,7 +8,7 @@ export PGDATABASE = $(shell sed -n -e '/^PGDATABASE/p' ${file} | cut -d "=" -f 2
 export SLACK_CHANNEL = $(shell sed -n -e '/^SLACK_CHANNEL/p' ${file} | cut -d "=" -f 2)
 export SLACK_BOT_NAME = $(shell sed -n -e '/^SLACK_BOT_NAME/p' ${file} | cut -d "=" -f 2)
 export SLACK_BOT_EMOJI = $(shell sed -n -e '/^SLACK_BOT_EMOJI/p' ${file} | cut -d "=" -f 2)
-export SLACK_BOT_KEY = $(shell sed -n -e '/^SLACK_BOT_KEY/p' ${file} | cut -d "=" -f 2)
+export SLACK_KEY = $(shell sed -n -e '/^SLACK_KEY/p' ${file} | cut -d "=" -f 2)
 export CKAN_DATA_S3_URL = $(shell sed -n -e '/^CKAN_DATA_S3_URL/p' ${file} | cut -d "=" -f 2)
 export CKAN_DATA_URL = $(shell sed -n -e '/^CKAN_DATA_URL/p' ${file} | cut -d "=" -f 2)
 export CKAN_BASE_URL = $(shell sed -n -e '/^CKAN_BASE_URL/p' ${file} | cut -d "=" -f 2)
