@@ -179,6 +179,9 @@ osmium_extract_config.json: ## generate config for osmium-extract
 data/mid/mapaction: | data/mid ## create directory data/mid/mapaction
 	mkdir -p $@
 
+data/in/mapaction/osm_last_modified_date: data/planet-latest-updated.osm.pbf | data/mid/mapaction ## get osm pbf last modified date
+	osmium fileinfo -e -g data.timestamp.last data/planet-latest-updated.osm.pbf > $@
+
 data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf osmium_extract_config.json | data/mid/mapaction ## create per-country extracts pbf files from planet.pbf
 	osmium extract --config osmium_extract_config.json --overwrite data/planet-latest-updated.osm.pbf
 	touch $@
@@ -197,7 +200,7 @@ db/table/mapaction_directories: | db/table ## Load into db structure of director
 	cat static_data/directories/directories.csv | psql -c "copy mapaction_directories from stdin;"
 	touch $@
 
-data/out/mapaction_export: db/table/mapaction_data_table db/table/mapaction_directories | data/out/country_extractions ## Export from db to SHP and JSON
+data/out/mapaction_export: data/in/mapaction/osm_last_modified_date db/table/mapaction_data_table db/table/mapaction_directories | data/out/country_extractions ## Export from db to SHP and JSON
 	psql -1 -f scripts/mapaction_data_export.sql
 	ls static_data/countries/*.json | parallel 'bash scripts/mapaction_export.sh {}'
 	touch $@
