@@ -36,6 +36,7 @@ do
     ogr2ogr -f "ESRI Shapefile" $OUTDIR/$dir_name/$output.shp PG:"dbname=$PGDATABASE" -sql "${sql}" -lco ENCODING=UTF8
     rm -f $OUTDIR/$dir_name/$output.geojson
     ogr2ogr -f "GeoJSON" $OUTDIR/$dir_name/$output.geojson PG:"dbname=$PGDATABASE" -sql "${sql}" -lco WRITE_NAME=NO
+    cp data/in/mapaction/osm_last_modified_date $OUTDIR/$dir_name/$output"_last_modified.txt"
 done < <( psql -t -A -F , -c "SELECT country_code, ma_category, ma_theme, feature_type, ma_tag, dir_name FROM ${mapaction_table_name}, mapaction_directories where dir_name ~* ma_category group by 1,2,3,4,5,6")
 
 # delete empty directories if exists
