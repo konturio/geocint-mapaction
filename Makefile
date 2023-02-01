@@ -214,11 +214,11 @@ db/table/water_polygons: data/in/mapaction/water-polygons-split-4326/water_polyg
 	touch $@
 
 data/out/country_extractions/worldpop100m: | data/out/country_extractions ## download worldpop100m for every country
-	ls static-data/countries | parallel 'bash scripts/download_worldpop.sh {}'
+	ls static_data/countries | parallel 'bash scripts/download_worldpop.sh {}'
 	touch $@
 
 data/out/country_extractions/worldpop1km: | data/out/country_extractions ## download worldpop1km for every country
-	ls static-data/countries | parallel 'bash scripts/download_worldpop.sh {} 1km'
+	ls static_data/countries | parallel 'bash scripts/download_worldpop.sh {} 1km'
 	touch $@
 
 dev: data/out/upload_datasets_all data/out/upload_cmf_all create_completeness_report ## this runs when auto_start.sh executes
