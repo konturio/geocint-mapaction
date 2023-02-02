@@ -9,7 +9,7 @@ output_shp_zip_path="data/out/country_extractions/$(basename $shp_path).zip"
 zip -r -j $output_shp_zip_path "${shp_path%.*}"* -x "*.geojson"
 
 output_geojson_zip_path="data/out/country_extractions/$(basename $geojson_path).zip"
-zip -r -j $output_geojson_zip_path "${shp_path%.*}.geojson" "${shp_path%.*}_last_modified.txt"
+zip -r -j $output_geojson_zip_path "${shp_path%.*}.geojson" "${shp_path%.*}.last_modified.txt"
 
 echo "output_shp_zip_path $output_shp_zip_path"
 echo "output_geojson_zip_path $output_geojson_zip_path"
