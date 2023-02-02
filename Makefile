@@ -42,6 +42,7 @@ data/out/country_extractions: | data/out ## create directory for country extract
 
 data/out/country_extractions/ocha_admin_boundaries: | data/in data/out ## process OCHA admin boundaries
 	ls static_data/countries | parallel 'bash scripts/download_hdx_admin_boundaries.sh {}'
+	touch $@
 
 data/in/mapaction/healthsites-world.zip: | data/in/mapaction ## download healthsites world dataset
 	curl "https://mekillot-backet.website.yandexcloud.net/healthsites/World.zip" -o $@
