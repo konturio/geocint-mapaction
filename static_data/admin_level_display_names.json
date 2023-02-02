@@ -1,10 +1,116 @@
 {
-  "blr": {
-    "adm1": "region",
-    "adm2": "district"
-  },
-  "tza": {
-    "adm1": "region",
-    "adm2": "district"
-  }
+    "bdi":{
+        "name": "Burundi",
+        "adm0": "country",
+        "adm1": "province",
+        "adm2": "commune"
+    },
+    "blr":{
+        "name": "Belarus",
+        "adm0": "country",
+        "adm1": "oblast"
+    },
+    "cmr":{
+        "name": "Cameroon",
+        "adm0": "country",
+        "adm1": "region",
+        "adm2": "department",
+        "adm3": "arrondissement"
+    },
+    "cod":{
+        "name": "Democratic Republic of the Congo",
+        "adm0": "country",
+        "adm1": "provinces",
+        "adm2": "territoires"
+    },
+    "hti":{
+        "name": "Haiti",
+        "adm0": "country",
+        "adm1": "department",
+        "adm2": "commune",
+        "adm3": "section communale"
+    },
+    "idn":{
+        "name": "Indonesia",
+        "adm0": "country",
+        "adm1": "province",
+        "adm2": "city, district, regency",
+        "adm3": "sub-district",
+        "adm4": "village"
+    },
+    "irq":{
+        "name": "Iraq",
+        "adm0": "country",
+        "adm1": "governorate",
+        "adm2": "district",
+        "adm3": "sub-district"
+    },
+    "ken":{
+        "name": "Kenya",
+        "adm0": "country",
+        "adm1": "county",
+        "adm2": "sub-county"
+    },
+    "mdg":{
+        "name": "Madagascar",
+        "adm0": "country",
+        "adm1": "region",
+        "adm2": "district",
+        "adm3": "commune",
+        "adm4": "fokontany"
+    },
+    "moz":{
+        "name": "Mozambique",
+        "adm0": "country",
+        "adm1": "province",
+        "adm2": "district",
+        "adm3": "posto"
+    },
+    "phl":{
+        "name": "The Philippines",
+        "adm0": "country",
+        "adm1": "region",
+        "adm2": "provinces",
+        "adm3": "municipalities"
+    },
+    "sdn":{
+        "name": "Sudan",
+        "adm0": "country",
+        "adm1": "state",
+        "adm2": "district"
+    },
+    "sen":{
+        "name": "Senegal",
+        "adm0": "country",
+        "adm1": "region",
+        "adm2": "department",
+        "adm3": "arrondissement"
+    },
+    "sur":{
+        "name": "Syrian Arab Republic",
+        "adm0": "country",
+        "adm1": "district",
+        "adm2": "resort"
+    },
+    "tza":{
+        "name": "Tanzania",
+        "adm0": "country",
+        "adm1": "region",
+        "adm2": "district",
+        "adm3": "ward"
+    },
+    "yem":{
+        "name": "Yemen",
+        "adm0": "country",
+        "adm1": "governorate",
+        "adm2": "district",
+        "adm3": "sub-district"
+    },
+    "zwe":{
+        "name": "Zimbabwe",
+        "adm0": "country",
+        "adm1": "province",
+        "adm2": "district",
+        "adm3": "ward"
+    }
 }
