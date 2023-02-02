@@ -35,7 +35,7 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
 
         if [ $file_extension = "shp" ]; then
             ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_"$display_name".geojson" $filename
-            echo "$last_modified" > "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_"$display_name"_last_modified.txt"
+            echo "$last_modified" > "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad0_py_s4_unocha_pp_"$display_name".last_modified.txt"
         fi
     done
 
@@ -48,7 +48,7 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
 
         if [ $file_extension = "shp" ]; then
             ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_"$display_name".geojson" $filename
-            echo "$last_modified" > "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_"$display_name"_last_modified.txt"
+            echo "$last_modified" > "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad1_py_s4_unocha_pp_"$display_name".last_modified.txt"
         fi
     done
 
@@ -61,7 +61,7 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
 
         if [ $file_extension = "shp" ]; then
             ogr2ogr "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_"$display_name".geojson" $filename
-            echo "$last_modified" > "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_"$display_name"_last_modified.txt"
+            echo "$last_modified" > "data/out/country_extractions/"$country_code"/202_admn/"$country_code"_admn_ad2_py_s4_unocha_pp_"$display_name".last_modified.txt"
         fi
     done
 fi
