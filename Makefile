@@ -224,11 +224,17 @@ data/out/country_extractions/worldpop1km: | data/out/country_extractions ## down
 	ls static_data/countries | parallel 'bash scripts/download_worldpop.sh {} 1km'
 	touch $@
 
-data/in/srtm: | data/in data/mid ## download srtm zipped tiles
+data/in/srtm: | data/in ## create dir
+	mkdir -p $@
+
+data/mid/srtm: | data/mid ## create dir
+	mkdir -p $@
+
+data/in/download_srtm: | data/in/srtm data/mid/srtm ## download srtm zipped tiles
 	bash scripts/download_srtm.sh
 	touch $@
 
-data/out/country_extractions/elevation: data/in/srtm | data/out/country_extractions ## clip country polygon from data/mid/srtm/srtm.vrt
+data/out/country_extractions/elevation: data/in/download_srtm | data/out/country_extractions ## clip country polygon from data/mid/srtm/srtm.vrt
 	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_srtm.sh {}'
 	touch $@
 
