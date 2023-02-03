@@ -52,6 +52,10 @@ EXAMPLE
     # path to your files on S3 via http(s) protocol, with trailing "/"                 
     CKAN_DATA_URL=https://geodata-eu-central-1-kontur-public.s3.amazonaws.com/mapaction_dataset/ 
 
+### geocint-mapaction configuration
+
+1. To generate data for country there should be json file in directory `static_data/countries`. Currently in this directory there are 25 countries from the list
+that MapAction team provided. To add another countries You can copy json files from `static_data/countries_world` to `static_data/countries`.
 
 ## Generating OSM layers
 
@@ -65,11 +69,11 @@ Pipeline for generating OSM layers looks like this:
 6. uploading files to CKAN
 
 
-### 4. mapping OSM features to MapAction layers
+#### Step 4. mapping OSM features to MapAction layers
 
 During this process we are filtering osm features and saving them into the distinct layers. Some layers are created with simple tag filters, some with more complex filters.
 
-#### Generating layer **admn_ad[0-3]_adminboundary[0-3]_py**
+#### Example for layers **admn_ad[0-3]_adminboundary[0-3]_py**
 
 * For layer **ad0** we use filter: 
 `tags @> '{"admin_level":"2"}'`. Also countries that include "12 nautical miles from the baseline of a coastal State" are clipped with water polygons from [osmdata.openstreetmap.de](https://osmdata.openstreetmap.de/data/water-polygons.html)
