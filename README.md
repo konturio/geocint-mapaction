@@ -54,8 +54,9 @@ EXAMPLE
 
 ### geocint-mapaction configuration
 
-1. To generate data for country there should be json file in directory `static_data/countries`. Currently in this directory there are 25 countries from the list
-that MapAction team provided. To add another countries You can copy json files from `static_data/countries_world` to `static_data/countries`.
+1. To generate data for a country there should be a json file with country boundaries in the directory `static_data/countries`.
+Currently there are 25 countries from MapAction priority country linst in this directory. 
+To add another countries you can copy corresponding json files from `static_data/countries_world` to `static_data/countries`.
 
 ## Generating OSM layers
 
