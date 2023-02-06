@@ -13,7 +13,7 @@ echo "country_extraction_path $country_extraction_path"
 echo "country_code $country_code"
 
 (cd $country_extraction_path; zip -r "../../cmf/$country_code""_active_data_shp.zip" . -x \*.geojson)
-(cd $country_extraction_path; zip -r "../../cmf/$country_code""_active_data_geojson.zip" . -i \*.geojson)
+(cd $country_extraction_path; zip -r "../../cmf/$country_code""_active_data_geojson.zip" . -i \*.geojson \*.txt \*.tif)
 
 # FIX: CKAN_DATA_S3_URL url from env to s3 bucket
 # CKAN_DATA_S3_URL=s3://geodata-eu-central-1-kontur-public/mapaction_dataset/
