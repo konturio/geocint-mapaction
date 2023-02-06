@@ -1,26 +1,32 @@
 #!/bin/bash
 
+# this script takes as input path to the file (shp, geojson or tif) 
+# zip it and add json with description
+# uploads to ckan as separate dataset
+
 set -e
 
-shp_path=$1
-geojson_path="${shp_path%.*}.geojson"
+filepath=$1
+filetype=$2
 
-output_shp_zip_path="data/out/country_extractions/$(basename $shp_path).zip"
-zip -r -j $output_shp_zip_path "${shp_path%.*}"* -x "*.geojson"
+output_shp_zip_path="data/out/country_extractions/$(basename $filepath).zip"
 
-output_geojson_zip_path="data/out/country_extractions/$(basename $geojson_path).zip"
-zip -r -j $output_geojson_zip_path "${shp_path%.*}.geojson" "${shp_path%.*}.last_modified.txt"
+if [ $filetype = "shp" ]; then
+    # include only related to shp(cpg, dbf, prj, shp, shx) and txt
+    zip -r -j $output_shp_zip_path "${filepath%.*}"* -x "*.geojson" "*.tif"
+ elif [ $filetype = "geojson" ]; then
+    # include only geojson and txt 
+    zip -r -j $output_shp_zip_path "${filepath%.*}"* -i "*.geojson" "*.txt"
+ elif [ $filetype = "tif" ]; then
+    # include only tif
+    zip -r -j $output_shp_zip_path "${filepath%.*}"* -i "*.tif"
+fi
 
-echo "output_shp_zip_path $output_shp_zip_path"
-echo "output_geojson_zip_path $output_geojson_zip_path"
+ckan_dataset_description_json_path="data/out/country_extractions/$(basename $filepath)_ckan.json"
 
-ckan_dataset_description_json_path="data/out/country_extractions/$(basename $shp_path)_ckan.json"
-echo "ckan_dataset_description_json_path $ckan_dataset_description_json_path"
+python scripts/build_ckan_dataset_description.py $filepath > $ckan_dataset_description_json_path
 
-python scripts/build_ckan_dataset_description.py $shp_path > $ckan_dataset_description_json_path
-
-aws s3 cp $output_shp_zip_path $CKAN_DATA_S3_URL$(basename $shp_path).zip --acl public-read
-aws s3 cp $output_geojson_zip_path $CKAN_DATA_S3_URL$(basename $geojson_path).zip --acl public-read
+aws s3 cp $output_shp_zip_path $CKAN_DATA_S3_URL$(basename $filepath).zip --acl public-read
 
 set +e
 curl -H "Content-Type: application/json" -d @$ckan_dataset_description_json_path -H "Authorization: $CKAN_API_KEY" -X POST "$CKAN_BASE_URL/api/3/action/package_create"
