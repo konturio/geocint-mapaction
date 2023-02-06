@@ -2,6 +2,7 @@ import os
 import time
 import sys
 import json
+import datetime
 
 
 def loadCsv(strInputFile, encoding="utf-8", separator="|", skipheaders=False):
@@ -37,13 +38,13 @@ def get_datasets_filenames_datetime(geoextent, files_folder):
     modifiedTimes = []
     for (root, dirs, files) in os.walk(files_folder, topdown=True):
         for file in files:
-            modifiedTime = time.ctime(os.path.getmtime(root + "/" + file))
+            modifiedTime = datetime.datetime.utcfromtimestamp(os.path.getmtime(root + "/" + file))
             if (file[0:3] == geoextent) or (file[0:3] == 'reg'):
                 dataset_name = file.split('.')[0]
                 if datasets.count(dataset_name) == 0:
                     datasets.append(dataset_name)
                     # data size
-                    modifiedTimes.append(modifiedTime)
+                    modifiedTimes.append(modifiedTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
     # return data name and size
     return datasets, modifiedTimes
 
