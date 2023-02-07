@@ -70,6 +70,9 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     elif source == "worldpop":
         ckan_dataset_description["url"] = "https://hub.worldpop.org/"
         ckan_dataset_description["license_id"] = "cc-by"
+    elif source == "srtm":
+        ckan_dataset_description["url"] = "https://www.earthdata.nasa.gov/"
+        ckan_dataset_description["license_id"] = "other-pd"
 
     ckan_dataset_description["tags"] = [
         {
