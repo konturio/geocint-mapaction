@@ -844,7 +844,7 @@ select 'admn',
     osm_type
 from :osm_table as a, 
     lateral (select st_union(b.geom) as clipgeom
-        from gis.water_polygons as b
+        from water_polygons as b
         where ST_Intersects(geog::geometry, b.geom)) as clip
 where tags @> '{"boundary":"administrative"}'
     and tags @> '{"admin_level":"2"}'
