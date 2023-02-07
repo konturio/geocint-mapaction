@@ -13,7 +13,7 @@ mkdir -p $srtm_vrt_dir
 
 # takes about 8-9 hours to download, errors while downloading will be logged into _download-errors.log
 # 14163 files, 97G
-wget -P $srtm_zip_dir -i $download_list -nv --rejected-log=$srtm_zip_dir/_download-errors.log -nc
+wget -nc -P $srtm_zip_dir -i $download_list -nv --rejected-log=$srtm_zip_dir/_download-errors.log -nc
 
 # if some files were not downloaded - stop the script
 if [ -f $srtm_zip_dir/_download-errors.log ]; then exit 1; fi
@@ -33,7 +33,7 @@ done
 
 # generate list of files to use them in virtual raster layer
 rm -f $srtm_zip_dir/_list_files.txt
-for f in $srtm_zip_dir/*; do echo -e "/vsizip/${f}/${f:14:7}.hgt" >> $srtm_zip_dir/_list_files.txt; done
+for f in $srtm_zip_dir/*; do echo -e "/vsizip/${f}/${f:13:7}.hgt" >> $srtm_zip_dir/_list_files.txt; done
 
 # generate virtual raster layer
 gdalbuildvrt -overwrite $srtm_vrt_dir/srtm.vrt -input_file_list $srtm_zip_dir/_list_files.txt
