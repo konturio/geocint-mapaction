@@ -22,10 +22,10 @@ resolution=${2:-100m}
 mkdir -p data/out/country_extractions/$country_code/223_popu
 
 if [ "${resolution}" = "100m" ]; then
-    curl -s -f -o "data/out/country_extractions/${country_code}/223_popu/${country_code}_popu_pop_ras_s1_worldpop_pp_2020UNadj_100m.tif" \
+    curl -s -f -o "data/out/country_extractions/${country_code}/223_popu/${country_code}_popu_pop_ras_s1_worldpop_pp_2020unadj_100m.tif" \
         "https://data.worldpop.org/GIS/Population/Global_2000_2020/2020/${country_code_upper}/${country_code}_ppp_2020_UNadj.tif"
 else
-    curl -s -f -o "data/out/country_extractions/${country_code}/223_popu/${country_code}_popu_pop_ras_s1_worldpop_pp_PopDensity_2020UNad.tif" \
+    curl -s -f -o "data/out/country_extractions/${country_code}/223_popu/${country_code}_popu_pop_ras_s1_worldpop_pp_popdensity_2020unad.tif" \
         "https://data.worldpop.org/GIS/Population_Density/Global_2000_2020_1km_UNadj/2020/${country_code_upper}/${country_code}_pd_2020_1km_UNadj.tif"
 fi
 
