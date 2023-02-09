@@ -20,9 +20,16 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
         file_extension=${filename##*.}
         wget -q -O data/in/mapaction/ocha_admin_boundaries/$filename $download_url
         if [ $file_extension = "zip" ]; then
-            unzip -o data/in/mapaction/ocha_admin_boundaries/$filename -d data/in/mapaction/ocha_admin_boundaries/$country_code
+            zipfile=data/in/mapaction/ocha_admin_boundaries/$filename
+            unzip -o $zipfile -d data/in/mapaction/ocha_admin_boundaries/$country_code
         fi
     done
+
+    # sometimes on hdx there is no spatial boundaries (f.e. Afghanistan)
+    # do not proceed if so
+    if [ ! -f $zipfile ]
+        exit 0
+    fi
 
     last_modified=$(cat $ckan_package_json_path | jq --raw-output '.result.last_modified')
 
