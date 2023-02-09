@@ -5,6 +5,7 @@ shopt -s globstar
 
 country_geojson_filename=$(basename "$1")
 country_code="${country_geojson_filename%%.*}"
+zipfile=""
 
 echo $country_code
 
@@ -27,7 +28,7 @@ if wget -O $ckan_package_json_path "https://data.humdata.org/api/3/action/packag
 
     # sometimes on hdx there is no spatial boundaries (f.e. Afghanistan)
     # do not proceed if so
-    if [ ! -f $zipfile ]
+    if [ -z $zipfile ]; then
         exit 0
     fi
 
