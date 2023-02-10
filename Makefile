@@ -245,6 +245,10 @@ dev: data/out/upload_datasets_all data/out/upload_cmf_all create_completeness_re
 	echo "dev target successfully build" | python scripts/slack_message.py $$SLACK_CHANNEL ${SLACK_BOT_NAME} $$SLACK_BOT_EMOJI
 	touch $@
 
+.PHONY: clean_data
+clean_data: | data/out/country_extractions ## clean DB and directory data/out/
+	bash scripts/clean_data.sh
+
 .PHONY: export_country
 export_country: db/table/mapaction_directories data/in/mapaction data/mid/mapaction data/out/mapaction | data/out/country_extractions ## run as make export_country COUNTRY=static_data/countries/blr.json
 	osmium extract --overwrite --polygon=$(COUNTRY) data/planet-latest-updated.osm.pbf -o data/mid/mapaction/$(shell (basename $(COUNTRY) .json) ).pbf
