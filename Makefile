@@ -45,7 +45,7 @@ data/out/country_extractions/ocha_admin_boundaries: | data/in data/out ## proces
 	touch $@
 
 data/in/mapaction/healthsites-world.zip: | data/in/mapaction ## download healthsites world dataset
-	curl "https://mekillot-backet.website.yandexcloud.net/healthsites/World.zip" -o $@
+	curl "https://healthsites.io/api/v2/facilities/shapefile/World/download" -o $@
 
 data/in/mapaction/healthsites/World-node.shp: data/in/mapaction/healthsites-world.zip | data/in/mapaction ## unzip healthsites dataset
 	unzip -o data/in/mapaction/healthsites-world.zip -d data/in/mapaction/healthsites
