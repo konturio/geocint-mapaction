@@ -34,9 +34,6 @@ clean: ## [FINAL] Cleans the worktree for next nightly run. Does not clean non-r
 data/in/mapaction: | data/in ## Dir for extract from planet pbf dump
 	mkdir -p $@
 
-data/out/mapaction: | data/out ## Dir for exported files
-	mkdir -p $@
-
 data/out/country_extractions: | data/out ## create directory for country extractions
 	mkdir -p $@
 
@@ -246,7 +243,7 @@ dev: data/out/upload_datasets_all data/out/upload_cmf_all create_completeness_re
 	touch $@
 
 .PHONY: clean_data
-clean_data: | data/out/country_extractions ## clean DB and directory data/out/
+clean_data: | data/out ## clean DB and directory data/out/
 	bash scripts/clean_data.sh
 
 .PHONY: export_country
