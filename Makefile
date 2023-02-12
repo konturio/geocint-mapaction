@@ -26,12 +26,19 @@ include runner_make osm_make
 all: dev ## [FINAL] Meta-target on top of all other targets, or targets on parking.
 
 # by default the clean target is set to serve an update of the OpenStreetMap planet dump during every run
-clean: ## [FINAL] Cleans the worktree for next nightly run. Does not clean non-repeating targets.
+clean: clean_osm ## [FINAL] Cleans the worktree for next nightly run. Does not clean non-repeating targets.
+	echo "Cleanup for the next run completed"
+
+clean_osm: ## Cleans the planet-latest-updated.osm.pbf, so that OSM planet can be updated again.
 	if [ -f data/planet-is-broken ]; then rm -rf data/planet-latest.osm.pbf ; fi
 	rm -rf data/planet-is-broken
 	profile_make_clean data/planet-latest-updated.osm.pbf
 
-data/in/mapaction: | data/in ## Dir for extract from planet pbf dump
+.PHONY: clean_out_data
+clean_out_data: | data/out ## Clean DB and directory data/out/
+	bash scripts/clean_out_data.sh
+
+data/in/mapaction: | data/in ## Create directory for the MapAction specific downloads
 	mkdir -p $@
 
 data/out/country_extractions: | data/out ## create directory for country extractions
@@ -241,10 +248,6 @@ data/out/country_extractions/elevation: data/in/download_srtm | data/out/country
 dev: data/out/upload_datasets_all data/out/upload_cmf_all create_completeness_report ## this runs when auto_start.sh executes
 	echo "dev target successfully build" | python scripts/slack_message.py $$SLACK_CHANNEL ${SLACK_BOT_NAME} $$SLACK_BOT_EMOJI
 	touch $@
-
-.PHONY: clean_data
-clean_data: | data/out ## clean DB and directory data/out/
-	bash scripts/clean_data.sh
 
 .PHONY: export_country
 export_country: db/table/mapaction_directories data/in/mapaction data/mid/mapaction data/out/mapaction | data/out/country_extractions ## run as make export_country COUNTRY=static_data/countries/blr.json
