@@ -33,7 +33,7 @@ Geoextent = {
     "bdi": "Burundi",  # Country
     "bel": "Belgium",  # Country
     "ben": "Benin",  # Country
-    "bes": "Bonaire (Sint Eustatius and Saba)",  # Country
+    "bes": "Bonaire, (Sint Eustatius and Saba)",  # Country
     "bfa": "Burkina Faso",  # Country
     "bgd": "Bangladesh",  # Country
     "bgr": "Bulgaria",  # Country
@@ -59,7 +59,7 @@ Geoextent = {
     "chn": "China",  # Country
     "civ": "Cote d'Ivoire",  # Country
     "cmr": "Cameroon",  # Country
-    "cod": "Congo (the Democratic Republic of the)",  # Country
+    "cod": "Congo, (the Democratic Republic of the)",  # Country
     "cog": "Congo",  # Country
     "cok": "Cook Islands",  # Country
     "col": "Colombia",  # Country
