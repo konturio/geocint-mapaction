@@ -33,7 +33,7 @@ Geoextent = {
     "bdi": "Burundi",  # Country
     "bel": "Belgium",  # Country
     "ben": "Benin",  # Country
-    "bes": "Bonaire, Sint Eustatius and Saba",  # Country
+    "bes": "Bonaire (Sint Eustatius and Saba)",  # Country
     "bfa": "Burkina Faso",  # Country
     "bgd": "Bangladesh",  # Country
     "bgr": "Bulgaria",  # Country
@@ -59,7 +59,7 @@ Geoextent = {
     "chn": "China",  # Country
     "civ": "Cote d'Ivoire",  # Country
     "cmr": "Cameroon",  # Country
-    "cod": "Congo, the Democratic Republic of the",  # Country
+    "cod": "Congo (the Democratic Republic of the)",  # Country
     "cog": "Congo",  # Country
     "cok": "Cook Islands",  # Country
     "col": "Colombia",  # Country
@@ -90,7 +90,7 @@ Geoextent = {
     "flk": "Falkland Islands (Malvinas)",  # Country
     "fra": "France",  # Country
     "fro": "Faroe Islands",  # Country
-    "fsm": "Micronesia, Federated States of",  # Country
+    "fsm": "Micronesia, (Federated States of)",  # Country
     "gab": "Gabon",  # Country
     "gbr": "United Kingdom",  # Country
     "geo": "Georgia",  # Country
@@ -120,7 +120,7 @@ Geoextent = {
     "ind": "India",  # Country
     "iot": "British Indian Ocean Territory",  # Country
     "irl": "Ireland",  # Country
-    "irn": "Iran, Islamic Republic of",  # Country
+    "irn": "Iran, (Islamic Republic of)",  # Country
     "irq": "Iraq",  # Country
     "isl": "Iceland",  # Country
     "isr": "Israel",  # Country
@@ -135,7 +135,7 @@ Geoextent = {
     "khm": "Cambodia",  # Country
     "kir": "Kiribati",  # Country
     "kna": "Saint Kitts and Nevis",  # Country
-    "kor": "Korea, Republic of",  # Country
+    "kor": "Korea, (Republic of)",  # Country
     "kwt": "Kuwait",  # Country
     "lao": "Lao People's Democratic Republic",  # Country
     "lbn": "Lebanon",  # Country
@@ -152,7 +152,7 @@ Geoextent = {
     "maf": "Saint Martin (French part)",  # Country
     "mar": "Morocco",  # Country
     "mco": "Monaco",  # Country
-    "mda": "Moldova, Republic of",  # Country
+    "mda": "Moldova, (Republic of)",  # Country
     "mdg": "Madagascar",  # Country
     "mdv": "Maldives",  # Country
     "mex": "Mexico",  # Country
@@ -194,10 +194,10 @@ Geoextent = {
     "png": "Papua New Guinea",  # Country
     "pol": "Poland",  # Country
     "pri": "Puerto Rico",  # Country
-    "prk": "Korea, Democratic People's Republic of",  # Country
+    "prk": "Korea, (Democratic People's Republic of)",  # Country
     "prt": "Portugal",  # Country
     "pry": "Paraguay",  # Country
-    "pse": "Palestine, State of",  # Country
+    "pse": "Palestine, (State of)",  # Country
     "pyf": "French Polynesia",  # Country
     "qat": "Qatar",  # Country
     "reu": "Reunion",  # Country
@@ -209,7 +209,7 @@ Geoextent = {
     "sen": "Senegal",  # Country
     "sgp": "Singapore",  # Country
     "sgs": "South Georgia and the South Sandwich Islands",  # Country
-    "shn": "Saint Helena, Ascension and Tristan da Cunha",  # Country
+    "shn": "Saint Helena, (Ascension and Tristan da Cunha)",  # Country
     "sjm": "Svalbard and Jan Mayen",  # Country
     "slb": "Solomon Islands",  # Country
     "sle": "Sierra Leone",  # Country
@@ -251,7 +251,7 @@ Geoextent = {
     "uzb": "Uzbekistan",  # Country
     "vat": "Holy See (Vatican City State)",  # Country
     "vct": "Saint Vincent and the Grenadines",  # Country
-    "ven": "Venezuela, Bolivarian Republic of",  # Country
+    "ven": "Venezuela, (Bolivarian Republic of)",  # Country
     "vgb": "Virgin Islands, British",  # Country
     "vir": "Virgin Islands, U.S.",  # Country
     "vnm": "Viet Nam",  # Country
