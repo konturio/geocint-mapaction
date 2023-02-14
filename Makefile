@@ -197,7 +197,7 @@ db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create
 	ls static_data/countries/*.json | parallel 'bash scripts/osm_data_import.sh {}'
 	touch $@
 
-db/table/mapaction_data_table: db/table/osm_data_import db/table/water_polygons | db/table ## Create and populate mapaction_[] tables in db
+db/table/mapaction_data_table: db/table/osm_data_import | db/table ## Create and populate mapaction_[] tables in db
 	ls static_data/countries/*.json | parallel 'bash scripts/mapaction_data_table.sh {}'
 	touch $@
 
@@ -210,17 +210,6 @@ db/table/mapaction_directories: | db/table ## Load into db structure of director
 data/out/mapaction_export: data/in/mapaction/osm_last_modified_date db/table/mapaction_data_table db/table/mapaction_directories | data/out/country_extractions ## Export from db to SHP and JSON
 	psql -1 -f scripts/mapaction_data_export.sql
 	ls static_data/countries/*.json | parallel 'bash scripts/mapaction_export.sh {}'
-	touch $@
-
-data/in/mapaction/water-polygons-split-4326.zip: | data/in/mapaction ## download water-polygons-split-4326.zip
-	curl https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip -o $@
-
-data/in/mapaction/water-polygons-split-4326/water_polygons.shp: data/in/mapaction/water-polygons-split-4326.zip | data/in/mapaction ## unzip
-	unzip -o data/in/mapaction/water-polygons-split-4326.zip -d data/in/mapaction
-	touch $@
-
-db/table/water_polygons: data/in/mapaction/water-polygons-split-4326/water_polygons.shp | data/in/mapaction ## import water_polygons into database
-	ogr2ogr --config PG_USE_COPY YES -overwrite -f PostgreSQL PG:"dbname=$$PGDATABASE" data/in/mapaction/water-polygons-split-4326/water_polygons.shp -nlt GEOMETRY -lco GEOMETRY_NAME=geom -nln water_polygons
 	touch $@
 
 data/out/country_extractions/worldpop100m: | data/out/country_extractions ## download worldpop100m for every country
