@@ -73,7 +73,7 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     elif source == "srtm":
         ckan_dataset_description["url"] = "https://www.usgs.gov/"
         ckan_dataset_description["license_id"] = "other-pd"
-    elif source == "gmted250":
+    elif source == "gmted2010":
         ckan_dataset_description["url"] = "https://www.usgs.gov/"
         ckan_dataset_description["license_id"] = "other-pd"
 
