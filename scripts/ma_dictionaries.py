@@ -33,7 +33,7 @@ Geoextent = {
     "bdi": "Burundi",  # Country
     "bel": "Belgium",  # Country
     "ben": "Benin",  # Country
-    "bes": "Bonaire, (Sint Eustatius and Saba)",  # Country
+    "bes": "Bonaire, Sint Eustatius and Saba",  # Country
     "bfa": "Burkina Faso",  # Country
     "bgd": "Bangladesh",  # Country
     "bgr": "Bulgaria",  # Country
@@ -209,7 +209,7 @@ Geoextent = {
     "sen": "Senegal",  # Country
     "sgp": "Singapore",  # Country
     "sgs": "South Georgia and the South Sandwich Islands",  # Country
-    "shn": "Saint Helena, (Ascension and Tristan da Cunha)",  # Country
+    "shn": "Saint Helena, Ascension and Tristan da Cunha",  # Country
     "sjm": "Svalbard and Jan Mayen",  # Country
     "slb": "Solomon Islands",  # Country
     "sle": "Sierra Leone",  # Country
