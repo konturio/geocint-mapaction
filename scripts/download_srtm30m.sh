@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# this script downloads all srtm zipped tiles
+# this script downloads all srtm30m zipped tiles
 # fixes some zip archives with bad filenames inside
 # and generates virtual raster layer
 
-download_list=static_data/srtm_urls.csv
-srtm_zip_dir=data/in/srtm
-srtm_vrt_dir=data/mid/srtm
+download_list=static_data/srtm30m_urls.csv
+srtm_zip_dir=data/in/srtm30m
+srtm_vrt_dir=data/mid/srtm30m
 
 mkdir -p $srtm_zip_dir
 mkdir -p $srtm_vrt_dir
@@ -33,7 +33,7 @@ done
 
 # generate list of files to use them in virtual raster layer
 rm -f $srtm_zip_dir/_list_files.txt
-for f in $srtm_zip_dir/*; do echo -e "/vsizip/${f}/${f:13:7}.hgt" >> $srtm_zip_dir/_list_files.txt; done
+for f in $srtm_zip_dir/*.zip; do echo -e "/vsizip/${f}/${f:16:7}.hgt" >> $srtm_zip_dir/_list_files.txt; done
 
 # generate virtual raster layer
 gdalbuildvrt -overwrite $srtm_vrt_dir/srtm.vrt -input_file_list $srtm_zip_dir/_list_files.txt
