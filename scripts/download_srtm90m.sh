@@ -20,7 +20,7 @@ if [ -f $srtm_zip_dir/_download-errors.log ]; then exit 1; fi
 
 # in some zip files there are bad filenames, fixing them
 # this list was collected during development
-bad_zips="N37E051.SRTMGL3.hgt.zip N37E052.SRTMGL3.hgt.zip N38E050.SRTMGL3.hgt.zip N38E051.SRTMGL3.hgt.zip N38E052.SRTMGL3.hgt.zip N39E050.SRTMGL3.hgt.zip N39E051.SRTMGL3.hgt.zip N40E051.SRTMGL3.hgt.zip N41E050.SRTMGL3.hgt.zip N41E051.SRTMGL3.hgt.zip N42E049.SRTMGL3.hgt.zip N42E050.SRTMGL3.hgt.zip N43E048.SRTMGL3.hgt.zip N43E049.SRTMGL3.hgt.zip N44E048.SRTMGL3.hgt.zip N44E049.SRTMGL3.hgt.zip"
+bad_zips="N37E051.SRTMGL3.hgt.zip N37E052.SRTMGL3.hgt.zip N38E050.SRTMGL3.hgt.zip N38E051.SRTMGL3.hgt.zip N38E052.SRTMGL3.hgt.zip N39E050.SRTMGL3.hgt.zip N39E051.SRTMGL3.hgt.zip N40E051.SRTMGL3.hgt.zip N41E050.SRTMGL3.hgt.zip N41E051.SRTMGL3.hgt.zip N42E049.SRTMGL3.hgt.zip N42E050.SRTMGL3.hgt.zip N43E048.SRTMGL3.hgt.zip N43E049.SRTMGL3.hgt.zip N44E048.SRTMGL3.hgt.zip N44E049.SRTMGL3.hgt.zip N47W087.SRTMGL3.hgt.zip"
 
 ch1=$'\100' # @
 ch2=$'\012' # \n
