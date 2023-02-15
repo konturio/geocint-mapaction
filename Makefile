@@ -231,18 +231,36 @@ data/out/country_extractions/worldpop1km: | data/out/country_extractions ## down
 	ls static_data/countries | parallel 'bash scripts/download_worldpop.sh {} 1km'
 	touch $@
 
-data/in/srtm: | data/in ## create dir
+data/in/srtm30m: | data/in ## create dir
 	mkdir -p $@
 
-data/mid/srtm: | data/mid ## create dir
+data/mid/srtm30m: | data/mid ## create dir
 	mkdir -p $@
 
-data/in/download_srtm: | data/in/srtm data/mid/srtm ## download srtm zipped tiles
-	bash scripts/download_srtm.sh
+data/in/srtm90m: | data/in ## create dir
+	mkdir -p $@
+
+data/mid/srtm90m: | data/mid ## create dir
+	mkdir -p $@
+
+data/in/gmted250m: | data/in ## create dir
+	mkdir -p $@
+
+data/in/download_srtm30m: | data/in/srtm30m data/mid/srtm30m ## download srtm30m zipped tiles
+	bash scripts/download_srtm30m.sh
 	touch $@
 
-data/out/country_extractions/elevation: data/in/download_srtm | data/out/country_extractions ## clip country polygon from data/mid/srtm/srtm.vrt
-	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_srtm.sh {}'
+data/in/download_srtm90m: | data/in/srtm90m data/mid/srtm90m ## download srtm90m zipped tiles
+	bash scripts/download_srtm90m.sh
+	touch $@
+
+data/in/gmted250m/gmted250m.zip: | data/in/gmted250m ## download GMTED2010 Global Grids in zipped ESRI ArcGrid format
+	curl https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/topo/downloads/GMTED/Grid_ZipFiles/be75_grd.zip -o $@
+
+data/out/country_extractions/elevation: data/in/download_srtm30m data/in/download_srtm90m data/in/gmted250m/gmted250m.zip | data/out/country_extractions ## clip country polygon from srtm30m.vrt and srtm90m.vrt
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_srtm.sh {} srtm30m'
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_srtm.sh {} srtm90m'
+	ls static_data/countries | parallel 'bash scripts/mapaction_extract_country_from_srtm.sh {} gmted250m'
 	touch $@
 
 dev: data/out/upload_datasets_all data/out/upload_cmf_all create_completeness_report ## this runs when auto_start.sh executes
