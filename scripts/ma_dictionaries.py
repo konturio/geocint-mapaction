@@ -366,6 +366,7 @@ FeatureSource = {
     "gist": "Geographic Information Support Team",
     "ge": "Google Earth",
     "geobnd": "geoboundaries.org",
+    "gmted250": "Global Multi-resolution Terrain Elevation Data 2010",
     "googleearth": "Google Earth",
     "govd": "Government - regional",
     "govl": "Government - local",
