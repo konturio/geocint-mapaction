@@ -21,14 +21,14 @@
         "name": "Democratic Republic of the Congo",
         "adm0": "country",
         "adm1": "provinces",
-        "adm2": "territoires"
+        "adm2": "territories"
     },
     "hti":{
         "name": "Haiti",
         "adm0": "country",
         "adm1": "department",
         "adm2": "commune",
-        "adm3": "section communale"
+        "adm3": "communal section"
     },
     "idn":{
         "name": "Indonesia",
