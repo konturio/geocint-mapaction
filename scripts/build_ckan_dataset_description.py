@@ -35,7 +35,7 @@ def determine_dataset_dates(source, geoextent, geocint_folder, dataset_filename)
 
     # download date -- when the source is downloaded. We will take time stamp of the downloaded file.
     if source == 'worldpop':
-        download_timestamp = DatasetCreationTime #worldpop is downladed directly to the out folder.
+        download_timestamp = creation_timestamp #worldpop is downladed directly to the out folder.
     elif source == 'unocha':
         #hdx admin boundaries are downloaded per country.
         source_path=os.path.join(os.path.join(geocint_folder,SourceFiles[source]), geoextent)
