@@ -1,16 +1,79 @@
 import sys
 import os
 import json
+import datetime
 from urllib.parse import urljoin, urlparse
 from ma_dictionaries import Geoextent
 from ma_dictionaries import FeatureCategory
 from ma_dictionaries import FeatureSource
+
+DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+
+SourceFiles ={
+    'gppd': "data/in/mapaction/global_power_plant_database.zip",
+    'healthsites': "data/in/mapaction/healthsites-world.zip",
+    'naturalearth': "data/in/mapaction/ne_10m_roads.zip",
+    'osm': "data/planet-latest-updated.osm.pbf",
+    'ourairports': "data/in/mapaction/ourairports/airports.csv",
+    'srtm': "data/in/srtm30m/_list_files.txt",
+    'wfp': "data/in/mapaction/wfp_railroads.zip",
+    'worldports': "data/in/mapaction/worldports/worldports.csv",
+    'unocha': "data/in/mapaction/ocha_admin_boundaries"
+    # 'worldpop': "",
+}
 
 # format CKAN tags. Limited set of chars is allowed
 def format_tag(s):
     s = s.replace(" ", "_")
     s = s.replace("/", "_")
     return s.lower()
+
+def determine_dataset_dates(source, geoextent, geocint_folder, dataset_filename):
+
+    # dataset creation date is when dataset file was created
+    creation_timestamp = datetime.datetime.utcfromtimestamp(os.path.getmtime(dataset_filename))
+
+    # download date -- when the source is downloaded. We will take time stamp of the downloaded file.
+    if source == 'worldpop':
+        download_timestamp = DatasetCreationTime #worldpop is downladed directly to the out folder.
+    elif source == 'unocha':
+        #hdx admin boundaries are downloaded per country.
+        source_path=os.path.join(os.path.join(geocint_folder,SourceFiles[source]), geoextent)
+        download_timestamp = datetime.datetime.utcfromtimestamp(
+            os.path.getmtime(source_path))
+    else:
+        if source in SourceFiles:
+            download_timestamp = datetime.datetime.utcfromtimestamp(
+                os.path.getmtime(os.path.join(geocint_folder, SourceFiles[source])))
+        else:
+            download_timestamp = ""
+            sys.stderr.write("download date of "+source+" source cannot be obtained. No origin file specified for this source \n")
+
+    # reference date is when the orgin was lastly modified.
+    # now let's obtain it from .last_modified.txt file.
+    if source == "osm":
+        last_modified_file_name = os.path.join(geocint_folder, "data/mid/mapaction/"+ geoextent+'.pbf'+ ".last_modified.txt")
+    else:
+        last_modified_file_name = ""
+
+    if os.path.exists(last_modified_file_name):
+        fo1 = open(last_modified_file_name, 'r', encoding="utf-8")
+        reference_timestamp = fo1.read()
+        reference_timestamp = reference_timestamp.replace("\n",'')
+        fo1.close
+    else:
+        reference_timestamp = ""
+        sys.stderr.write("unable to determine reference date for "+dataset_filename)
+
+    if download_timestamp=="":
+        download_timestamp="unknown"
+    else:
+        download_timestamp =download_timestamp.strftime(DATE_FORMAT)
+
+    if reference_timestamp == "":
+        reference_timestamp = "unknown"
+
+    return creation_timestamp.strftime(DATE_FORMAT), download_timestamp, reference_timestamp
 
 
 def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilter):
@@ -19,6 +82,7 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     codes = dataset_name.split("_", 7)
 
     S3_DATASET_BASE_URL = os.environ['CKAN_DATA_URL']
+    GEOCINT_WORK_DIRECTORY = os.environ['GEOCINT_WORK_DIRECTORY']
 
     geoextent = codes[0]
     category = codes[1]
@@ -38,7 +102,7 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     if strFilter != "":
         dataset_description = dataset_description + " Original filter is " + strFilter + "."
 
-    # NOTE: it's not a json escaping, but  a particularly perverted bug of curl, it does not undertand equal sign
+    # NOTE: it's not a json escaping, but a particularly perverted bug of curl, it does not undertand equal sign
     dataset_description = dataset_description.replace("=", "%3D")
 
     ckan_dataset_description = {}
@@ -47,6 +111,8 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     ckan_dataset_description["title"] = dataset_title
     ckan_dataset_description["notes"] = dataset_description
     ckan_dataset_description["owner_org"] = "kontur"
+
+    # determine dataset source and license.  
     if source == "osm":
         ckan_dataset_description["url"] = "http://Openstreetmap.org"
         ckan_dataset_description["license_id"] = "odc-odbl"
@@ -77,6 +143,8 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         ckan_dataset_description["url"] = "https://www.usgs.gov/"
         ckan_dataset_description["license_id"] = "other-pd"
 
+    creation_timestamp, download_timestamp, reference_timestamp = determine_dataset_dates(source, geoextent,os.path.join(GEOCINT_WORK_DIRECTORY,"geocint"), strOutputFileName)
+
     ckan_dataset_description["tags"] = [
         {
             "vocabulary_id": None,
@@ -96,6 +164,9 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         {"key": "scale", "value": scale},
         {"key": "source", "value": source},
         {"key": "permission", "value": permission},
+        {"key": "creation_date", "value": creation_timestamp},
+        {"key": "download_date", "value": download_timestamp},
+        {"key": "reference_date", "value": reference_timestamp},
     ]
 
     if geometry_type in ["pt", "py", "ln"]:
@@ -142,7 +213,7 @@ def main():
         command = "dataset"
 
     if command == "dataset":
-        print(json.dumps(build_ckan_dataset_description(strInputFileName, "Unknown", "")))
+        print(json.dumps(build_ckan_dataset_description(strInputFileName, "Unknown", ""), indent=3))
     elif command == "cmf":
         raise Exception("TODO: Crash Move Folder printer")
     else:
