@@ -47,7 +47,7 @@ def determine_dataset_dates(source, geoextent, geocint_folder, dataset_filename)
                 os.path.getmtime(os.path.join(geocint_folder, SourceFiles[source])))
         else:
             download_timestamp = ""
-            sys.stderr.write("download date of "+source+" source cannot be obtained. No origin file specified for this source \n")
+            sys.stderr.write("WARNING: download date of "+source+" source cannot be obtained. No origin file specified for this source \n")
 
     # reference date is when the orgin was lastly modified.
     # now let's obtain it from .last_modified.txt file.
@@ -63,7 +63,7 @@ def determine_dataset_dates(source, geoextent, geocint_folder, dataset_filename)
         fo1.close
     else:
         reference_timestamp = ""
-        sys.stderr.write("unable to determine reference date for "+dataset_filename)
+        sys.stderr.write("WARNING: unable to determine reference date for "+dataset_filename+"\n")
 
     if download_timestamp=="":
         download_timestamp="unknown"
