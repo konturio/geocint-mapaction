@@ -166,17 +166,29 @@ data/out/country_extractions/global_power_plant_database: data/in/mapaction/glob
 data/out/cmf: | data/out ## create directory for CMFs
 	mkdir -p $@
 
-data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export data/out/country_extractions/worldpop1km data/out/country_extractions/worldpop100m data/out/country_extractions/elevation | data/out ## upload datasets in CKAN
+data/out/datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export data/out/country_extractions/worldpop1km data/out/country_extractions/worldpop100m data/out/country_extractions/elevation  | data/out ## Milestone: all the datasets have been prepared
+	echo "all the datasets prepared"
+	touch $@
+
+data/out/datasets_ckan_descriptions: data/out/datasets_all | data/out ## create json files with metadata for CKAN upload per dataset
+	echo "TODO: move creation of dataset CKAN descriptions here"
+	touch $@
+
+data/out/cmf_metadata_list_all: data/out/datasets_ckan_descriptions | data/out ## create csv file with metadata per country
+	echo "TODO: create csv file with metadata per country"
+	touch $@
+
+data/out/upload_datasets_all: data/out/datasets_ckan_descriptions | data/out ## upload datasets in CKAN
 	find data/out/country_extractions/ -name "*.shp" | parallel 'bash scripts/mapaction_upload_dataset.sh {} shp'
 	find data/out/country_extractions/ -name "*.geojson" | parallel 'bash scripts/mapaction_upload_dataset.sh {} geojson'
 	find data/out/country_extractions/ -name "*.tif" | parallel 'bash scripts/mapaction_upload_dataset.sh {} tif'
 	touch $@
 
-data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export data/out/country_extractions/worldpop1km data/out/country_extractions/worldpop100m data/out/country_extractions/elevation | data/out/cmf ## upload CMFs in CKAN
+data/out/upload_cmf_all: data/out/cmf_metadata_list_all | data/out/cmf ## upload CMFs in CKAN
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
-create_completeness_report: data/out/upload_cmf_all | data/out/country_extractions ## create separate report for each country directory
+create_completeness_report: data/out/upload_cmf_all | data/out/country_extractions ## create completeness report for each country
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'python scripts/create_completeness_report.py {}'
 	touch $@
 
