@@ -175,7 +175,7 @@ data/out/datasets_ckan_descriptions: data/out/datasets_all | data/out ## create 
 	touch $@
 
 data/out/cmf_metadata_list_all: data/out/datasets_ckan_descriptions | data/out ## create csv file with metadata per country
-	echo "TODO: create csv file with metadata per country"
+	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'python scripts/build_metadata_list.py {}'
 	touch $@
 
 data/out/upload_datasets_all: data/out/datasets_ckan_descriptions | data/out ## upload datasets in CKAN

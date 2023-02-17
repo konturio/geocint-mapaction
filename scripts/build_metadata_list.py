@@ -100,7 +100,14 @@ def main():
     # input from bash find command
     # example: data/out/country_extractions/tza
     country_data_folder = sys.argv[1]
-    output_file_name = sys.argv[2]
+
+    # optional output file name
+    #specify it if you need to test this script separately
+    if len(sys.argv)>2:
+        output_file_name = sys.argv[2]
+    else:
+        output_file_name = os.path.join(country_data_folder,"dataset_metadata.csv")
+
     country_code = os.path.basename(country_data_folder)
     files = get_datasets_filenames_datetime(country_code, country_data_folder)
     create_csv(output_file_name,country_code, files)
