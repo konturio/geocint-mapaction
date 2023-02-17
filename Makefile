@@ -171,7 +171,7 @@ data/out/datasets_all: data/out/country_extractions/ne_10m_lakes data/out/countr
 	touch $@
 
 data/out/datasets_ckan_descriptions: data/out/datasets_all | data/out ## create json files with metadata for CKAN upload per dataset
-	find data/out/country_extractions/ -regex ".*\.\(shp\|geojson\|tif\|csv\)" | parallel 'bash scripts/mapaction_build_dataset_description.sh {}'
+	find data/out/country_extractions/ -mindepth 3 -regex ".*\.\(shp\|geojson\|tif\|csv\)" | parallel 'bash scripts/mapaction_build_dataset_description.sh {}'
 	touch $@
 
 data/out/cmf_metadata_list_all: data/out/datasets_ckan_descriptions | data/out ## create csv file with metadata per country
