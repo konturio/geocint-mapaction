@@ -24,8 +24,6 @@ fi
 
 ckan_dataset_description_json_path="data/out/country_extractions/$(basename $filepath)_ckan.json"
 
-python scripts/build_ckan_dataset_description.py $filepath > $ckan_dataset_description_json_path
-
 aws s3 cp $output_zip_path $CKAN_DATA_S3_URL$(basename $filepath).zip --acl public-read
 
 set +e
