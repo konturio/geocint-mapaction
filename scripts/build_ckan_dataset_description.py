@@ -16,6 +16,7 @@ SourceFiles ={
     'osm': "data/planet-latest-updated.osm.pbf",
     'ourairports': "data/in/mapaction/ourairports/airports.csv",
     'srtm': "data/in/srtm30m/_list_files.txt",
+    'gmted2010': "data/in/gmted250m/gmted250m.zip",
     'wfp': "data/in/mapaction/wfp_railroads.zip",
     'worldports': "data/in/mapaction/worldports/worldports.csv",
     'unocha': "data/in/mapaction/ocha_admin_boundaries"
@@ -47,7 +48,7 @@ def determine_dataset_dates(source, geoextent, geocint_folder, dataset_filename)
                 os.path.getmtime(os.path.join(geocint_folder, SourceFiles[source])))
         else:
             download_timestamp = ""
-            sys.stderr.write("WARNING: download date of "+source+" source cannot be obtained. No origin file specified for this source \n")
+            sys.stderr.write("WARNING: download date of "+source+" source cannot be obtained. No origin file specified for this source. \n")
 
     # reference date is when the orgin was lastly modified.
     # now let's obtain it from .last_modified.txt file.
