@@ -50,21 +50,30 @@ def determine_dataset_dates(source, geoextent, geocint_folder, dataset_filename)
             download_timestamp = ""
             sys.stderr.write("WARNING: download date of "+source+" source cannot be obtained. No origin file specified for this source. \n")
 
-    # reference date is when the orgin was lastly modified.
-    # now let's obtain it from .last_modified.txt file.
-    if source == "osm":
-        last_modified_file_name = os.path.join(geocint_folder, "data/mid/mapaction/"+ geoextent+'.pbf'+ ".last_modified.txt")
+    if source == "srtm" or "gmted2010":
+        # for some sources reference date is known and will not change
+        # space shuttle is no longer in service
+        reference_timestamp = "2010-01-01T00:00:00Z"
     else:
-        last_modified_file_name = ""
+        # reference date is when the orgin was lastly modified.
+        # now let's obtain it from .last_modified.txt file.
+        last_modified_file_name = os.path.join(geocint_folder,
+                                               os.path.splitext(dataset_filename)[0] + ".last_modified.txt")
 
-    if os.path.exists(last_modified_file_name):
-        fo1 = open(last_modified_file_name, 'r', encoding="utf-8")
-        reference_timestamp = fo1.read()
-        reference_timestamp = reference_timestamp.replace("\n",'')
-        fo1.close
-    else:
-        reference_timestamp = ""
-        sys.stderr.write("WARNING: unable to determine reference date for "+dataset_filename+"\n")
+        if not os.path.exists(last_modified_file_name):
+            if source == "osm":
+                last_modified_file_name = os.path.join(geocint_folder, "data/mid/mapaction/"+ geoextent+'.pbf'+ ".last_modified.txt")
+            else:
+                last_modified_file_name = ""
+
+        if os.path.exists(last_modified_file_name):
+            fo1 = open(last_modified_file_name, 'r', encoding="utf-8")
+            reference_timestamp = fo1.read()
+            reference_timestamp = reference_timestamp.replace("\n",'')
+            fo1.close
+        else:
+            reference_timestamp = ""
+            sys.stderr.write("WARNING: unable to determine reference date for "+dataset_filename+"\n")
 
     if download_timestamp=="":
         download_timestamp="unknown"
