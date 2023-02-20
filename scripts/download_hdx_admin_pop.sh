@@ -12,5 +12,6 @@ mkdir -p $out_dir
 # find country_code and download tabular data
 while IFS=$'\t' read -r url file_name
 do
-    wget -O $out_dir/$file_name.csv $url
+    rm -f $out_dir/$file_name.csv
+    wget -q -O $out_dir/$file_name.csv $url
 done < <( cat static_data/hdx_admin_pop_urls.json | jq -r --arg cnt $country_code '(.[] | select( .country_code | test( $cnt; "i" )) | .val | .[] | [ .download_url, .ma_file_name ]) | @tsv' )
