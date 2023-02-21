@@ -68,20 +68,3 @@ Pipeline for generating OSM layers looks like this:
 4. mapping OSM features to MapAction layers
 5. exporting from database to SHP/GeoJSON files
 6. uploading files to CKAN
-
-
-#### Step 4. mapping OSM features to MapAction layers
-
-During this process we are filtering osm features and saving them into the distinct layers. Some layers are created with simple tag filters, some with more complex filters.
-
-#### Example for layers **admn_ad[0-3]_adminboundary[0-3]_py**
-
-* For layer **ad0** we use filter: 
-`tags @> '{"admin_level":"2"}'`. Also countries that include "12 nautical miles from the baseline of a coastal State" are clipped with water polygons from [osmdata.openstreetmap.de](https://osmdata.openstreetmap.de/data/water-polygons.html)
-
-* For layer **ad1** we use the next value in admin_level after 2 (possible values are *3* or *4*)
-
-* For layer **ad2** we use the next value in admin_level after value for **ad1**. 
-Example: `if ad1=3 next value after 3, if ad1=4 - next value after 4`
-
-* For layer **ad3** - all other values not in **ad[0-1]**
