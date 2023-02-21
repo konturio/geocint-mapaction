@@ -333,6 +333,43 @@ FeatureCategory = \
         "wash": "Water Sanitation and Hygiene"
     }
 
+FeatureCategoryCodes = {
+    "3www": "201",
+    "admn": "202",
+    "affd": "203",
+    "agri": "204",
+    "assm": "205",
+    "bldg": "205",
+    "carto": "207",
+    "cash": "208",
+    "cccm": "209",
+    "educ": "210",
+    "elev": "211",
+    "envi": "212",
+    "evnt": "213",
+    "fsec": "214",
+    "heal": "215",
+    "hazd": "216",
+    "imgy": "217",
+    "land": "218",
+    "logs": "219",
+    "nutr": "220",
+    "phys": "221",
+    "pois": "222",
+    "popu": "223",
+    "prot": "224",
+    "rcvy": "225",
+    "scan": "226",
+    "scty": "227",
+    "shel": "228",
+    "stle": "229",
+    "sar": "230",
+    "telc": "231",
+    "tran": "232",
+    "util": "233",
+    "wash": "234",
+    "uxo": "235"}
+
 FeatureSource = {
     "alertnet": "Alertnet",
     "amb": "Ambulance Service",

@@ -166,17 +166,29 @@ data/out/country_extractions/global_power_plant_database: data/in/mapaction/glob
 data/out/cmf: | data/out ## create directory for CMFs
 	mkdir -p $@
 
-data/out/upload_datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export data/out/country_extractions/worldpop1km data/out/country_extractions/worldpop100m data/out/country_extractions/elevation | data/out ## upload datasets in CKAN
+data/out/datasets_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export data/out/country_extractions/worldpop1km data/out/country_extractions/worldpop100m data/out/country_extractions/elevation  | data/out ## Milestone: all the datasets have been prepared
+	echo "all the datasets prepared"
+	touch $@
+
+data/out/datasets_ckan_descriptions: data/out/datasets_all | data/out ## create json files with metadata for CKAN upload per dataset
+	find data/out/country_extractions/ -mindepth 3 -regex ".*\.\(shp\|geojson\|tif\|csv\)" | parallel 'bash scripts/mapaction_build_dataset_description.sh {}'
+	touch $@
+
+data/out/cmf_metadata_list_all: data/out/datasets_ckan_descriptions | data/out ## create csv file with metadata per country
+	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'python scripts/build_metadata_list.py {}'
+	touch $@
+
+data/out/upload_datasets_all: data/out/datasets_ckan_descriptions | data/out ## upload datasets in CKAN
 	find data/out/country_extractions/ -name "*.shp" | parallel 'bash scripts/mapaction_upload_dataset.sh {} shp'
 	find data/out/country_extractions/ -name "*.geojson" | parallel 'bash scripts/mapaction_upload_dataset.sh {} geojson'
 	find data/out/country_extractions/ -name "*.tif" | parallel 'bash scripts/mapaction_upload_dataset.sh {} tif'
 	touch $@
 
-data/out/upload_cmf_all: data/out/country_extractions/ne_10m_lakes data/out/country_extractions/ourairports data/out/country_extractions/worldports data/out/country_extractions/wfp_railroads data/out/country_extractions/global_power_plant_database data/out/country_extractions/ne_10m_rivers_lake_centerlines data/out/country_extractions/ne_10m_populated_places data/out/country_extractions/ne_10m_roads data/out/country_extractions/healthsites data/out/country_extractions/ocha_admin_boundaries data/out/mapaction_export data/out/country_extractions/worldpop1km data/out/country_extractions/worldpop100m data/out/country_extractions/elevation | data/out/cmf ## upload CMFs in CKAN
+data/out/upload_cmf_all: data/out/cmf_metadata_list_all | data/out/cmf ## upload CMFs in CKAN
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'bash scripts/mapaction_upload_cmf.sh {}'
 	touch $@
 
-create_completeness_report: data/out/upload_cmf_all | data/out/country_extractions ## create separate report for each country directory
+create_completeness_report: data/out/upload_cmf_all | data/out/country_extractions ## create completeness report for each country
 	find data/out/country_extractions/ -mindepth 1 -maxdepth 1 -type d | parallel 'python scripts/create_completeness_report.py {}'
 	touch $@
 
@@ -186,11 +198,12 @@ osmium_extract_config.json: ## generate config for osmium-extract
 data/mid/mapaction: | data/mid ## create directory data/mid/mapaction
 	mkdir -p $@
 
-data/in/mapaction/osm_last_modified_date: data/planet-latest-updated.osm.pbf | data/mid/mapaction ## get osm pbf last modified date
-	osmium fileinfo -e -g data.timestamp.last data/planet-latest-updated.osm.pbf > $@
-
 data/in/mapaction/per_country_pbf: data/planet-latest-updated.osm.pbf osmium_extract_config.json | data/mid/mapaction ## create per-country extracts pbf files from planet.pbf
 	osmium extract --config osmium_extract_config.json --overwrite data/planet-latest-updated.osm.pbf
+	touch $@
+
+data/in/mapaction/osm_last_modified_date: data/in/mapaction/per_country_pbf | data/mid/mapaction ## get osm pbf last modified date
+	ls data/mid/mapaction/*.pbf | parallel 'osmium fileinfo -e -g data.timestamp.last {} > {}.last_modified.txt'
 	touch $@
 
 db/table/osm_data_import: data/in/mapaction/per_country_pbf | db/table ## Create and populate osm_[] tables in db
