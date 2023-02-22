@@ -50,7 +50,7 @@ def determine_dataset_dates(source, geoextent, geocint_folder, dataset_filename)
             download_timestamp = ""
             sys.stderr.write("WARNING: download date of "+source+" source cannot be obtained. No origin file specified for this source. \n")
 
-    if source == "srtm" or "gmted2010":
+    if source == "srtm" or source == "gmted2010":
         # for some sources reference date is known and will not change
         # space shuttle is no longer in service
         reference_timestamp = "2010-01-01T00:00:00Z"
