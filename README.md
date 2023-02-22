@@ -68,3 +68,13 @@ Pipeline for generating OSM layers looks like this:
 4. mapping OSM features to MapAction layers
 5. exporting from database to SHP/GeoJSON files
 6. uploading files to CKAN
+
+
+## Generating population tabular data from HDX
+
+Because of ununiform naming of population tabular data on HDX it was implemented using `static_data/hdx_admin_pop_urls.json` file.
+The script filters values using country code and downloads this layers.
+
+__TO ADD OR UPDATE NEW LAYER__
+
+1. add OR update `static_data/hdx_admin_pop_urls.json`
