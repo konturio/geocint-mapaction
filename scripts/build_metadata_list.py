@@ -56,7 +56,7 @@ def create_csv(output_file_name,geoextent, datasets):
             codes = dataset_name.split("_", 7)
             # for some reason, _ckan.json files inculde dataset extension.
             # we should guess it from geometry type
-            Extentions = {"pt": ".geojson", "ln": ".geojson", "py": ".geojson", "ras": ".tif", ".tab": ".csv"}
+            Extentions = {"pt": ".geojson", "ln": ".geojson", "py": ".geojson", "ras": ".tif", "tab": ".csv"}
 
             file_extension = Extentions[codes[3]]
 
@@ -78,7 +78,7 @@ def create_csv(output_file_name,geoextent, datasets):
 
             fo.write(FeatureSource[source] + ',')  # ['source']
 
-            fo.write(data['url'] + ',')
+            fo.write(data.get('url','') + ',')
             fo.write(data.get('license_id', '') + ',')
 
             fo.write(creation_timestamp +',')
