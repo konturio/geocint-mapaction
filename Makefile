@@ -35,8 +35,10 @@ clean_osm: ## Cleans the planet-latest-updated.osm.pbf, so that OSM planet can b
 	profile_make_clean data/planet-latest-updated.osm.pbf
 
 .PHONY: clean_out_data
-clean_out_data: | data/out ## Clean DB and directory data/out/
+clean_out_data: | data/out ## Clean DB and directory data/out/ and delete targets
 	bash scripts/clean_out_data.sh
+	rm -f db/table/mapaction_data_table
+	rm -f db/table/osm_data_import
 
 data/in/mapaction: | data/in ## Create directory for the MapAction specific downloads
 	mkdir -p $@
