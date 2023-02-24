@@ -140,9 +140,6 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
         ckan_dataset_description["url"] = "https://ourairports.com/data"
     elif source == "healthsites":
         ckan_dataset_description["url"] = "https://www.healthsites.io/"
-    elif source == "unocha":
-        ckan_dataset_description["url"] = "https://data.humdata.org/organization/un-ocha"
-        ckan_dataset_description["license_id"] = "cc-by"
     elif source == "worldpop":
         ckan_dataset_description["url"] = "https://hub.worldpop.org/"
         ckan_dataset_description["license_id"] = "cc-by"
@@ -152,6 +149,9 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     elif source == "gmted2010":
         ckan_dataset_description["url"] = "https://www.usgs.gov/"
         ckan_dataset_description["license_id"] = "other-pd"
+    elif source in ("ocha3w", "unocha", "unfis"):
+        ckan_dataset_description["url"] = "https://data.humdata.org/organization/un-ocha"
+        ckan_dataset_description["license_id"] = "cc-by"
 
     creation_timestamp, download_timestamp, reference_timestamp = determine_dataset_dates(source, geoextent,os.path.join(GEOCINT_WORK_DIRECTORY,"geocint"), strOutputFileName)
 
