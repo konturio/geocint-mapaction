@@ -152,6 +152,9 @@ def build_ckan_dataset_description(strOutputFileName, number_of_objects, strFilt
     elif source == "gmted2010":
         ckan_dataset_description["url"] = "https://www.usgs.gov/"
         ckan_dataset_description["license_id"] = "other-pd"
+    elif source == "ocha3w":
+        ckan_dataset_description["url"] = "https://data.humdata.org/organization/un-ocha"
+        ckan_dataset_description["license_id"] = "cc-by"
 
     creation_timestamp, download_timestamp, reference_timestamp = determine_dataset_dates(source, geoextent,os.path.join(GEOCINT_WORK_DIRECTORY,"geocint"), strOutputFileName)
 
